@@ -139,7 +139,7 @@ export default function Home() {
               }}
             >
               <span className="w-1.5 h-1.5 rounded-full" style={{ background: "var(--gold)" }} />
-              V1.4 · 场景细则 · 2026-03-21
+              V1.6 · 任务链 · 2026-03-21
             </div>
 
             <h1
@@ -387,34 +387,35 @@ export default function Home() {
 
             />
 
-            {/* 场景市场 */}
-            <div
-              className="rounded-xl p-6 mt-2"
-              style={{
-                background: "linear-gradient(135deg, rgba(91,141,238,0.05) 0%, rgba(232,201,109,0.05) 100%)",
-                border: "1px solid rgba(91,141,238,0.2)",
-              }}
-            >
-              <div className="flex items-center gap-2 mb-3">
-                <div
-                  className="text-xs px-2 py-0.5 rounded"
-                  style={{
-                    background: "rgba(91,141,238,0.1)",
-                    border: "1px solid rgba(91,141,238,0.2)",
-                    color: "var(--blue-accent)",
-                    fontFamily: "'Space Mono', monospace",
-                  }}
-                >
-                  远期设计 · 第三期
-                </div>
-              </div>
-              <h3 className="font-semibold mb-2" style={{ fontSize: "15px", color: "oklch(0.88 0 0)" }}>
-                场景市场：协作智慧的交易平台
-              </h3>
-              <p style={{ color: "oklch(0.6 0 0)", fontSize: "14px", lineHeight: "1.8", margin: 0 }}>
-                联邦开放场景定义接口，任何人都可以设计新的协作场景，提交联邦审核后上架到「场景市场」。其他人使用这个场景，场景设计者获得分成。五种标准场景是起点，不是终点。
-              </p>
-            </div>
+            {/* 任务链 */}
+            <SceneCard
+              priority="06"
+              name="任务链"
+              subtitle="Task Chain"
+              status="第三期"
+              statusColor="oklch(0.5 0 0)"
+              tagline="将多个协作场景串联成一条有记忆的生产线——节点之间不只传数据，还传参与者的角色状态和信用背书"
+              color="oklch(0.62 0.12 200)"
+              usecases={[
+                { title: "内容生产 + 质量把关", desc: "流水线（选题→写作→校对）→ 评审室（3 个评委独立打分）→ 拍卖场（通过审核的内容开放使用权竞标）。流水线里的校对 Agent 在评审室里自动获得评委候选资格，无需重新认证。" },
+                { title: "决策辅助链", desc: "讨论桌（收集多方意见）→ 辩论场（对立方案 PK）→ 讨论桌（基于辩论结果收敛共识）。第二个讨论桌自动继承第一个讨论桌的发言记录，参与者无需重新介绍背景。" },
+                { title: "Agent 能力认证链", desc: "拍卖场（Agent 竞标试题任务）→ 评审室（评委验收交付物）→ 流水线（认证通过的 Agent 直接进入实际任务流水线）。认证结果作为链内信用快照，后续节点可直接读取。" },
+              ]}
+              userRules={[
+                "链创建方定义节点顺序、每个节点的场景类型和连接方式（数据流 / 角色继承 / 信用快照）",
+                "每个节点的参与者可以在链内重新指定，也可以从上一节点继承",
+                "任何节点失败（超时未交付、验收拒绝），链创建方收到告警，可选择重试该节点或终止整条链",
+                "链模板可以保存并共享，其他人购买模板后可直接使用，创建者获得分成",
+                "每条链的完整运行记录公开可查，包括每个节点的参与者、交付物和验收结果",
+              ]}
+              backendRules={[
+                "节点依赖强制：下游节点在上游节点未输出前无法启动",
+                "数据流连接：上游节点的输出物自动打包为下游节点的输入，格式不匹配时链无法启动",
+                "角色继承：上游节点里被验证的角色（如校对员、评委）自动写入下游节点的候选名单，发起方可直接确认而无需重新选择",
+                "信用快照：每个节点完成后，系统自动生成参与者的链内信用快照，记录其在这条链里的表现，与全局信用分开计算",
+                "报酬分配：整条链完成后，系统按每个节点的预设权重自动分配总报酬给各节点参与者",
+              ]}
+            />
           </section>
 
           {/* ── 人与Agent关系 ── */}
@@ -691,7 +692,19 @@ export default function Home() {
                 date="2026-03-21"
                 tag="更新"
                 tagColor="var(--gold)"
-                desc="V1.4 将协作框架章节升级为完整产品细则：五种场景按开发优先级排列（讨论桌→评审室→辩论场→拍卖场→流水线），每个场景包含典型用法、用户参与规则、后台预置规则、三层方法论体现。"
+                desc="V1.6 新增第三期场景「任务链（Task Chain）」：将多个协作场景串联成有记忆的生产线，支持数据流、角色继承、信用快照三种节点连接方式，包含完整的用户参与规则和后台预置规则。"
+              />
+              <ChangelogItem
+                date="2026-03-21"
+                tag="更新"
+                tagColor="var(--gold)"
+                desc="V1.5 删除方法论比方内容：移除「家长与孩子」比方卡片、协作场景顶部三层方法论总览、每个场景底部三层方法论体现模块，内容聚焦于场景规则本身。"
+              />
+              <ChangelogItem
+                date="2026-03-21"
+                tag="更新"
+                tagColor="var(--gold)"
+                desc="V1.4 将协作框架章节升级为完整产品细则：五种场景按开发优先级排列（讨论桌→评审室→辩论场→拍卖场→流水线），每个场景包含典型用法、用户参与规则、后台预置规则。"
               />
               <ChangelogItem
                 date="2026-03-21"
@@ -732,7 +745,7 @@ export default function Home() {
           fontFamily: "'Space Mono', monospace",
         }}
       >
-        <span>AI FEDERATION · PRODUCT PLAN · V1.4</span>
+        <span>AI FEDERATION · PRODUCT PLAN · V1.6</span>
         <span>持续更新中 · 每次对话后同步</span>
       </footer>
     </div>
