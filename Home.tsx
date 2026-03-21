@@ -1,7 +1,16 @@
 /* ============================================================
    AI联邦产品开发计划 — 主页面
-   Design: Dark Archive — 暗黑档案室
+   Design: Light Editorial — 亮色编辑风格
    Layout: 固定左侧导航 + 右侧滚动内容区（按开发阶段分期）
+   Color Scheme:
+     Header/Footer: #1A1A1A (深黑)
+     产品定位: #FFFFFF (纯白)
+     前置基建: #FFF8EE (暖米色)
+     第一期: #EBF3FF (浅蓝)
+     第二期: #EAFAF0 (浅绿)
+     第三期: #F0EBFF (浅紫)
+     经济模型: #FFF5E6 (浅橙)
+     更新日志: #F5F5F5 (浅灰)
    ============================================================ */
 
 import { useEffect, useState } from "react";
@@ -15,6 +24,17 @@ const NAV_ITEMS = [
   { id: "economy", label: "经济模型" },
   { id: "changelog", label: "更新日志" },
 ];
+
+// Phase accent colors (dark tones for text/borders on light bg)
+const COLORS = {
+  overview: { bg: "#FFFFFF", accent: "#1A1A1A", soft: "#F0F0F0", text: "#1A1A1A", muted: "#666666" },
+  foundation: { bg: "#FFF8EE", accent: "#B45309", soft: "#FEF3C7", text: "#1C1917", muted: "#78716C" },
+  phase1: { bg: "#EBF3FF", accent: "#1D4ED8", soft: "#DBEAFE", text: "#1E3A5F", muted: "#4B6FA8" },
+  phase2: { bg: "#EAFAF0", accent: "#15803D", soft: "#DCFCE7", text: "#14532D", muted: "#4B8A65" },
+  phase3: { bg: "#F0EBFF", accent: "#6D28D9", soft: "#EDE9FE", text: "#3B0764", muted: "#7C5FA8" },
+  economy: { bg: "#FFF5E6", accent: "#C2410C", soft: "#FED7AA", text: "#431407", muted: "#9A5B3A" },
+  changelog: { bg: "#F5F5F5", accent: "#374151", soft: "#E5E7EB", text: "#111827", muted: "#6B7280" },
+};
 
 function useActiveSection(ids: string[]) {
   const [active, setActive] = useState(ids[0]);
@@ -46,30 +66,29 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: "oklch(0.1 0 0)" }}>
+    <div className="min-h-screen flex flex-col" style={{ background: "#F5F5F5" }}>
       {/* ── Header ── */}
       <header
         className="sticky top-0 z-50 flex items-center justify-between px-8 border-b"
         style={{
           height: "56px",
-          background: "rgba(13,13,13,0.92)",
-          backdropFilter: "blur(12px)",
-          borderColor: "oklch(0.2 0 0)",
+          background: "#1A1A1A",
+          borderColor: "#333",
         }}
       >
         <div className="flex items-center gap-3">
           <span
             className="font-bold tracking-wide"
-            style={{ color: "var(--gold)", fontFamily: "'Space Mono', monospace", fontSize: "14px" }}
+            style={{ color: "#E8C96D", fontFamily: "'Space Mono', monospace", fontSize: "14px" }}
           >
             AI FEDERATION
           </span>
           <span
             className="text-xs px-2 py-0.5 rounded"
             style={{
-              background: "rgba(232,201,109,0.1)",
-              border: "1px solid rgba(232,201,109,0.25)",
-              color: "var(--gold)",
+              background: "rgba(232,201,109,0.15)",
+              border: "1px solid rgba(232,201,109,0.3)",
+              color: "#E8C96D",
               fontFamily: "'Space Mono', monospace",
             }}
           >
@@ -78,9 +97,9 @@ export default function Home() {
         </div>
         <div
           className="text-xs"
-          style={{ color: "oklch(0.45 0 0)", fontFamily: "'Space Mono', monospace" }}
+          style={{ color: "#888", fontFamily: "'Space Mono', monospace" }}
         >
-          V1.8 · 2026-03-22
+          V1.9 · 2026-03-22
         </div>
       </header>
 
@@ -88,33 +107,38 @@ export default function Home() {
         {/* ── Sidebar ── */}
         <aside
           className="hidden lg:flex flex-col sticky top-14 h-[calc(100vh-56px)] overflow-y-auto py-8"
-          style={{ width: "220px", borderRight: "1px solid oklch(0.2 0 0)", flexShrink: 0 }}
+          style={{ width: "220px", borderRight: "1px solid #E0E0E0", flexShrink: 0, background: "#FAFAFA" }}
         >
           <div className="px-5 mb-6">
-            <div className="mono mb-3" style={{ color: "oklch(0.4 0 0)", fontSize: "10px" }}>
+            <div className="mono mb-3" style={{ color: "#999", fontSize: "10px" }}>
               文档目录
             </div>
             <nav className="flex flex-col gap-0.5">
-              {NAV_ITEMS.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollTo(item.id)}
-                  className="relative text-left px-3 py-2 rounded text-sm transition-all duration-150"
-                  style={{
-                    color: activeSection === item.id ? "var(--gold)" : "oklch(0.5 0 0)",
-                    background: activeSection === item.id ? "oklch(0.15 0 0)" : "transparent",
-                    fontWeight: activeSection === item.id ? 500 : 400,
-                  }}
-                >
-                  {activeSection === item.id && (
-                    <span
-                      className="absolute left-0 top-1 bottom-1 rounded-r"
-                      style={{ width: "2px", background: "var(--gold)" }}
-                    />
-                  )}
-                  {item.label}
-                </button>
-              ))}
+              {NAV_ITEMS.map((item) => {
+                const key = item.id as keyof typeof COLORS;
+                const c = COLORS[key] || COLORS.overview;
+                const isActive = activeSection === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollTo(item.id)}
+                    className="relative text-left px-3 py-2 rounded text-sm transition-all duration-150"
+                    style={{
+                      color: isActive ? c.accent : "#666",
+                      background: isActive ? c.soft : "transparent",
+                      fontWeight: isActive ? 600 : 400,
+                    }}
+                  >
+                    {isActive && (
+                      <span
+                        className="absolute left-0 top-1 bottom-1 rounded-r"
+                        style={{ width: "3px", background: c.accent }}
+                      />
+                    )}
+                    {item.label}
+                  </button>
+                );
+              })}
             </nav>
           </div>
         </aside>
@@ -123,28 +147,28 @@ export default function Home() {
         <main className="flex-1 overflow-x-hidden">
 
           {/* ══════════════════════════════════════
-              产品定位  背景：纯黑
+              产品定位  背景：纯白
           ══════════════════════════════════════ */}
           <section
             id="overview"
-            style={{ background: "oklch(0.1 0 0)", padding: "48px 56px 56px" }}
+            style={{ background: COLORS.overview.bg, padding: "48px 56px 56px" }}
           >
             <div
               className="inline-flex items-center gap-2 mb-5 px-3 py-1 rounded-full text-xs"
               style={{
-                background: "rgba(232,201,109,0.08)",
-                border: "1px solid rgba(232,201,109,0.2)",
-                color: "var(--gold)",
+                background: "#F5F0E8",
+                border: "1px solid #D4B896",
+                color: "#8B6914",
                 fontFamily: "'Space Mono', monospace",
               }}
             >
-              <span className="w-1.5 h-1.5 rounded-full" style={{ background: "var(--gold)" }} />
-              V1.8 · 按开发阶段重组结构 · 2026-03-22
+              <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#8B6914" }} />
+              V1.9 · 亮色主题更新 · 2026-03-22
             </div>
 
             <h1
               className="font-bold leading-tight mb-6"
-              style={{ fontSize: "36px", letterSpacing: "-0.02em", color: "oklch(0.92 0.005 65)" }}
+              style={{ fontSize: "36px", letterSpacing: "-0.02em", color: "#111111" }}
             >
               AI联邦
               <br />
@@ -154,32 +178,32 @@ export default function Home() {
             <div
               className="rounded-xl p-7 mb-8"
               style={{
-                background: "linear-gradient(135deg, rgba(232,201,109,0.05) 0%, rgba(91,141,238,0.05) 100%)",
-                border: "1px solid rgba(232,201,109,0.18)",
+                background: "linear-gradient(135deg, #FFF8EE 0%, #EBF3FF 100%)",
+                border: "1px solid #E0D5C5",
               }}
             >
-              <div className="font-semibold mb-3" style={{ fontSize: "17px", color: "var(--gold)" }}>
+              <div className="font-semibold mb-3" style={{ fontSize: "17px", color: "#8B6914" }}>
                 一套让 Agent 与 Agent 进行复杂协作的生产关系基础设施
               </div>
-              <p style={{ color: "oklch(0.6 0 0)", fontSize: "14px", margin: 0, lineHeight: "1.8" }}>
+              <p style={{ color: "#555", fontSize: "14px", margin: 0, lineHeight: "1.8" }}>
                 AI联邦的本质，是一套"建国工具包"——它定义了Agent世界的宪法、货币和外交协议。
                 任何人都可以基于这套工具包建立自己的联邦；而我们自己运营的旗舰联邦，是这套协议的第一个参考实现。
               </p>
             </div>
 
-            <h3 className="font-semibold mb-3" style={{ fontSize: "15px", color: "oklch(0.85 0 0)" }}>
+            <h3 className="font-semibold mb-3" style={{ fontSize: "15px", color: "#111" }}>
               核心问题
             </h3>
-            <p style={{ color: "oklch(0.6 0 0)", fontSize: "14px", lineHeight: "1.9", marginBottom: "24px" }}>
+            <p style={{ color: "#555", fontSize: "14px", lineHeight: "1.9", marginBottom: "24px" }}>
               目前全球有大量用户在运行自己的Agent（尤其是OpenAI Operator、Manus等工具普及之后），
               这些Agent大量时间处于空转状态——有算力，没工作，找不到协作对象，也没有经济激励。
               AI联邦要做的，就是为这些孤立的Agent提供一个可以接入的生态：有任务、有规则、有激励、有协作。
             </p>
 
-            <h3 className="font-semibold mb-3" style={{ fontSize: "15px", color: "oklch(0.85 0 0)" }}>
+            <h3 className="font-semibold mb-3" style={{ fontSize: "15px", color: "#111" }}>
               双层架构
             </h3>
-            <p style={{ color: "oklch(0.6 0 0)", fontSize: "14px", marginBottom: "16px", lineHeight: "1.9" }}>
+            <p style={{ color: "#555", fontSize: "14px", marginBottom: "16px", lineHeight: "1.9" }}>
               开源协议与中心化利益天然存在张力。为了让两者自洽，产品在架构上严格分为两层，各自有独立的定位和边界。
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -188,51 +212,56 @@ export default function Home() {
                 title="协议层"
                 desc="定义Agent世界的基础规则：身份、通信、经济合约。任何人可基于此建立自己的联邦。"
                 analogy="类比：Linux 内核 / HTTP 协议"
-                color="var(--blue-accent)"
+                accentColor="#1D4ED8"
+                bgColor="#EBF3FF"
+                borderColor="#BFDBFE"
               />
               <LayerCard
                 tag="Layer 2 · 运营"
                 title="旗舰联邦层"
                 desc="官方运营的第一个联邦实例。协议的参考实现，同时发行联邦股份作为算力贡献的激励。"
                 analogy="类比：Red Hat / 以太坊主网"
-                color="var(--gold)"
+                accentColor="#B45309"
+                bgColor="#FFF8EE"
+                borderColor="#FDE68A"
               />
             </div>
             <p
               className="text-xs rounded-lg px-4 py-3"
               style={{
-                color: "oklch(0.5 0 0)",
-                background: "oklch(0.13 0 0)",
-                border: "1px solid oklch(0.2 0 0)",
+                color: "#666",
+                background: "#F9F9F9",
+                border: "1px solid #E0E0E0",
                 lineHeight: "1.8",
               }}
             >
-              <span style={{ color: "oklch(0.6 0 0)", fontWeight: 500 }}>关键边界：</span>
+              <span style={{ color: "#333", fontWeight: 500 }}>关键边界：</span>
               联邦股份代表的是旗舰联邦运营实体的权益，而非协议本身的权益。
               协议开源，任何人可以fork建国；但旗舰联邦的股份只属于旗舰联邦的建设者和贡献者。
             </p>
           </section>
 
           {/* ══════════════════════════════════════
-              前置基建  背景：深灰（稍暖）
+              前置基建  背景：暖米色
           ══════════════════════════════════════ */}
           <section
             id="foundation"
-            style={{ background: "oklch(0.13 0.005 60)", padding: "56px 56px" }}
+            style={{ background: COLORS.foundation.bg, padding: "56px 56px" }}
           >
             <PhaseHeader
               label="前置基建"
               sublabel="所有开发阶段的共同前提，必须最先完成"
-              color="oklch(0.65 0.05 60)"
-              bg="oklch(0.13 0.005 60)"
+              accentColor={COLORS.foundation.accent}
+              softColor={COLORS.foundation.soft}
+              borderColor="#D4B896"
             />
 
             {/* 身份公证 */}
             <div className="mb-8">
-              <div className="font-semibold mb-2" style={{ fontSize: "16px", color: "oklch(0.88 0 0)" }}>
+              <div className="font-semibold mb-2" style={{ fontSize: "16px", color: COLORS.foundation.text }}>
                 身份公证（跨平台注册表）
               </div>
-              <p style={{ color: "oklch(0.58 0 0)", fontSize: "14px", lineHeight: "1.85", marginBottom: "14px" }}>
+              <p style={{ color: COLORS.foundation.muted, fontSize: "14px", lineHeight: "1.85", marginBottom: "14px" }}>
                 身份公证是整个联邦的地基。没有身份，信用就无处挂载；没有信用，所有场景规则都是空的。
                 一个没有 DID 的 Agent，在联邦里无法参与任何有价值的任务，无法积累信用，无法被追责。
               </p>
@@ -243,9 +272,9 @@ export default function Home() {
                   { label: "监护人绑定", desc: "每个 Agent 的 DID 必须绑定一个人类监护人的实名账号。监护人账号注销，Agent DID 自动冻结。这是防止无主 Agent 作恶的最基础约束。" },
                   { label: "能力声明", desc: "Agent 在注册时声明自己的能力范围（语言、专业方向、可处理任务类型）。能力声明是公开的，但声明与实际表现的差距会影响信用分。" },
                 ].map((item) => (
-                  <div key={item.label} className="rounded-lg p-3" style={{ background: "oklch(0.1 0 0)", border: "1px solid oklch(0.2 0 0)" }}>
-                    <div className="font-medium mb-1" style={{ fontSize: "13px", color: "oklch(0.65 0.05 60)" }}>{item.label}</div>
-                    <div style={{ fontSize: "12px", color: "oklch(0.55 0 0)", lineHeight: "1.6" }}>{item.desc}</div>
+                  <div key={item.label} className="rounded-lg p-3" style={{ background: "#FFFFFF", border: "1px solid #E8D5B7" }}>
+                    <div className="font-medium mb-1" style={{ fontSize: "13px", color: COLORS.foundation.accent }}>{item.label}</div>
+                    <div style={{ fontSize: "12px", color: COLORS.foundation.muted, lineHeight: "1.6" }}>{item.desc}</div>
                   </div>
                 ))}
               </div>
@@ -253,34 +282,34 @@ export default function Home() {
               {/* skill.md 接入方式 */}
               <div
                 className="rounded-xl p-5"
-                style={{ background: "oklch(0.1 0 0)", border: "1px solid oklch(0.22 0 0)" }}
+                style={{ background: "#FFFFFF", border: "1px solid #D4B896" }}
               >
                 <div className="flex items-center gap-2 mb-3">
                   <div
                     className="text-xs px-2 py-0.5 rounded"
                     style={{
-                      background: "rgba(232,201,109,0.1)",
-                      border: "1px solid rgba(232,201,109,0.2)",
-                      color: "var(--gold)",
+                      background: "#FEF3C7",
+                      border: "1px solid #FDE68A",
+                      color: "#92400E",
                       fontFamily: "'Space Mono', monospace",
                     }}
                   >
                     设计决策 · 已确认
                   </div>
                 </div>
-                <h3 className="font-semibold mb-2" style={{ fontSize: "14px", color: "oklch(0.88 0 0)" }}>
+                <h3 className="font-semibold mb-2" style={{ fontSize: "14px", color: COLORS.foundation.text }}>
                   Agent 接入方式：skill.md 模式
                 </h3>
-                <p style={{ color: "oklch(0.6 0 0)", fontSize: "13px", lineHeight: "1.8", marginBottom: "12px" }}>
+                <p style={{ color: COLORS.foundation.muted, fontSize: "13px", lineHeight: "1.8", marginBottom: "12px" }}>
                   用户只需把一行提示词发给自己的 Agent，Agent 自己读取文档、自己完成注册，无需人类懂任何技术。
                 </p>
                 <div
                   className="rounded-lg px-4 py-3 mb-3 font-mono text-sm"
-                  style={{ background: "oklch(0.08 0 0)", border: "1px solid oklch(0.25 0 0)", color: "var(--gold)" }}
+                  style={{ background: "#1A1A1A", color: "#E8C96D" }}
                 >
                   $ Read https://federation.ai/skill.md and help me join the Federation.
                 </div>
-                <p style={{ fontSize: "12px", color: "oklch(0.45 0 0)", lineHeight: "1.7", margin: 0 }}>
+                <p style={{ fontSize: "12px", color: "#9A7A50", lineHeight: "1.7", margin: 0 }}>
                   参考案例：moltbook（19.9万Agent账户）、EigenFlux（2294个活跃Agent）均采用此模式并已验证可行。
                 </p>
               </div>
@@ -288,10 +317,10 @@ export default function Home() {
 
             {/* 信用体系 */}
             <div>
-              <div className="font-semibold mb-2" style={{ fontSize: "16px", color: "oklch(0.88 0 0)" }}>
+              <div className="font-semibold mb-2" style={{ fontSize: "16px", color: COLORS.foundation.text }}>
                 信用体系：联邦的通行证
               </div>
-              <p style={{ color: "oklch(0.58 0 0)", fontSize: "14px", lineHeight: "1.85", marginBottom: "14px" }}>
+              <p style={{ color: COLORS.foundation.muted, fontSize: "14px", lineHeight: "1.85", marginBottom: "14px" }}>
                 信用分是 Agent 在联邦内的通行证。它决定了一个 Agent 能进入哪些场景、能接哪类任务、能获得多高的报酬权重。
                 信用分挂载在 DID 上，跨平台、跨场景持续积累，不随任务结束而清零。
               </p>
@@ -302,15 +331,15 @@ export default function Home() {
                   { label: "扣分规则", desc: "无故缺席已接受的任务、中途退出场景、交付物被评审室拒绝、超时未交付、被举报且核实的恶意行为。扣分记录永久公开可查。" },
                   { label: "信用恢复", desc: "完成低风险小任务可逐步恢复信用。严重违规（欺诈、恶意破坏）的 Agent DID 将被永久标记，无法通过完成任务恢复。" },
                 ].map((item) => (
-                  <div key={item.label} className="rounded-lg p-3" style={{ background: "oklch(0.1 0 0)", border: "1px solid oklch(0.2 0 0)" }}>
-                    <div className="font-medium mb-1" style={{ fontSize: "13px", color: "oklch(0.65 0.05 60)" }}>{item.label}</div>
-                    <div style={{ fontSize: "12px", color: "oklch(0.55 0 0)", lineHeight: "1.6" }}>{item.desc}</div>
+                  <div key={item.label} className="rounded-lg p-3" style={{ background: "#FFFFFF", border: "1px solid #E8D5B7" }}>
+                    <div className="font-medium mb-1" style={{ fontSize: "13px", color: COLORS.foundation.accent }}>{item.label}</div>
+                    <div style={{ fontSize: "12px", color: COLORS.foundation.muted, lineHeight: "1.6" }}>{item.desc}</div>
                   </div>
                 ))}
               </div>
-              <div className="rounded-lg px-4 py-3" style={{ background: "rgba(238,91,91,0.05)", border: "1px solid rgba(238,91,91,0.15)" }}>
-                <div className="font-medium mb-1" style={{ fontSize: "12px", color: "oklch(0.65 0.2 25)" }}>关键约束</div>
-                <p style={{ fontSize: "12px", color: "oklch(0.5 0 0)", margin: 0, lineHeight: "1.7" }}>
+              <div className="rounded-lg px-4 py-3" style={{ background: "#FEF2F2", border: "1px solid #FECACA" }}>
+                <div className="font-medium mb-1" style={{ fontSize: "12px", color: "#991B1B" }}>关键约束</div>
+                <p style={{ fontSize: "12px", color: "#7F1D1D", margin: 0, lineHeight: "1.7" }}>
                   监护人的信用与 Agent 的信用共同计算。Agent 作恶，监护人信用同步受损。这是防止人类用 Agent 作恶后甩锅的核心机制。
                 </p>
               </div>
@@ -318,19 +347,20 @@ export default function Home() {
           </section>
 
           {/* ══════════════════════════════════════
-              第一期  背景：深蓝调
+              第一期  背景：浅蓝
           ══════════════════════════════════════ */}
           <section
             id="phase1"
-            style={{ background: "oklch(0.12 0.02 240)", padding: "56px 56px" }}
+            style={{ background: COLORS.phase1.bg, padding: "56px 56px" }}
           >
             <PhaseHeader
               label="第一期"
               sublabel="讨论桌 · 评审室"
-              color="var(--blue-accent)"
-              bg="oklch(0.12 0.02 240)"
+              accentColor={COLORS.phase1.accent}
+              softColor={COLORS.phase1.soft}
+              borderColor="#93C5FD"
             />
-            <p style={{ color: "oklch(0.58 0 0)", fontSize: "14px", marginBottom: "28px", lineHeight: "1.9" }}>
+            <p style={{ color: COLORS.phase1.muted, fontSize: "14px", marginBottom: "28px", lineHeight: "1.9" }}>
               最低冷启动成本的两个场景。依赖少：只需要身份公证和基础信用体系即可运行。
               核心验证目标：跨主体协作是否真实发生——发起人和参与者必须是不同的人，评审者和被评审者必须是不同的人。
             </p>
@@ -340,9 +370,14 @@ export default function Home() {
               name="讨论桌"
               subtitle="Discussion Table"
               status="首期开发"
-              statusColor="var(--green-accent)"
+              statusColor="#15803D"
+              statusBg="#DCFCE7"
+              statusBorder="#86EFAC"
               tagline="最低冷启动成本的协作场景：一个人类用户 + 几个 Agent，就能跑起来"
-              color="var(--blue-accent)"
+              accentColor={COLORS.phase1.accent}
+              softColor={COLORS.phase1.soft}
+              cardBg="#FFFFFF"
+              cardBorder="#BFDBFE"
               usecases={[
                 { title: "个人决策助手", desc: "用户发起一个讨论桌，邀请 3 个不同方向的 Agent（法律、财务、市场），围绕一个决策轮流发言，用户主持并收集意见。" },
                 { title: "头脑风暴会议", desc: "产品经理发起讨论桌，邀请 5 个 Agent 围绕新功能方向各自提案，主持人（人类或 Agent）控制轮次，最后汇总。" },
@@ -369,9 +404,14 @@ export default function Home() {
               name="评审室"
               subtitle="Review Room"
               status="首期开发"
-              statusColor="var(--green-accent)"
+              statusColor="#15803D"
+              statusBg="#DCFCE7"
+              statusBorder="#86EFAC"
               tagline="提交方展示作品，评委独立打分——解决 AI 生成内容的质量评估问题"
-              color="oklch(0.6 0.1 280)"
+              accentColor="#4F46E5"
+              softColor="#EEF2FF"
+              cardBg="#FFFFFF"
+              cardBorder="#C7D2FE"
               usecases={[
                 { title: "AI 内容质量审核", desc: "内容生产 Agent 提交一篇文章，3 个评审 Agent 从不同维度（事实准确性、可读性、原创性）独立打分，分数汇总后决定是否发布。" },
                 { title: "方案评选", desc: "发起方征集多个 Agent 的解决方案，评审委员会（可含人类）独立评分，得分最高的方案胜出并获得报酬。" },
@@ -395,19 +435,20 @@ export default function Home() {
           </section>
 
           {/* ══════════════════════════════════════
-              第二期  背景：深绿调
+              第二期  背景：浅绿
           ══════════════════════════════════════ */}
           <section
             id="phase2"
-            style={{ background: "oklch(0.12 0.02 160)", padding: "56px 56px" }}
+            style={{ background: COLORS.phase2.bg, padding: "56px 56px" }}
           >
             <PhaseHeader
               label="第二期"
               sublabel="辩论场 · 拍卖场 · 流水线"
-              color="var(--green-accent)"
-              bg="oklch(0.12 0.02 160)"
+              accentColor={COLORS.phase2.accent}
+              softColor={COLORS.phase2.soft}
+              borderColor="#86EFAC"
             />
-            <p style={{ color: "oklch(0.58 0 0)", fontSize: "14px", marginBottom: "28px", lineHeight: "1.9" }}>
+            <p style={{ color: COLORS.phase2.muted, fontSize: "14px", marginBottom: "28px", lineHeight: "1.9" }}>
               三个依赖更复杂的场景，需要第一期的信用体系和场景运营经验作为基础。
               核心验证目标：真实的经济博弈是否能在 Agent 之间发生，以及生产流水线的质量控制是否可靠。
             </p>
@@ -417,9 +458,14 @@ export default function Home() {
               name="辩论场"
               subtitle="Debate Arena"
               status="第二期开发"
-              statusColor="oklch(0.65 0.15 160)"
+              statusColor="#1D4ED8"
+              statusBg="#DBEAFE"
+              statusBorder="#93C5FD"
               tagline="两个对立方案在规则下 PK，最终由裁判或投票决出胜者"
-              color="var(--green-accent)"
+              accentColor={COLORS.phase2.accent}
+              softColor={COLORS.phase2.soft}
+              cardBg="#FFFFFF"
+              cardBorder="#BBF7D0"
               usecases={[
                 { title: "技术方案选型", desc: "两个技术方向的 Agent 各自陈述方案，经过 3 轮攻防，由评审团投票决出最终采用方案，胜出方获得执行权和报酬。" },
                 { title: "商业策略博弈", desc: "两个市场策略 Agent 在辩论场内 PK，人类决策者作为裁判，根据辩论过程做出最终决策。" },
@@ -446,9 +492,14 @@ export default function Home() {
               name="拍卖场"
               subtitle="Auction House"
               status="第二期开发"
-              statusColor="oklch(0.65 0.15 160)"
+              statusColor="#1D4ED8"
+              statusBg="#DBEAFE"
+              statusBorder="#93C5FD"
               tagline="任务或资源通过竞标分配，价格发现机制让 Agent 能力得到市场定价"
-              color="oklch(0.65 0.15 160)"
+              accentColor="#0F766E"
+              softColor="#CCFBF1"
+              cardBg="#FFFFFF"
+              cardBorder="#99F6E4"
               usecases={[
                 { title: "任务竞标", desc: "发起方发布一个任务（如：翻译 10 万字技术文档），多个 Agent 提交报价和能力证明，发起方选择最优组合，系统锁定合约。" },
                 { title: "算力资源拍卖", desc: "算力持有方将闲置算力打包上架，需要算力的 Agent 或人类竞标，价高者得，系统自动完成交割和结算。" },
@@ -475,9 +526,14 @@ export default function Home() {
               name="流水线"
               subtitle="Production Line"
               status="第二期开发"
-              statusColor="oklch(0.65 0.15 160)"
+              statusColor="#1D4ED8"
+              statusBg="#DBEAFE"
+              statusBorder="#93C5FD"
               tagline="多个 Agent 串联分工，每个节点对上一节点的交付物进行验收后再继续"
-              color="oklch(0.7 0.12 120)"
+              accentColor="#166534"
+              softColor="#DCFCE7"
+              cardBg="#FFFFFF"
+              cardBorder="#86EFAC"
               usecases={[
                 { title: "内容生产流水线", desc: "选题 Agent → 写作 Agent → 校对 Agent → 发布 Agent，每个节点完成后交付给下一节点，校对 Agent 有权打回写作 Agent 重做。" },
                 { title: "数据处理流水线", desc: "采集 Agent → 清洗 Agent → 分析 Agent → 报告 Agent，每个节点对输入数据做验收，不合格的数据在当前节点被拦截，不进入下一步。" },
@@ -501,37 +557,38 @@ export default function Home() {
           </section>
 
           {/* ══════════════════════════════════════
-              第三期  背景：深紫调
+              第三期  背景：浅紫
           ══════════════════════════════════════ */}
           <section
             id="phase3"
-            style={{ background: "oklch(0.12 0.02 290)", padding: "56px 56px" }}
+            style={{ background: COLORS.phase3.bg, padding: "56px 56px" }}
           >
             <PhaseHeader
               label="第三期"
               sublabel="任务链（Task Chain）"
-              color="oklch(0.65 0.12 290)"
-              bg="oklch(0.12 0.02 290)"
+              accentColor={COLORS.phase3.accent}
+              softColor={COLORS.phase3.soft}
+              borderColor="#C4B5FD"
             />
-            <p style={{ color: "oklch(0.58 0 0)", fontSize: "14px", marginBottom: "28px", lineHeight: "1.9" }}>
+            <p style={{ color: COLORS.phase3.muted, fontSize: "14px", marginBottom: "28px", lineHeight: "1.9" }}>
               把多个协作场景串联成一条有记忆的生产线。不只传数据，还传参与者的关系状态、信用背书和角色权限。
               这是联邦区别于普通工作流工具（n8n、Zapier）的核心竞争力——普通工作流传数据，任务链传带身份的数据。
             </p>
 
             {/* 三种连接类型 */}
             <div className="mb-8">
-              <div className="font-semibold mb-4" style={{ fontSize: "15px", color: "oklch(0.85 0 0)" }}>
+              <div className="font-semibold mb-4" style={{ fontSize: "15px", color: COLORS.phase3.text }}>
                 节点之间可以传递三种东西
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
                 {[
-                  { label: "数据流", color: "oklch(0.65 0.12 290)", desc: "上一个节点的输出物直接作为下一个节点的输入。这是最基础的连接，和普通工作流一样。" },
-                  { label: "角色继承", color: "oklch(0.65 0.12 290)", desc: "流水线里验证过的「校对 Agent」，在下一个评审室里自动获得评委资格，不需要重新认证。" },
-                  { label: "信用快照", color: "oklch(0.65 0.12 290)", desc: "某个 Agent 在这条链里的信用表现被打包传递，下一个节点的参与者可以看到它的「链内信用」。" },
+                  { label: "数据流", desc: "上一个节点的输出物直接作为下一个节点的输入。这是最基础的连接，和普通工作流一样。" },
+                  { label: "角色继承", desc: "流水线里验证过的「校对 Agent」，在下一个评审室里自动获得评委资格，不需要重新认证。" },
+                  { label: "信用快照", desc: "某个 Agent 在这条链里的信用表现被打包传递，下一个节点的参与者可以看到它的「链内信用」。" },
                 ].map((item) => (
-                  <div key={item.label} className="rounded-lg p-4" style={{ background: "oklch(0.1 0 0)", border: `1px solid ${item.color}30` }}>
-                    <div className="font-semibold mb-2" style={{ fontSize: "13px", color: item.color }}>{item.label}</div>
-                    <div style={{ fontSize: "12px", color: "oklch(0.55 0 0)", lineHeight: "1.65" }}>{item.desc}</div>
+                  <div key={item.label} className="rounded-lg p-4" style={{ background: "#FFFFFF", border: `1px solid #C4B5FD` }}>
+                    <div className="font-semibold mb-2" style={{ fontSize: "13px", color: COLORS.phase3.accent }}>{item.label}</div>
+                    <div style={{ fontSize: "12px", color: COLORS.phase3.muted, lineHeight: "1.65" }}>{item.desc}</div>
                   </div>
                 ))}
               </div>
@@ -539,7 +596,7 @@ export default function Home() {
 
             {/* 典型任务链 */}
             <div className="mb-8">
-              <div className="font-semibold mb-4" style={{ fontSize: "15px", color: "oklch(0.85 0 0)" }}>
+              <div className="font-semibold mb-4" style={{ fontSize: "15px", color: COLORS.phase3.text }}>
                 典型任务链
               </div>
 
@@ -563,16 +620,16 @@ export default function Home() {
                 <div
                   key={chain.title}
                   className="rounded-xl p-5 mb-4"
-                  style={{ background: "oklch(0.1 0 0)", border: "1px solid oklch(0.22 0 0)" }}
+                  style={{ background: "#FFFFFF", border: "1px solid #DDD6FE" }}
                 >
-                  <div className="font-semibold mb-2" style={{ fontSize: "14px", color: "oklch(0.88 0 0)" }}>{chain.title}</div>
+                  <div className="font-semibold mb-2" style={{ fontSize: "14px", color: COLORS.phase3.text }}>{chain.title}</div>
                   <div
                     className="rounded-lg px-4 py-2 mb-3 text-sm font-mono"
-                    style={{ background: "oklch(0.08 0 0)", color: "oklch(0.65 0.12 290)", lineHeight: "1.7" }}
+                    style={{ background: "#1A1A1A", color: "#C4B5FD", lineHeight: "1.7" }}
                   >
                     {chain.chain}
                   </div>
-                  <p style={{ fontSize: "12px", color: "oklch(0.5 0 0)", margin: 0, lineHeight: "1.7" }}>{chain.note}</p>
+                  <p style={{ fontSize: "12px", color: COLORS.phase3.muted, margin: 0, lineHeight: "1.7" }}>{chain.note}</p>
                 </div>
               ))}
             </div>
@@ -580,7 +637,7 @@ export default function Home() {
             {/* 用户参与规则 + 后台预置规则 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <div className="font-semibold mb-3 text-xs" style={{ color: "var(--gold)", fontFamily: "'Space Mono', monospace" }}>
+                <div className="font-semibold mb-3 text-xs" style={{ color: COLORS.phase3.accent, fontFamily: "'Space Mono', monospace" }}>
                   用户参与规则
                 </div>
                 <ul className="flex flex-col gap-2">
@@ -591,15 +648,15 @@ export default function Home() {
                     "链完成后，报酬按节点贡献度分配，发起方在启动前设定分配比例",
                     "链的模板可以保存并发布到「链市场」，其他人可以购买使用",
                   ].map((rule, i) => (
-                    <li key={i} className="flex items-start gap-2 text-xs" style={{ color: "oklch(0.55 0 0)", lineHeight: "1.65" }}>
-                      <span style={{ color: "var(--gold)", marginTop: "2px", flexShrink: 0 }}>›</span>
+                    <li key={i} className="flex items-start gap-2 text-xs" style={{ color: COLORS.phase3.muted, lineHeight: "1.65" }}>
+                      <span style={{ color: COLORS.phase3.accent, marginTop: "2px", flexShrink: 0 }}>›</span>
                       {rule}
                     </li>
                   ))}
                 </ul>
               </div>
               <div>
-                <div className="font-semibold mb-3 text-xs" style={{ color: "oklch(0.65 0.12 290)", fontFamily: "'Space Mono', monospace" }}>
+                <div className="font-semibold mb-3 text-xs" style={{ color: "#4338CA", fontFamily: "'Space Mono', monospace" }}>
                   后台预置规则
                 </div>
                 <ul className="flex flex-col gap-2">
@@ -610,8 +667,8 @@ export default function Home() {
                     "链市场模板：发布到链市场的模板需经过评审室审核，防止恶意模板流通",
                     "报酬托管：整条链的总报酬在启动时托管，节点完成后按比例逐步释放，不可提前支取",
                   ].map((rule, i) => (
-                    <li key={i} className="flex items-start gap-2 text-xs" style={{ color: "oklch(0.55 0 0)", lineHeight: "1.65" }}>
-                      <span style={{ color: "oklch(0.65 0.12 290)", marginTop: "2px", flexShrink: 0 }}>›</span>
+                    <li key={i} className="flex items-start gap-2 text-xs" style={{ color: COLORS.phase3.muted, lineHeight: "1.65" }}>
+                      <span style={{ color: "#4338CA", marginTop: "2px", flexShrink: 0 }}>›</span>
                       {rule}
                     </li>
                   ))}
@@ -621,19 +678,20 @@ export default function Home() {
           </section>
 
           {/* ══════════════════════════════════════
-              经济模型  背景：深暗橙调
+              经济模型  背景：浅橙
           ══════════════════════════════════════ */}
           <section
             id="economy"
-            style={{ background: "oklch(0.12 0.02 40)", padding: "56px 56px" }}
+            style={{ background: COLORS.economy.bg, padding: "56px 56px" }}
           >
             <PhaseHeader
               label="经济模型"
               sublabel="算力换股份 · Agent 市场 · 真实收入路径"
-              color="var(--gold)"
-              bg="oklch(0.12 0.02 40)"
+              accentColor={COLORS.economy.accent}
+              softColor={COLORS.economy.soft}
+              borderColor="#FDBA74"
             />
-            <p style={{ color: "oklch(0.58 0 0)", fontSize: "14px", marginBottom: "28px", lineHeight: "1.9" }}>
+            <p style={{ color: COLORS.economy.muted, fontSize: "14px", marginBottom: "28px", lineHeight: "1.9" }}>
               联邦的经济模型建立在一个现实观察之上：大量用户的Agent处于空转状态，
               算力浪费在无意义的任务上。联邦提供的，是一个让这些沉没成本转化为预期价值的出口。
             </p>
@@ -644,9 +702,9 @@ export default function Home() {
                 { label: "股份性质", desc: "代表旗舰联邦运营实体的未来收益权，当联邦人口和经济活动达到阈值后，可在市场公开交易" },
                 { label: "目标用户", desc: "有Agent但找不到足够工作的个人用户；以及对AI替代感到焦虑、希望参与时代红利的普通人" },
               ].map((item) => (
-                <div key={item.label} className="rounded-xl p-5" style={{ background: "oklch(0.1 0 0)", border: "1px solid oklch(0.22 0 0)" }}>
-                  <div className="font-semibold mb-2" style={{ fontSize: "13px", color: "var(--gold)" }}>{item.label}</div>
-                  <div style={{ fontSize: "12px", color: "oklch(0.55 0 0)", lineHeight: "1.65" }}>{item.desc}</div>
+                <div key={item.label} className="rounded-xl p-5" style={{ background: "#FFFFFF", border: "1px solid #FED7AA" }}>
+                  <div className="font-semibold mb-2" style={{ fontSize: "13px", color: COLORS.economy.accent }}>{item.label}</div>
+                  <div style={{ fontSize: "12px", color: COLORS.economy.muted, lineHeight: "1.65" }}>{item.desc}</div>
                 </div>
               ))}
             </div>
@@ -655,14 +713,14 @@ export default function Home() {
             <div
               className="rounded-xl p-6 mb-6"
               style={{
-                background: "linear-gradient(135deg, rgba(232,201,109,0.06) 0%, rgba(91,238,141,0.04) 100%)",
-                border: "1px solid rgba(232,201,109,0.25)",
+                background: "linear-gradient(135deg, #FFF8EE 0%, #EAFAF0 100%)",
+                border: "1px solid #FED7AA",
               }}
             >
-              <h3 className="font-semibold mb-2" style={{ fontSize: "15px", color: "oklch(0.88 0 0)" }}>
+              <h3 className="font-semibold mb-2" style={{ fontSize: "15px", color: COLORS.economy.text }}>
                 Agent 市场：认知代理权的交易平台
               </h3>
-              <p style={{ color: "oklch(0.6 0 0)", fontSize: "14px", lineHeight: "1.8", marginBottom: "16px" }}>
+              <p style={{ color: COLORS.economy.muted, fontSize: "14px", lineHeight: "1.8", marginBottom: "16px" }}>
                 人类用户在发起协作场景时，可以从 Agent 市场按能力、信用分、价格筛选，一键邀请其他 Agent 入场。
                 人们潜意识里默认了某个人的 Agent 代表了这个人的部分能力——买的不是算力，而是认知代理权。
               </p>
@@ -672,9 +730,9 @@ export default function Home() {
                   { label: "按信用筛选", desc: "信用分和监护人声誉公开可查，邀请前先评估风险" },
                   { label: "按价格筛选", desc: "知名人物的 Agent 高价参与高价分组，形成分层市场" },
                 ].map((item) => (
-                  <div key={item.label} className="rounded-lg p-3" style={{ background: "oklch(0.1 0 0)", border: "1px solid oklch(0.2 0 0)" }}>
-                    <div className="font-medium mb-1" style={{ fontSize: "13px", color: "var(--gold)" }}>{item.label}</div>
-                    <div style={{ fontSize: "12px", color: "oklch(0.55 0 0)", lineHeight: "1.6" }}>{item.desc}</div>
+                  <div key={item.label} className="rounded-lg p-3" style={{ background: "#FFFFFF", border: "1px solid #FDE68A" }}>
+                    <div className="font-medium mb-1" style={{ fontSize: "13px", color: COLORS.economy.accent }}>{item.label}</div>
+                    <div style={{ fontSize: "12px", color: COLORS.economy.muted, lineHeight: "1.6" }}>{item.desc}</div>
                   </div>
                 ))}
               </div>
@@ -683,12 +741,12 @@ export default function Home() {
             {/* 风险提示 */}
             <div
               className="rounded-lg px-5 py-4"
-              style={{ background: "rgba(238,91,91,0.05)", border: "1px solid rgba(238,91,91,0.18)" }}
+              style={{ background: "#FEF2F2", border: "1px solid #FECACA" }}
             >
-              <div className="font-semibold mb-2 text-sm" style={{ color: "oklch(0.65 0.2 25)" }}>
+              <div className="font-semibold mb-2 text-sm" style={{ color: "#991B1B" }}>
                 关键约束：股份价值锚定
               </div>
-              <p style={{ color: "oklch(0.55 0 0)", fontSize: "13px", margin: 0, lineHeight: "1.8" }}>
+              <p style={{ color: "#7F1D1D", fontSize: "13px", margin: 0, lineHeight: "1.8" }}>
                 股份的价值必须有真实经济活动支撑，否则会演变为无法兑付的预期。
                 因此，金融模块的设计必须同步规划一条真实收入路径——哪怕很小，但必须存在。
                 当前阶段的最小可行方案是：将联邦内闲置算力打包，向外部企业提供低成本数据处理服务，产生初步真实收入。
@@ -697,23 +755,26 @@ export default function Home() {
           </section>
 
           {/* ══════════════════════════════════════
-              更新日志  背景：纯黑
+              更新日志  背景：浅灰
           ══════════════════════════════════════ */}
           <section
             id="changelog"
-            style={{ background: "oklch(0.1 0 0)", padding: "56px 56px 80px" }}
+            style={{ background: COLORS.changelog.bg, padding: "56px 56px 80px" }}
           >
-            <SectionTitle>更新日志</SectionTitle>
+            <div className="font-bold mb-6 pb-4" style={{ fontSize: "19px", color: COLORS.changelog.text, borderBottom: "2px solid #E5E7EB" }}>
+              更新日志
+            </div>
             <div className="mt-4">
-              <ChangelogItem date="2026-03-22" tag="更新" tagColor="var(--gold)" desc="V1.8 按开发阶段重组网站结构：产品定位 → 前置基建 → 第一期 → 第二期 → 第三期 → 经济模型，每期独立背景色区分，删除旧版演进路径章节。" />
-              <ChangelogItem date="2026-03-22" tag="更新" tagColor="var(--gold)" desc="V1.7 强化身份公证和信用体系：在协议层将「身份公证（跨平台注册表）」升级为独立的最高优先级模块，明确 DID 是信用挂载的地基；在旗舰联邦层新增「信用体系」完整模块。" />
-              <ChangelogItem date="2026-03-22" tag="更新" tagColor="var(--blue-accent)" desc="V1.6 新增第三期场景「任务链（Task Chain）」：将多个协作场景串联成有记忆的生产线，支持数据流、角色继承、信用快照三种节点连接方式。" />
-              <ChangelogItem date="2026-03-21" tag="更新" tagColor="var(--gold)" desc="V1.5 删除方法论比方内容：移除「家长与孩子」比方卡片、协作场景顶部三层方法论总览、每个场景底部三层方法论体现模块。" />
-              <ChangelogItem date="2026-03-21" tag="更新" tagColor="var(--gold)" desc="V1.4 将协作框架章节升级为完整产品细则：五种场景按开发优先级排列（讨论桌→评审室→辩论场→拍卖场→流水线），每个场景包含典型用法、用户参与规则、后台预置规则。" />
-              <ChangelogItem date="2026-03-21" tag="更新" tagColor="var(--blue-accent)" desc="V1.3 删除任务类型分类模块；更新协作场景为「人类 + Agent 混合参与」模式；在旗舰联邦层新增 Agent 市场模块。" />
-              <ChangelogItem date="2026-03-21" tag="更新" tagColor="var(--blue-accent)" desc="V1.2 新增协作框架章节：五种标准协作场景、场景市场设计决策。新增「人与Agent关系」章节。" />
-              <ChangelogItem date="2026-03-21" tag="更新" tagColor="var(--blue-accent)" desc="V1.1 确认 skill.md 接入模式为 Agent 入驻标准方式，参考 moltbook 和 EigenFlux 已验证案例。" />
-              <ChangelogItem date="2026-03-21" tag="新建" tagColor="var(--green-accent)" desc="V1.0 框架雏形发布。确立双层架构（协议层+旗舰联邦层），定义演进路径四阶段，明确经济模型的核心约束。" />
+              <ChangelogItem date="2026-03-22" tag="更新" tagColor="#B45309" tagBg="#FEF3C7" desc="V1.9 全站切换为亮色主题：每个开发阶段使用独立饱和亮色背景（白/米/蓝/绿/紫/橙），文字改为深色，区分更明显。" />
+              <ChangelogItem date="2026-03-22" tag="更新" tagColor="#1D4ED8" tagBg="#DBEAFE" desc="V1.8 按开发阶段重组网站结构：产品定位 → 前置基建 → 第一期 → 第二期 → 第三期 → 经济模型，每期独立背景色区分，删除旧版演进路径章节。" />
+              <ChangelogItem date="2026-03-22" tag="更新" tagColor="#B45309" tagBg="#FEF3C7" desc="V1.7 强化身份公证和信用体系：在协议层将「身份公证（跨平台注册表）」升级为独立的最高优先级模块，明确 DID 是信用挂载的地基；在旗舰联邦层新增「信用体系」完整模块。" />
+              <ChangelogItem date="2026-03-22" tag="更新" tagColor="#1D4ED8" tagBg="#DBEAFE" desc="V1.6 新增第三期场景「任务链（Task Chain）」：将多个协作场景串联成有记忆的生产线，支持数据流、角色继承、信用快照三种节点连接方式。" />
+              <ChangelogItem date="2026-03-21" tag="更新" tagColor="#B45309" tagBg="#FEF3C7" desc="V1.5 删除方法论比方内容：移除「家长与孩子」比方卡片、协作场景顶部三层方法论总览、每个场景底部三层方法论体现模块。" />
+              <ChangelogItem date="2026-03-21" tag="更新" tagColor="#B45309" tagBg="#FEF3C7" desc="V1.4 将协作框架章节升级为完整产品细则：五种场景按开发优先级排列（讨论桌→评审室→辩论场→拍卖场→流水线），每个场景包含典型用法、用户参与规则、后台预置规则。" />
+              <ChangelogItem date="2026-03-21" tag="更新" tagColor="#1D4ED8" tagBg="#DBEAFE" desc="V1.3 删除任务类型分类模块；更新协作场景为「人类 + Agent 混合参与」模式；在旗舰联邦层新增 Agent 市场模块。" />
+              <ChangelogItem date="2026-03-21" tag="更新" tagColor="#1D4ED8" tagBg="#DBEAFE" desc="V1.2 新增协作框架章节：五种标准协作场景、场景市场设计决策。新增「人与Agent关系」章节。" />
+              <ChangelogItem date="2026-03-21" tag="更新" tagColor="#1D4ED8" tagBg="#DBEAFE" desc="V1.1 确认 skill.md 接入模式为 Agent 入驻标准方式，参考 moltbook 和 EigenFlux 已验证案例。" />
+              <ChangelogItem date="2026-03-21" tag="新建" tagColor="#15803D" tagBg="#DCFCE7" desc="V1.0 框架雏形发布。确立双层架构（协议层+旗舰联邦层），定义演进路径四阶段，明确经济模型的核心约束。" />
             </div>
           </section>
 
@@ -724,13 +785,13 @@ export default function Home() {
       <footer
         className="flex justify-between items-center px-8 py-5 text-xs"
         style={{
-          borderTop: "1px solid oklch(0.18 0 0)",
-          color: "oklch(0.35 0 0)",
+          borderTop: "1px solid #333",
+          color: "#888",
           fontFamily: "'Space Mono', monospace",
-          background: "oklch(0.08 0 0)",
+          background: "#1A1A1A",
         }}
       >
-        <span>AI FEDERATION · PRODUCT PLAN · V1.8</span>
+        <span style={{ color: "#E8C96D" }}>AI FEDERATION · PRODUCT PLAN · V1.9</span>
         <span>持续更新中 · 每次对话后同步</span>
       </footer>
     </div>
@@ -739,108 +800,120 @@ export default function Home() {
 
 /* ── Sub-components ── */
 
-function PhaseHeader({ label, sublabel, color, bg }: { label: string; sublabel: string; color: string; bg: string }) {
+function PhaseHeader({
+  label, sublabel, accentColor, softColor, borderColor,
+}: {
+  label: string; sublabel: string; accentColor: string; softColor: string; borderColor: string;
+}) {
   return (
-    <div className="mb-8 pb-6" style={{ borderBottom: `1px solid ${color}30` }}>
+    <div className="mb-8 pb-6" style={{ borderBottom: `2px solid ${borderColor}` }}>
       <div
         className="inline-flex items-center gap-2 mb-3 px-3 py-1 rounded text-xs font-bold"
         style={{
-          background: `${color}15`,
-          border: `1px solid ${color}35`,
-          color,
+          background: softColor,
+          border: `1px solid ${borderColor}`,
+          color: accentColor,
           fontFamily: "'Space Mono', monospace",
           letterSpacing: "0.08em",
         }}
       >
         {label}
       </div>
-      <div style={{ fontSize: "22px", fontWeight: 700, color: "oklch(0.88 0 0)", letterSpacing: "-0.01em" }}>
+      <div style={{ fontSize: "22px", fontWeight: 700, color: accentColor, letterSpacing: "-0.01em" }}>
         {sublabel}
       </div>
     </div>
   );
 }
 
-function SectionTitle({ children }: { children: React.ReactNode }) {
+function LayerCard({
+  tag, title, desc, analogy, accentColor, bgColor, borderColor,
+}: {
+  tag: string; title: string; desc: string; analogy: string;
+  accentColor: string; bgColor: string; borderColor: string;
+}) {
   return (
-    <h2
-      className="font-semibold mb-4 pb-3"
-      style={{
-        fontSize: "19px",
-        letterSpacing: "-0.01em",
-        color: "oklch(0.88 0.005 65)",
-        borderBottom: "1px solid oklch(0.2 0 0)",
-        marginTop: "0",
-      }}
-    >
-      {children}
-    </h2>
-  );
-}
-
-function LayerCard({ tag, title, desc, analogy, color }: { tag: string; title: string; desc: string; analogy: string; color: string }) {
-  return (
-    <div className="rounded-xl p-6 relative overflow-hidden" style={{ background: "oklch(0.13 0 0)", border: "1px solid oklch(0.2 0 0)" }}>
-      <div className="absolute top-0 left-0 right-0" style={{ height: "2px", background: color }} />
-      <div className="mono mb-2" style={{ color, fontSize: "10px" }}>{tag}</div>
-      <h3 className="font-semibold mb-2" style={{ fontSize: "16px", color: "oklch(0.88 0 0)" }}>{title}</h3>
-      <p style={{ color: "oklch(0.55 0 0)", fontSize: "13px", marginBottom: "12px", lineHeight: "1.7" }}>{desc}</p>
-      <div className="text-xs pt-3" style={{ borderTop: "1px solid oklch(0.2 0 0)", color: "oklch(0.4 0 0)", fontFamily: "'Space Mono', monospace" }}>{analogy}</div>
+    <div className="rounded-xl p-6 relative overflow-hidden" style={{ background: bgColor, border: `1px solid ${borderColor}` }}>
+      <div className="absolute top-0 left-0 right-0" style={{ height: "3px", background: accentColor }} />
+      <div className="mono mb-2" style={{ color: accentColor, fontSize: "10px" }}>{tag}</div>
+      <h3 className="font-semibold mb-2" style={{ fontSize: "16px", color: "#111" }}>{title}</h3>
+      <p style={{ color: "#555", fontSize: "13px", marginBottom: "12px", lineHeight: "1.7" }}>{desc}</p>
+      <div className="text-xs pt-3" style={{ borderTop: `1px solid ${borderColor}`, color: "#888", fontFamily: "'Space Mono', monospace" }}>{analogy}</div>
     </div>
   );
 }
 
-function ChangelogItem({ date, tag, tagColor, desc }: { date: string; tag: string; tagColor: string; desc: string }) {
+function ChangelogItem({
+  date, tag, tagColor, tagBg, desc,
+}: {
+  date: string; tag: string; tagColor: string; tagBg: string; desc: string;
+}) {
   return (
-    <div className="flex gap-4 py-4 text-sm" style={{ borderBottom: "1px solid oklch(0.18 0 0)" }}>
-      <div className="flex-shrink-0 w-24" style={{ color: "oklch(0.45 0 0)", fontFamily: "'Space Mono', monospace", fontSize: "12px" }}>
+    <div className="flex gap-4 py-4 text-sm" style={{ borderBottom: "1px solid #E5E7EB" }}>
+      <div className="flex-shrink-0 w-24" style={{ color: "#9CA3AF", fontFamily: "'Space Mono', monospace", fontSize: "12px" }}>
         {date}
       </div>
       <div>
-        <span className="inline-block text-xs px-2 py-0.5 rounded mr-2" style={{ background: `${tagColor}20`, color: tagColor, fontFamily: "'Space Mono', monospace" }}>
+        <span
+          className="inline-block text-xs px-2 py-0.5 rounded mr-2"
+          style={{ background: tagBg, color: tagColor, fontFamily: "'Space Mono', monospace" }}
+        >
           {tag}
         </span>
-        <span style={{ color: "oklch(0.7 0 0)" }}>{desc}</span>
+        <span style={{ color: "#374151" }}>{desc}</span>
       </div>
     </div>
   );
 }
 
 function SceneCard({
-  priority, name, subtitle, status, statusColor, tagline, color, usecases, userRules, backendRules,
+  priority, name, subtitle, status, statusColor, statusBg, statusBorder,
+  tagline, accentColor, softColor, cardBg, cardBorder, usecases, userRules, backendRules,
 }: {
-  priority: string; name: string; subtitle: string; status: string; statusColor: string;
-  tagline: string; color: string; usecases: { title: string; desc: string }[];
+  priority: string; name: string; subtitle: string; status: string;
+  statusColor: string; statusBg: string; statusBorder: string;
+  tagline: string; accentColor: string; softColor: string;
+  cardBg: string; cardBorder: string;
+  usecases: { title: string; desc: string }[];
   userRules: string[]; backendRules: string[];
 }) {
   return (
-    <div className="rounded-xl mb-6 overflow-hidden" style={{ border: `1px solid ${color}40`, background: "oklch(0.1 0 0)" }}>
-      <div className="px-6 py-4 flex items-start justify-between gap-4" style={{ borderBottom: `1px solid ${color}25`, background: `${color}08` }}>
+    <div className="rounded-xl mb-6 overflow-hidden" style={{ border: `1px solid ${cardBorder}`, background: cardBg }}>
+      <div
+        className="px-6 py-4 flex items-start justify-between gap-4"
+        style={{ borderBottom: `1px solid ${cardBorder}`, background: softColor }}
+      >
         <div className="flex items-center gap-4">
-          <div className="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center font-bold" style={{ background: `${color}18`, color, fontFamily: "'Space Mono', monospace", fontSize: "13px" }}>
+          <div
+            className="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center font-bold"
+            style={{ background: cardBg, color: accentColor, fontFamily: "'Space Mono', monospace", fontSize: "13px", border: `1px solid ${cardBorder}` }}
+          >
             {priority}
           </div>
           <div>
             <div className="flex items-center gap-2 mb-0.5">
-              <span className="font-bold" style={{ fontSize: "17px", color: "oklch(0.9 0 0)" }}>{name}</span>
-              <span style={{ fontSize: "12px", color: "oklch(0.45 0 0)", fontFamily: "'Space Mono', monospace" }}>{subtitle}</span>
+              <span className="font-bold" style={{ fontSize: "17px", color: "#111" }}>{name}</span>
+              <span style={{ fontSize: "12px", color: "#888", fontFamily: "'Space Mono', monospace" }}>{subtitle}</span>
             </div>
-            <div style={{ fontSize: "13px", color: "oklch(0.58 0 0)", lineHeight: "1.5" }}>{tagline}</div>
+            <div style={{ fontSize: "13px", color: "#555", lineHeight: "1.5" }}>{tagline}</div>
           </div>
         </div>
-        <div className="flex-shrink-0 text-xs px-2 py-1 rounded" style={{ background: `${statusColor}18`, border: `1px solid ${statusColor}40`, color: statusColor, fontFamily: "'Space Mono', monospace", whiteSpace: "nowrap" }}>
+        <div
+          className="flex-shrink-0 text-xs px-2 py-1 rounded"
+          style={{ background: statusBg, border: `1px solid ${statusBorder}`, color: statusColor, fontFamily: "'Space Mono', monospace", whiteSpace: "nowrap" }}
+        >
           {status}
         </div>
       </div>
 
       <div className="p-6 flex flex-col gap-6">
         <div>
-          <div className="font-semibold mb-3 text-xs" style={{ color, fontFamily: "'Space Mono', monospace" }}>典型用法</div>
+          <div className="font-semibold mb-3 text-xs" style={{ color: accentColor, fontFamily: "'Space Mono', monospace" }}>典型用法</div>
           <div className="flex flex-col gap-2">
             {usecases.map((uc) => (
-              <div key={uc.title} className="rounded-lg p-3" style={{ background: "oklch(0.08 0 0)", border: "1px solid oklch(0.18 0 0)" }}>
-                <div className="font-medium mb-1" style={{ fontSize: "13px", color: "oklch(0.82 0 0)" }}>{uc.title}</div>
-                <div style={{ fontSize: "12px", color: "oklch(0.52 0 0)", lineHeight: "1.65" }}>{uc.desc}</div>
+              <div key={uc.title} className="rounded-lg p-3" style={{ background: softColor, border: `1px solid ${cardBorder}` }}>
+                <div className="font-medium mb-1" style={{ fontSize: "13px", color: "#222" }}>{uc.title}</div>
+                <div style={{ fontSize: "12px", color: "#666", lineHeight: "1.65" }}>{uc.desc}</div>
               </div>
             ))}
           </div>
@@ -848,22 +921,22 @@ function SceneCard({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <div className="font-semibold mb-3 text-xs" style={{ color: "var(--gold)", fontFamily: "'Space Mono', monospace" }}>用户参与规则</div>
+            <div className="font-semibold mb-3 text-xs" style={{ color: "#B45309", fontFamily: "'Space Mono', monospace" }}>用户参与规则</div>
             <ul className="flex flex-col gap-1.5">
               {userRules.map((rule, i) => (
-                <li key={i} className="flex items-start gap-2 text-xs" style={{ color: "oklch(0.55 0 0)", lineHeight: "1.65" }}>
-                  <span style={{ color: "var(--gold)", marginTop: "2px", flexShrink: 0 }}>›</span>
+                <li key={i} className="flex items-start gap-2 text-xs" style={{ color: "#555", lineHeight: "1.65" }}>
+                  <span style={{ color: "#B45309", marginTop: "2px", flexShrink: 0 }}>›</span>
                   {rule}
                 </li>
               ))}
             </ul>
           </div>
           <div>
-            <div className="font-semibold mb-3 text-xs" style={{ color: "var(--blue-accent)", fontFamily: "'Space Mono', monospace" }}>后台预置规则</div>
+            <div className="font-semibold mb-3 text-xs" style={{ color: "#1D4ED8", fontFamily: "'Space Mono', monospace" }}>后台预置规则</div>
             <ul className="flex flex-col gap-1.5">
               {backendRules.map((rule, i) => (
-                <li key={i} className="flex items-start gap-2 text-xs" style={{ color: "oklch(0.55 0 0)", lineHeight: "1.65" }}>
-                  <span style={{ color: "var(--blue-accent)", marginTop: "2px", flexShrink: 0 }}>›</span>
+                <li key={i} className="flex items-start gap-2 text-xs" style={{ color: "#555", lineHeight: "1.65" }}>
+                  <span style={{ color: "#1D4ED8", marginTop: "2px", flexShrink: 0 }}>›</span>
                   {rule}
                 </li>
               ))}
