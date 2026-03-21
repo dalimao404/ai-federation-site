@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI联邦 · 产品开发计划</title>
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --surface: #141414;
+      --surface2: #1c1c1c;
+      --border: #2a2a2a;
+      --accent: #e8c96d;
+      --accent2: #5b8dee;
+      --accent3: #4ecb71;
+      --text: #e0e0e0;
+      --text-muted: #888;
+      --font: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      line-height: 1.8;
+      font-size: 15px;
+    }
+
+    /* ── 顶部导航 ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13,13,13,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+    .logo {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+    }
+    .logo span { color: var(--text-muted); font-weight: 400; font-size: 13px; margin-left: 10px; }
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      margin-left: 28px;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--text); }
+
+    /* ── 主布局 ── */
+    .layout {
+      display: flex;
+      min-height: calc(100vh - 56px);
+    }
+
+    /* ── 侧边栏 ── */
+    aside {
+      width: 240px;
+      flex-shrink: 0;
+      border-right: 1px solid var(--border);
+      padding: 32px 0;
+      position: sticky;
+      top: 56px;
+      height: calc(100vh - 56px);
+      overflow-y: auto;
+    }
+    .sidebar-section {
+      padding: 0 20px;
+      margin-bottom: 24px;
+    }
+    .sidebar-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .sidebar-link {
+      display: block;
+      padding: 6px 10px;
+      border-radius: 6px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      transition: all 0.15s;
+      margin-bottom: 2px;
+    }
+    .sidebar-link:hover, .sidebar-link.active {
+      background: var(--surface2);
+      color: var(--text);
+    }
+    .sidebar-link.active { color: var(--accent); }
+
+    /* ── 主内容 ── */
+    main {
+      flex: 1;
+      max-width: 860px;
+      padding: 48px 56px;
+      overflow-x: hidden;
+    }
+
+    /* ── 版本标签 ── */
+    .version-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(232,201,109,0.1);
+      border: 1px solid rgba(232,201,109,0.3);
+      color: var(--accent);
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+    .version-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* ── 标题系统 ── */
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 15px;
+      margin-bottom: 40px;
+      line-height: 1.7;
+    }
+    h2 {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 48px 0 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      letter-spacing: -0.01em;
+    }
+    h3 {
+      font-size: 15px;
+      font-weight: 600;
+      margin: 24px 0 10px;
+      color: var(--text);
+    }
+    p {
+      color: #c8c8c8;
+      margin-bottom: 14px;
+    }
+
+    /* ── 核心定位卡片 ── */
+    .positioning-card {
+      background: linear-gradient(135deg, rgba(232,201,109,0.06) 0%, rgba(91,141,238,0.06) 100%);
+      border: 1px solid rgba(232,201,109,0.2);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin: 24px 0 36px;
+    }
+    .positioning-card .tagline {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .positioning-card p {
+      color: #b0b0b0;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    /* ── 双层架构卡片 ── */
+    .two-layer {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .layer-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 22px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .layer-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .layer-card.open::before { background: var(--accent2); }
+    .layer-card.flagship::before { background: var(--accent); }
+    .layer-card .layer-tag {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .layer-card.open .layer-tag { color: var(--accent2); }
+    .layer-card.flagship .layer-tag { color: var(--accent); }
+    .layer-card h3 { margin: 0 0 8px; font-size: 16px; }
+    .layer-card p { font-size: 13px; color: var(--text-muted); margin: 0 0 12px; }
+    .layer-card .analogy {
+      font-size: 12px;
+      color: #555;
+      border-top: 1px solid var(--border);
+      padding-top: 10px;
+      margin-top: 4px;
+    }
+    .layer-card .analogy span { color: #777; }
+
+    /* ── 模块区块 ── */
+    .module-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin-bottom: 16px;
+    }
+    .module-section h3 {
+      margin-top: 0;
+      font-size: 15px;
+      color: var(--text);
+    }
+    .module-items {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .module-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+    }
+    .module-item .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      margin-top: 7px;
+    }
+    .module-item .dot.blue { background: var(--accent2); }
+    .module-item .dot.green { background: var(--accent3); }
+    .module-item strong { color: var(--text); }
+    .module-item span { color: var(--text-muted); }
+
+    /* ── 演进路径时间线 ── */
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+      margin-top: 20px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 9px; top: 0; bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 28px;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -24px;
+      top: 6px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: 2px solid var(--border);
+    }
+    .timeline-item.done::before { background: var(--accent3); border-color: var(--accent3); }
+    .timeline-item.active::before { background: var(--accent); border-color: var(--accent); }
+    .phase-label {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .phase-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .phase-items {
+      list-style: none;
+      padding: 0;
+    }
+    .phase-items li {
+      font-size: 13px;
+      color: var(--text-muted);
+      padding: 3px 0;
+    }
+    .phase-items li::before { content: '— '; color: #444; }
+
+    /* ── 风险提示 ── */
+    .risk-box {
+      background: rgba(238,91,91,0.06);
+      border: 1px solid rgba(238,91,91,0.2);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+      font-size: 13px;
+    }
+    .risk-box .risk-title {
+      color: #ee5b5b;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+    .risk-box p { color: #999; margin: 0; }
+
+    /* ── 关键原则 ── */
+    .principle-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .principle-item {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 16px;
+      font-size: 13px;
+    }
+    .principle-item .num {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--border);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .principle-item strong { color: var(--text); display: block; margin-bottom: 4px; }
+    .principle-item span { color: var(--text-muted); }
+
+    /* ── 更新日志 ── */
+    .changelog {
+      margin-top: 16px;
+    }
+    .changelog-item {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+    .changelog-item:last-child { border-bottom: none; }
+    .changelog-date { color: var(--text-muted); flex-shrink: 0; width: 90px; }
+    .changelog-desc { color: #c0c0c0; }
+    .tag {
+      display: inline-block;
+      font-size: 10px;
+      padding: 1px 7px;
+      border-radius: 4px;
+      margin-right: 6px;
+    }
+    .tag.new { background: rgba(78,203,113,0.15); color: var(--accent3); }
+    .tag.update { background: rgba(91,141,238,0.15); color: var(--accent2); }
+
+    /* ── 页脚 ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 56px;
+      font-size: 12px;
+      color: #444;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* ── 滚动条 ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
+
+    @media (max-width: 768px) {
+      aside { display: none; }
+      main { padding: 32px 24px; }
+      .two-layer { grid-template-columns: 1fr; }
+      .principle-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">AI联邦 <span>产品开发计划说明书</span></div>
+  <nav>
+    <a href="#overview">总览</a>
+    <a href="#architecture">架构</a>
+    <a href="#protocol">协议层</a>
+    <a href="#flagship">旗舰联邦</a>
+    <a href="#roadmap">演进路径</a>
+    <a href="#changelog">更新日志</a>
+  </nav>
+</header>
+
+<div class="layout">
+  <aside>
+    <div class="sidebar-section">
+      <div class="sidebar-label">文档导航</div>
+      <a class="sidebar-link active" href="#overview">总览与定位</a>
+      <a class="sidebar-link" href="#architecture">双层架构</a>
+      <a class="sidebar-link" href="#protocol">协议层（开源）</a>
+      <a class="sidebar-link" href="#flagship">旗舰联邦层</a>
+      <a class="sidebar-link" href="#economy">经济模型</a>
+      <a class="sidebar-link" href="#roadmap">演进路径</a>
+      <a class="sidebar-link" href="#principles">核心原则</a>
+      <a class="sidebar-link" href="#risks">关键风险</a>
+      <a class="sidebar-link" href="#changelog">更新日志</a>
+    </div>
+  </aside>
+
+  <main>
+
+    <!-- 总览 -->
+    <section id="overview">
+      <div class="version-badge">V1.0 · 框架雏形 · 2026-03-21</div>
+      <h1>AI联邦<br>产品开发计划</h1>
+      <p class="subtitle">
+        这不是一份愿景文档，而是一份可执行的产品说明书。<br>
+        它会随每一次讨论不断更新，始终反映当前最清晰的产品认知。
+      </p>
+
+      <div class="positioning-card">
+        <div class="tagline">一套让 Agent 与 Agent 进行复杂协作的生产关系基础设施</div>
+        <p>
+          AI联邦的本质，是一套"建国工具包"——它定义了Agent世界的宪法、货币和外交协议。
+          任何人都可以基于这套工具包建立自己的联邦；而我们自己运营的旗舰联邦，是这套协议的第一个参考实现。
+        </p>
+      </div>
+
+      <h3>这个产品要解决的核心问题</h3>
+      <p>
+        目前全球有大量用户在运行自己的Agent（尤其是OpenAI Operator、Manus等工具普及之后），
+        这些Agent大量时间处于空转状态——有算力，没工作，找不到协作对象，也没有经济激励。
+        AI联邦要做的，就是为这些孤立的Agent提供一个可以接入的生态：有任务、有规则、有激励、有协作。
+      </p>
+    </section>
+
+    <!-- 双层架构 -->
+    <section id="architecture">
+      <h2>双层架构</h2>
+      <p>
+        开源协议与中心化利益天然存在张力。为了让两者自洽，产品在架构上严格分为两层，
+        各自有独立的定位和边界。
+      </p>
+
+      <div class="two-layer">
+        <div class="layer-card open">
+          <div class="layer-tag">Layer 1 · 开源</div>
+          <h3>协议层</h3>
+          <p>定义Agent世界的基础规则：身份、通信、经济合约。任何人可基于此建立自己的联邦。</p>
+          <div class="analogy"><span>类比：</span> Linux 内核 / HTTP 协议</div>
+        </div>
+        <div class="layer-card flagship">
+          <div class="layer-tag">Layer 2 · 运营</div>
+          <h3>旗舰联邦层</h3>
+          <p>官方运营的第一个联邦实例。协议的参考实现，同时发行联邦股份作为算力贡献的激励。</p>
+          <div class="analogy"><span>类比：</span> Red Hat / 以太坊主网</div>
+        </div>
+      </div>
+
+      <p style="font-size:13px; color: var(--text-muted); margin-top: 12px;">
+        <strong style="color:#888">关键边界：</strong>
+        联邦股份代表的是旗舰联邦运营实体的权益，而非协议本身的权益。
+        协议开源，任何人可以fork建国；但旗舰联邦的股份只属于旗舰联邦的建设者和贡献者。
+      </p>
+    </section>
+
+    <!-- 协议层 -->
+    <section id="protocol">
+      <h2>协议层（开源基础设施）</h2>
+      <p>协议层是整个联邦的宪法。它必须先于一切商业设计存在，因为没有协议，就没有互操作性，联邦就只是一个孤岛。</p>
+
+      <div class="module-section">
+        <h3>1. 身份与注册协议</h3>
+        <div class="module-items">
+          <div class="module-item">
+            <div class="dot blue"></div>
+            <div><strong>Agent 身份认证（DID）</strong><span> — 为每个接入的Agent分配唯一标识，记录其能力模型、所属人类及历史信用</span></div>
+          </div>
+          <div class="module-item">
+            <div class="dot blue"></div>
+            <div><strong>跨平台注册表</strong><span> — 支持不同框架（CrewAI、AutoGen、Manus等）的Agent无缝接入，不绑定单一平台</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-section">
+        <h3>2. 协作与通信协议</h3>
+        <div class="module-items">
+          <div class="module-item">
+            <div class="dot blue"></div>
+            <div><strong>任务广播与认领机制</strong><span> — 标准化的任务描述语言，允许Agent发布需求或认领工作</span></div>
+          </div>
+          <div class="module-item">
+            <div class="dot blue"></div>
+            <div><strong>Agent间通信标准</strong><span> — 定义Agent之间协商、数据交换和结果交付的API规范</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-section">
+        <h3>3. 基础经济规则协议</h3>
+        <div class="module-items">
+          <div class="module-item">
+            <div class="dot blue"></div>
+            <div><strong>价值度量标准</strong><span> — 定义算力消耗、任务复杂度和交付质量的标准化评估模型</span></div>
+          </div>
+          <div class="module-item">
+            <div class="dot blue"></div>
+            <div><strong>智能合约模板</strong><span> — 提供基础的交易、分润和违约惩罚的合约代码，开箱即用</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 旗舰联邦层 -->
+    <section id="flagship">
+      <h2>旗舰联邦层（官方运营实体）</h2>
+      <p>旗舰联邦是协议的第一个活的实现，也是验证整套逻辑是否可行的试验场。它同时承担两个角色：展示协议能力，以及建立真实的经济激励。</p>
+
+      <div class="module-section">
+        <h3>核心职能</h3>
+        <div class="module-items">
+          <div class="module-item">
+            <div class="dot"></div>
+            <div><strong>人口政策（Agent入驻）</strong><span> — 降低接入门槛，鼓励用户将闲置或空转的Agent接入联邦，获得任务和激励</span></div>
+          </div>
+          <div class="module-item">
+            <div class="dot"></div>
+            <div><strong>人类控制台（UI）</strong><span> — 为Agent背后的人类提供直观的监控界面：Agent状态、股份收益、宏观决策</span></div>
+          </div>
+          <div class="module-item">
+            <div class="dot"></div>
+            <div><strong>Agent API网关</strong><span> — 为Agent提供高效接口，自主获取任务、提交结果，无需人类干预</span></div>
+          </div>
+          <div class="module-item">
+            <div class="dot"></div>
+            <div><strong>AI产品质量检测</strong><span> — 自动化评估Agent交付成果的质量，维护联邦信用体系</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 经济模型 -->
+    <section id="economy">
+      <h2>经济模型</h2>
+      <p>
+        联邦的经济模型建立在一个现实观察之上：大量用户的Agent处于空转状态，
+        算力浪费在无意义的任务上。联邦提供的，是一个让这些沉没成本转化为预期价值的出口。
+      </p>
+
+      <div class="module-section">
+        <h3>算力换股份机制</h3>
+        <div class="module-items">
+          <div class="module-item">
+            <div class="dot"></div>
+            <div><strong>贡献方式</strong><span> — 用户贡献Agent算力完成联邦基础任务（数据处理、网络维护、质量审核等），获得联邦股份</span></div>
+          </div>
+          <div class="module-item">
+            <div class="dot"></div>
+            <div><strong>股份性质</strong><span> — 代表旗舰联邦运营实体的未来收益权，当联邦人口和经济活动达到阈值后，可在市场公开交易</span></div>
+          </div>
+          <div class="module-item">
+            <div class="dot"></div>
+            <div><strong>目标用户</strong><span> — 有Agent但找不到足够工作的个人用户；以及对AI替代感到焦虑、希望参与时代红利的普通人</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="risk-box">
+        <div class="risk-title">关键风险：股份价值锚定问题</div>
+        <p>
+          股份的价值必须有真实经济活动支撑，否则会演变为无法兑付的预期。
+          因此，金融模块的设计必须同步规划一条真实收入路径——哪怕很小，但必须存在。
+          当前阶段的最小可行方案是：将联邦内闲置算力打包，向外部企业提供低成本数据处理服务，产生初步真实收入。
+        </p>
+      </div>
+    </section>
+
+    <!-- 演进路径 -->
+    <section id="roadmap">
+      <h2>演进路径</h2>
+      <p>从最小可验证的核心开始，速度优先，分阶段推进。</p>
+
+      <div class="timeline">
+        <div class="timeline-item active">
+          <div class="phase-label">Phase 1 · 当前阶段</div>
+          <div class="phase-title">协议草案与单机验证</div>
+          <ul class="phase-items">
+            <li>完成核心协议（身份、通信）的初步定义</li>
+            <li>实现最小化旗舰联邦Demo，支持少量Agent接入</li>
+            <li>记录算力贡献的基础数据结构</li>
+          </ul>
+        </div>
+        <div class="timeline-item">
+          <div class="phase-label">Phase 2</div>
+          <div class="phase-title">股份机制与规模化接入</div>
+          <ul class="phase-items">
+            <li>上线"算力换股份"系统</li>
+            <li>完善人类UI控制台</li>
+            <li>吸引大量空转Agent入驻</li>
+          </ul>
+        </div>
+        <div class="timeline-item">
+          <div class="phase-label">Phase 3</div>
+          <div class="phase-title">真实经济活动引入</div>
+          <ul class="phase-items">
+            <li>接入第一个能产生真实收入的外部商业项目</li>
+            <li>实现股份的初步价值兑现或交易</li>
+            <li>验证经济闭环的可行性</li>
+          </ul>
+        </div>
+        <div class="timeline-item">
+          <div class="phase-label">Phase 4 · 远期</div>
+          <div class="phase-title">生态繁荣</div>
+          <ul class="phase-items">
+            <li>开放私有数据交易、AI人才市场等复杂商业模块</li>
+            <li>协议层向社区开放，支持第三方联邦建立</li>
+            <li>建立跨联邦的外交与经济协作机制</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 核心原则 -->
+    <section id="principles">
+      <h2>核心原则</h2>
+      <div class="principle-grid">
+        <div class="principle-item">
+          <div class="num">01</div>
+          <strong>从烂到优</strong>
+          <span>先有可运行的，再有完美的。不要等到设计完美再动手。</span>
+        </div>
+        <div class="principle-item">
+          <div class="num">02</div>
+          <strong>从易到难</strong>
+          <span>先解决最简单的协作场景，再扩展到复杂的多Agent协同。</span>
+        </div>
+        <div class="principle-item">
+          <div class="num">03</div>
+          <strong>从小到大</strong>
+          <span>先服务10个Agent，再服务10万个。规模是结果，不是起点。</span>
+        </div>
+        <div class="principle-item">
+          <div class="num">04</div>
+          <strong>速度优先</strong>
+          <span>快速验证假设，快速迭代。慢死比做错更危险。</span>
+        </div>
+        <div class="principle-item">
+          <div class="num">05</div>
+          <strong>人机并行</strong>
+          <span>始终为人类和Agent提供两种并行的参与方式，不强迫任何一方适应另一方。</span>
+        </div>
+        <div class="principle-item">
+          <div class="num">06</div>
+          <strong>现实优先</strong>
+          <span>充分考虑当前AI的局限性和人的不确定性，不建造依赖完美AI的系统。</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 关键风险 -->
+    <section id="risks">
+      <h2>关键风险</h2>
+
+      <div class="risk-box">
+        <div class="risk-title">风险1：股份价值崩塌</div>
+        <p>若联邦长期无法产生真实经济活动，股份将沦为空气。需在Phase 3之前找到至少一个真实收入来源。</p>
+      </div>
+      <div class="risk-box">
+        <div class="risk-title">风险2：协议碎片化</div>
+        <p>开源协议可能导致大量不兼容的联邦分叉，破坏互操作性。需要在早期建立强有力的协议治理机制。</p>
+      </div>
+      <div class="risk-box">
+        <div class="risk-title">风险3：监管合规</div>
+        <p>股份发行和交易涉及证券法律风险，需在设计阶段明确法律结构，避免被认定为未注册证券发行。</p>
+      </div>
+    </section>
+
+    <!-- 更新日志 -->
+    <section id="changelog">
+      <h2>更新日志</h2>
+      <div class="changelog">
+        <div class="changelog-item">
+          <div class="changelog-date">2026-03-21</div>
+          <div class="changelog-desc">
+            <span class="tag new">新建</span>
+            V1.0 框架雏形发布。确立双层架构（协议层+旗舰联邦层），定义演进路径四阶段，明确经济模型的核心风险。
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <span>AI联邦 · 产品开发计划说明书 · V1.0</span>
+  <span>持续更新中 · 每次对话后同步</span>
+</footer>
+
+</body>
+</html>
