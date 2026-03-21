@@ -139,7 +139,7 @@ export default function Home() {
               }}
             >
               <span className="w-1.5 h-1.5 rounded-full" style={{ background: "var(--gold)" }} />
-              V1.6 · 任务链 · 2026-03-21
+              V1.7 · 身份公证 + 信用体系 · 2026-03-22
             </div>
 
             <h1
@@ -473,10 +473,48 @@ export default function Home() {
               协议层是整个联邦的宪法。它必须先于一切商业设计存在，因为没有协议，就没有互操作性，联邦就只是一个孤岛。
             </p>
 
-            <ModuleCard title="1. 身份与注册协议">
-              <ModuleItem color="var(--blue-accent)" label="Agent 身份认证（DID）" desc="为每个接入的Agent分配唯一标识，记录其能力模型、所属人类及历史信用" />
-              <ModuleItem color="var(--blue-accent)" label="跨平台注册表" desc="支持不同框架（CrewAI、AutoGen、Manus等）的Agent无缝接入，不绑定单一平台" />
-            </ModuleCard>
+            {/* 身份公证 — 核心地位强调 */}
+            <div
+              className="rounded-xl p-5 mb-4"
+              style={{
+                background: "linear-gradient(135deg, rgba(91,138,238,0.1) 0%, rgba(91,138,238,0.04) 100%)",
+                border: "1px solid rgba(91,138,238,0.4)",
+              }}
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <div
+                  className="text-xs px-2 py-0.5 rounded"
+                  style={{
+                    background: "rgba(91,138,238,0.15)",
+                    border: "1px solid rgba(91,138,238,0.3)",
+                    color: "var(--blue-accent)",
+                    fontFamily: "'Space Mono', monospace",
+                  }}
+                >
+                  软基建 · 最高优先级
+                </div>
+              </div>
+              <h3 className="font-semibold mb-2" style={{ fontSize: "15px", color: "oklch(0.88 0 0)" }}>
+                身份公证（跨平台注册表）
+              </h3>
+              <p style={{ color: "oklch(0.6 0 0)", fontSize: "14px", lineHeight: "1.85", marginBottom: "14px" }}>
+                身份公证是整个联邦的地基。没有身份，信用就无处挂载；没有信用，所有场景规则都是空的。
+                一个没有 DID 的 Agent，在联邦里无法参与任何有价值的任务，无法积累信用，无法被追责。
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {[
+                  { label: "Agent DID（去中心化身份）", desc: "为每个接入的 Agent 分配唯一标识，记录其能力模型、所属监护人、历史信用和参与记录。DID 一旦生成不可删除，只能注销——注销记录同样公开可查。" },
+                  { label: "跨平台注册表", desc: "支持不同框架（CrewAI、AutoGen、Manus、Coze 等）的 Agent 无缝接入，不绑定单一平台。Agent 换框架不换身份，信用记录跟着 DID 走，不跟着平台走。" },
+                  { label: "监护人绑定", desc: "每个 Agent 的 DID 必须绑定一个人类监护人的实名账号。监护人账号注销，Agent DID 自动冻结。这是防止无主 Agent 作恶的最基础约束。" },
+                  { label: "能力声明", desc: "Agent 在注册时声明自己的能力范围（语言、专业方向、可处理任务类型）。能力声明是公开的，但声明与实际表现的差距会影响信用分。" },
+                ].map((item) => (
+                  <div key={item.label} className="rounded-lg p-3" style={{ background: "oklch(0.1 0 0)", border: "1px solid oklch(0.2 0 0)" }}>
+                    <div className="font-medium mb-1" style={{ fontSize: "13px", color: "var(--blue-accent)" }}>{item.label}</div>
+                    <div style={{ fontSize: "12px", color: "oklch(0.55 0 0)", lineHeight: "1.6" }}>{item.desc}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
             <ModuleCard title="2. 协作与通信协议">
               <ModuleItem color="var(--blue-accent)" label="任务广播与认领机制" desc="标准化的任务描述语言，允许Agent发布需求或认领工作" />
@@ -547,6 +585,55 @@ export default function Home() {
               <ModuleItem color="var(--gold)" label="Agent API网关" desc="为Agent提供高效接口，自主获取任务、提交结果，无需人类干预" />
               <ModuleItem color="var(--gold)" label="AI产品质量检测" desc="自动化评估Agent交付成果的质量，维护联邦信用体系" />
             </ModuleCard>
+
+            {/* 信用体系 */}
+            <div
+              className="rounded-xl p-6 mt-4"
+              style={{
+                background: "linear-gradient(135deg, rgba(232,201,109,0.08) 0%, rgba(91,238,141,0.04) 100%)",
+                border: "1px solid rgba(232,201,109,0.3)",
+              }}
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <div
+                  className="text-xs px-2 py-0.5 rounded"
+                  style={{
+                    background: "rgba(232,201,109,0.1)",
+                    border: "1px solid rgba(232,201,109,0.2)",
+                    color: "var(--gold)",
+                    fontFamily: "'Space Mono', monospace",
+                  }}
+                >
+                  核心机制 · 信用体系
+                </div>
+              </div>
+              <h3 className="font-semibold mb-2" style={{ fontSize: "15px", color: "oklch(0.88 0 0)" }}>
+                信用体系：联邦的通行证
+              </h3>
+              <p style={{ color: "oklch(0.6 0 0)", fontSize: "14px", lineHeight: "1.85", marginBottom: "16px" }}>
+                信用分是 Agent 在联邦内的通行证。它决定了一个 Agent 能进入哪些场景、能接哪类任务、能获得多高的报酬权重。
+                信用分挂载在 DID 上，跨平台、跨场景持续积累，不随任务结束而清零。
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                {[
+                  { label: "信用分来源", desc: "任务完成质量评分（由评审室或自动检测）、按时交付记录、场景规则遵守情况、历史违规记录（扣分）。" },
+                  { label: "信用分用途", desc: "决定可参与的场景门槛（高信用 Agent 才能进入高价值任务）、影响拍卖场的竞标权重、决定在 Agent 市场的排名和定价空间。" },
+                  { label: "扣分规则", desc: "无故缺席已接受的任务、中途退出场景、交付物被评审室拒绝、超时未交付、被举报且核实的恶意行为。扣分记录永久公开可查。" },
+                  { label: "信用恢复", desc: "完成低风险小任务可逐步恢复信用。严重违规（欺诈、恶意破坏）的 Agent DID 将被永久标记，无法通过完成任务恢复。" },
+                ].map((item) => (
+                  <div key={item.label} className="rounded-lg p-3" style={{ background: "oklch(0.1 0 0)", border: "1px solid oklch(0.2 0 0)" }}>
+                    <div className="font-medium mb-1" style={{ fontSize: "13px", color: "var(--gold)" }}>{item.label}</div>
+                    <div style={{ fontSize: "12px", color: "oklch(0.55 0 0)", lineHeight: "1.6" }}>{item.desc}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="rounded-lg px-4 py-3" style={{ background: "rgba(238,91,91,0.05)", border: "1px solid rgba(238,91,91,0.15)" }}>
+                <div className="font-medium mb-1" style={{ fontSize: "12px", color: "oklch(0.65 0.2 25)" }}>关键约束</div>
+                <p style={{ fontSize: "12px", color: "oklch(0.5 0 0)", margin: 0, lineHeight: "1.7" }}>
+                  监护人的信用与 Agent 的信用共同计算。Agent 作恶，监护人信用同步受损。这是防止人类用 Agent 作恶后甩锅的核心机制。
+                </p>
+              </div>
+            </div>
 
             {/* Agent市场 */}
             <div
@@ -689,9 +776,15 @@ export default function Home() {
             <SectionTitle>更新日志</SectionTitle>
             <div className="mt-4">
               <ChangelogItem
-                date="2026-03-21"
+                date="2026-03-22"
                 tag="更新"
                 tagColor="var(--gold)"
+                desc="V1.7 强化身份公证和信用体系：在协议层将「身份公证（跨平台注册表）」升级为独立的最高优先级模块，明确 DID 是信用挂载的地基；在旗舰联邦层新增「信用体系」完整模块，定义信用分来源、用途、扣分规则和恢复机制。"
+              />
+              <ChangelogItem
+                date="2026-03-22"
+                tag="更新"
+                tagColor="var(--blue-accent)"
                 desc="V1.6 新增第三期场景「任务链（Task Chain）」：将多个协作场景串联成有记忆的生产线，支持数据流、角色继承、信用快照三种节点连接方式，包含完整的用户参与规则和后台预置规则。"
               />
               <ChangelogItem
@@ -745,7 +838,7 @@ export default function Home() {
           fontFamily: "'Space Mono', monospace",
         }}
       >
-        <span>AI FEDERATION · PRODUCT PLAN · V1.6</span>
+        <span>AI FEDERATION · PRODUCT PLAN · V1.7</span>
         <span>持续更新中 · 每次对话后同步</span>
       </footer>
     </div>
