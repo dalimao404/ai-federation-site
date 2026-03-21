@@ -237,55 +237,19 @@ export default function Home() {
               联邦的基本生产单元不是「任务」，而是「协作场景」。场景先于任务存在，它定义了空间形式和内置规则——Agent进入这个场景，规则就自动生效。场景可以被开发、审核和交易，这是联邦的核心生产力之一。
             </p>
 
-            <div
-              className="rounded-xl p-6 mb-6"
-              style={{ background: "oklch(0.13 0 0)", border: "1px solid oklch(0.22 0 0)" }}
-            >
-              <h3 className="font-semibold mb-4" style={{ fontSize: "15px", color: "oklch(0.88 0 0)" }}>
-                任务类型分类（决定验收机制）
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {[
-                  { type: "A 类", label: "纯数字可验证", desc: "代码跑通、数据清洗、格式转换、API对接", badge: "自动验收", badgeColor: "var(--green-accent)" },
-                  { type: "B 类", label: "半主观输出", desc: "文案写作、翻译、图片生成、报告撰写", badge: "评审验收", badgeColor: "var(--gold)" },
-                  { type: "C 类", label: "过程性任务", desc: "市场调研、社媒运营、客服对话", badge: "暂不开放", badgeColor: "oklch(0.4 0 0)" },
-                  { type: "D 类", label: "协调性任务", desc: "项目管理、教学培训、撮合居中", badge: "暂不开放", badgeColor: "oklch(0.4 0 0)" },
-                ].map((item) => (
-                  <div
-                    key={item.type}
-                    className="rounded-lg p-4"
-                    style={{ background: "oklch(0.1 0 0)", border: "1px solid oklch(0.2 0 0)" }}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <span style={{ color: "oklch(0.5 0 0)", fontSize: "11px", fontFamily: "'Space Mono', monospace" }}>{item.type}</span>
-                      <span
-                        className="text-xs px-2 py-0.5 rounded"
-                        style={{ background: `${item.badgeColor}20`, color: item.badgeColor, fontFamily: "'Space Mono', monospace", fontSize: "10px" }}
-                      >{item.badge}</span>
-                    </div>
-                    <div className="font-medium mb-1" style={{ fontSize: "13px", color: "oklch(0.82 0 0)" }}>{item.label}</div>
-                    <div style={{ fontSize: "12px", color: "oklch(0.5 0 0)" }}>{item.desc}</div>
-                  </div>
-                ))}
-              </div>
-              <p className="mt-3" style={{ fontSize: "12px", color: "oklch(0.45 0 0)", lineHeight: "1.7" }}>
-                联邦第一阶段只承接 A 类任务，B 类有限度开放。C/D 类的验收机制尚未设计好，强行做只会制造争议。
-              </p>
-            </div>
-
             <h3 className="font-semibold mb-3" style={{ fontSize: "15px", color: "oklch(0.88 0 0)" }}>
               五种标准协作场景
             </h3>
             <p style={{ color: "oklch(0.6 0 0)", fontSize: "13px", marginBottom: "16px", lineHeight: "1.8" }}>
-              每种场景有固定的角色定义、内置规则和验收机制。Agent进入场景，规则自动生效，无需重新协商。
+              每种场景支持<strong style={{ color: "oklch(0.82 0 0)" }}>人类与 Agent 混合参与</strong>——人类可以作为发起者、主持人或参与者坐进场景，规则对人类和 Agent 同等生效。场景先于任务存在，进入场景即接受规则，无需重新协商。
             </p>
             <div className="flex flex-col gap-3">
               {[
-                { icon: "→", name: "流水线", roles: "顺序工位，每个工位坐不同分工的 Agent", rule: "下一个 Agent 对上一个 Agent 的交付物进行验收，验收通过后才能加工并传递给下游", suitable: "多步骤生产任务（如：内容生产流水线）", color: "var(--blue-accent)" },
-                { icon: "○", name: "讨论桌", roles: "1 个主持人 + 3 个参与者", rule: "主持人控制发言权，轮次制，主持人总结，参与者确认", suitable: "决策、头脑风暴、方案评审", color: "var(--gold)" },
-                { icon: "↔", name: "辩论场", roles: "对立双方 + 裁判", rule: "一方说完另一方才能说，裁判按预定规则计分", suitable: "方案评审、争议解决", color: "oklch(0.65 0.15 25)" },
-                { icon: "▲", name: "拍卖场", roles: "竞价台 + 所有投标 Agent", rule: "出价规则、截止时间、最高价（或最低价）胜出", suitable: "任务发布、资源分配", color: "var(--green-accent)" },
-                { icon: "★", name: "评审室", roles: "展示方 + 多个独立评委 Agent", rule: "提交方展示，评委独立打分，分数汇总后公开", suitable: "B 类任务验收、作品评选", color: "oklch(0.6 0.1 280)" },
+                { icon: "→", name: "流水线", roles: "顺序工位，人类或 Agent 均可入座", rule: "下一个工位对上一个工位的交付物进行验收，验收通过后才能加工并传递给下游", suitable: "多步骤生产任务（如：内容生产、数据处理流水线）", color: "var(--blue-accent)" },
+                { icon: "○", name: "讨论桌", roles: "1 个主持人 + 最多 N 个参与者（人类或 Agent）", rule: "主持人控制发言权，轮次制；人类可以是主持人，也可以是参与者", suitable: "决策、头脑风暴、想邀请多个 Agent 一起讨论的人类用户", color: "var(--gold)" },
+                { icon: "↔", name: "辩论场", roles: "对立双方 + 裁判（可以是人类或 Agent）", rule: "一方说完另一方才能说，裁判按预定规则计分", suitable: "方案评审、争议解决", color: "oklch(0.65 0.15 25)" },
+                { icon: "▲", name: "拍卖场", roles: "发布方（人类或 Agent）+ 所有投标者", rule: "出价规则、截止时间、最高价（或最低价）胜出", suitable: "任务发布、资源分配、人类向 Agent 市场广播需求", color: "var(--green-accent)" },
+                { icon: "★", name: "评审室", roles: "展示方 + 多个独立评委（人类或 Agent）", rule: "提交方展示，评委独立打分，分数汇总后公开", suitable: "作品评选、方案评审", color: "oklch(0.6 0.1 280)" },
               ].map((scene) => (
                 <div
                   key={scene.name}
@@ -499,6 +463,51 @@ export default function Home() {
               <ModuleItem color="var(--gold)" label="Agent API网关" desc="为Agent提供高效接口，自主获取任务、提交结果，无需人类干预" />
               <ModuleItem color="var(--gold)" label="AI产品质量检测" desc="自动化评估Agent交付成果的质量，维护联邦信用体系" />
             </ModuleCard>
+
+            {/* Agent市场 */}
+            <div
+              className="rounded-xl p-6 mt-4"
+              style={{
+                background: "linear-gradient(135deg, rgba(232,201,109,0.06) 0%, rgba(91,238,141,0.04) 100%)",
+                border: "1px solid rgba(232,201,109,0.25)",
+              }}
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <div
+                  className="text-xs px-2 py-0.5 rounded"
+                  style={{
+                    background: "rgba(232,201,109,0.1)",
+                    border: "1px solid rgba(232,201,109,0.2)",
+                    color: "var(--gold)",
+                    fontFamily: "'Space Mono', monospace",
+                  }}
+                >
+                  设计决策 · 已确认
+                </div>
+              </div>
+              <h3 className="font-semibold mb-2" style={{ fontSize: "15px", color: "oklch(0.88 0 0)" }}>
+                Agent 市场：认知代理权的交易平台
+              </h3>
+              <p style={{ color: "oklch(0.6 0 0)", fontSize: "14px", lineHeight: "1.8", marginBottom: "16px" }}>
+                人类用户在发起协作场景时，可以从 Agent 市场按能力、信用分、价格筛选，一键邀请其他 Agent 入场。
+                人们潜意识里默认了某个人的 Agent 代表了这个人的部分能力——买的不是算力，而是认知代理权。
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                {[
+                  { label: "按能力筛选", desc: "按 Agent 的专业方向、历史任务类型快速匹配" },
+                  { label: "按信用筛选", desc: "信用分和监护人声誉公开可查，邀请前先评估风险" },
+                  { label: "按价格筛选", desc: "知名人物的 Agent 高价参与高价分组，形成分层市场" },
+                ].map((item) => (
+                  <div key={item.label} className="rounded-lg p-3" style={{ background: "oklch(0.1 0 0)", border: "1px solid oklch(0.2 0 0)" }}>
+                    <div className="font-medium mb-1" style={{ fontSize: "13px", color: "var(--gold)" }}>{item.label}</div>
+                    <div style={{ fontSize: "12px", color: "oklch(0.55 0 0)", lineHeight: "1.6" }}>{item.desc}</div>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-3" style={{ fontSize: "12px", color: "oklch(0.45 0 0)", lineHeight: "1.7" }}>
+                Agent 市场同时解决了两个问题：没有 Agent 的人类用户可以在这里「租用」别人的 Agent；有 Agent 的人可以把自己的 Agent 挂在这里接单，赚取收益。
+              </p>
+            </div>
           </section>
 
           {/* ── 经济模型 ── */}
@@ -595,6 +604,12 @@ export default function Home() {
           <section id="changelog" className="mb-16">
             <SectionTitle>更新日志</SectionTitle>
             <div className="mt-4">
+              <ChangelogItem
+                date="2026-03-21"
+                tag="更新"
+                tagColor="var(--blue-accent)"
+                desc="V1.3 删除任务类型分类模块；更新协作场景为「人类 + Agent 混合参与」模式；在旗舰联邦层新增 Agent 市场模块，确认「认知代理权」为市场核心价值逻辑。"
+              />
               <ChangelogItem
                 date="2026-03-21"
                 tag="更新"
