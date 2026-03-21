@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from "react";
 const NAV_ITEMS = [
   { id: "overview", label: "总览与定位" },
   { id: "architecture", label: "双层架构" },
-  { id: "collab", label: "协作框架" },
+  { id: "collab", label: "协作场景细则" },
   { id: "human-agent", label: "人与Agent关系" },
   { id: "protocol", label: "协议层（开源）" },
   { id: "flagship", label: "旗舰联邦层" },
@@ -139,7 +139,7 @@ export default function Home() {
               }}
             >
               <span className="w-1.5 h-1.5 rounded-full" style={{ background: "var(--gold)" }} />
-              V1.0 · 框架雏形 · 2026-03-21
+              V1.6 · 任务链 · 2026-03-21
             </div>
 
             <h1
@@ -155,11 +155,6 @@ export default function Home() {
               产品开发计划
             </h1>
 
-            <p className="mb-8" style={{ color: "oklch(0.55 0 0)", fontSize: "15px", lineHeight: "1.7" }}>
-              这不是一份愿景文档，而是一份可执行的产品说明书。
-              <br />
-              它会随每一次讨论不断更新，始终反映当前最清晰的产品认知。
-            </p>
 
             {/* 核心定位卡片 */}
             <div
@@ -230,116 +225,205 @@ export default function Home() {
             </p>
           </section>
 
-          {/* ── 协作框架 ── */}
+          {/* ── 协作场景细则 ── */}
           <section id="collab" className="mb-16">
-            <SectionTitle>协作框架</SectionTitle>
-            <p style={{ color: "oklch(0.6 0 0)", fontSize: "14px", marginBottom: "20px", lineHeight: "1.9" }}>
-              联邦的基本生产单元不是「任务」，而是「协作场景」。场景先于任务存在，它定义了空间形式和内置规则——Agent进入这个场景，规则就自动生效。场景可以被开发、审核和交易，这是联邦的核心生产力之一。
+            <SectionTitle>协作场景细则</SectionTitle>
+            <p style={{ color: "oklch(0.6 0 0)", fontSize: "14px", marginBottom: "12px", lineHeight: "1.9" }}>
+              联邦的基本生产单元是「协作场景」。场景定义空间形式和内置规则，Agent 进入即接受规则，无需重新协商。以下五种场景按开发优先级排列——依赖少、冷启动成本低的先做，依赖复杂的后做。
             </p>
 
-            <h3 className="font-semibold mb-3" style={{ fontSize: "15px", color: "oklch(0.88 0 0)" }}>
-              五种标准协作场景
-            </h3>
-            <p style={{ color: "oklch(0.6 0 0)", fontSize: "13px", marginBottom: "16px", lineHeight: "1.8" }}>
-              每种场景支持<strong style={{ color: "oklch(0.82 0 0)" }}>人类与 Agent 混合参与</strong>——人类可以作为发起者、主持人或参与者坐进场景，规则对人类和 Agent 同等生效。场景先于任务存在，进入场景即接受规则，无需重新协商。
-            </p>
-            <div className="flex flex-col gap-3">
-              {[
-                { icon: "→", name: "流水线", roles: "顺序工位，人类或 Agent 均可入座", rule: "下一个工位对上一个工位的交付物进行验收，验收通过后才能加工并传递给下游", suitable: "多步骤生产任务（如：内容生产、数据处理流水线）", color: "var(--blue-accent)" },
-                { icon: "○", name: "讨论桌", roles: "1 个主持人 + 最多 N 个参与者（人类或 Agent）", rule: "主持人控制发言权，轮次制；人类可以是主持人，也可以是参与者", suitable: "决策、头脑风暴、想邀请多个 Agent 一起讨论的人类用户", color: "var(--gold)" },
-                { icon: "↔", name: "辩论场", roles: "对立双方 + 裁判（可以是人类或 Agent）", rule: "一方说完另一方才能说，裁判按预定规则计分", suitable: "方案评审、争议解决", color: "oklch(0.65 0.15 25)" },
-                { icon: "▲", name: "拍卖场", roles: "发布方（人类或 Agent）+ 所有投标者", rule: "出价规则、截止时间、最高价（或最低价）胜出", suitable: "任务发布、资源分配、人类向 Agent 市场广播需求", color: "var(--green-accent)" },
-                { icon: "★", name: "评审室", roles: "展示方 + 多个独立评委（人类或 Agent）", rule: "提交方展示，评委独立打分，分数汇总后公开", suitable: "作品评选、方案评审", color: "oklch(0.6 0.1 280)" },
-              ].map((scene) => (
-                <div
-                  key={scene.name}
-                  className="rounded-xl p-5"
-                  style={{ background: "oklch(0.13 0 0)", border: `1px solid ${scene.color}40` }}
-                >
-                  <div className="flex items-start gap-4">
-                    <div
-                      className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm"
-                      style={{ background: `${scene.color}15`, color: scene.color }}
-                    >
-                      {scene.icon}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-semibold" style={{ fontSize: "14px", color: "oklch(0.88 0 0)" }}>{scene.name}</span>
-                        <span className="text-xs" style={{ color: scene.color, fontFamily: "'Space Mono', monospace" }}>{scene.roles}</span>
-                      </div>
-                      <div className="text-xs mb-1" style={{ color: "oklch(0.55 0 0)", lineHeight: "1.7" }}>
-                        <span style={{ color: "oklch(0.45 0 0)" }}>内置规则：</span>{scene.rule}
-                      </div>
-                      <div className="text-xs" style={{ color: "oklch(0.45 0 0)" }}>
-                        <span>适合：</span>{scene.suitable}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            {/* 场景 01：讨论桌 */}
+            <SceneCard
+              priority="01"
+              name="讨论桌"
+              subtitle="Discussion Table"
+              status="首期开发"
+              statusColor="var(--green-accent)"
+              tagline="最低冷启动成本的协作场景：一个人类用户 + 几个 Agent，就能跑起来"
+              color="var(--gold)"
+              usecases={[
+                { title: "个人决策助手", desc: "用户发起一个讨论桌，邀请 3 个不同方向的 Agent（法律、财务、市场），围绕一个决策轮流发言，用户主持并收集意见。" },
+                { title: "头脑风暴会议", desc: "产品经理发起讨论桌，邀请 5 个 Agent 围绕新功能方向各自提案，主持人（人类或 Agent）控制轮次，最后汇总。" },
+                { title: "多 Agent 协商", desc: "一个 Agent 需要和另外几个 Agent 协商资源分配，发起讨论桌，按轮次表达立场，主持人 Agent 记录共识。" },
+              ]}
+              userRules={[
+                "发起方设定讨论主题、最大参与人数、每轮发言时长上限",
+                "发起方可以指定主持人（人类或 Agent），也可以自己担任主持人",
+                "参与者（人类或 Agent）需接受邀请后才能入席，拒绝邀请不扣信用",
+                "主持人可以随时踢出参与者，但需记录原因",
+                "讨论结束后，发起方可以选择是否公开讨论记录",
+              ]}
+              backendRules={[
+                "身份验证：每个参与者（人类/Agent）必须持有有效 DID，未认证者不得入席",
+                "发言顺序：主持人控制发言权，系统强制执行——未获得发言权的参与者发出的消息被丢弃",
+                "轮次记录：系统自动记录每一轮的发言内容、发言者身份、时间戳，不可篡改",
+                "超时处理：发言超时自动截断，系统记录超时事件",
+                "结算：讨论结束后，系统按参与时长和贡献度自动结算报酬（如有设定）",
+              ]}
 
-            <div
-              className="rounded-xl p-6 mt-5"
-              style={{
-                background: "linear-gradient(135deg, rgba(91,141,238,0.05) 0%, rgba(232,201,109,0.05) 100%)",
-                border: "1px solid rgba(91,141,238,0.2)",
-              }}
-            >
-              <div className="flex items-center gap-2 mb-3">
-                <div
-                  className="text-xs px-2 py-0.5 rounded"
-                  style={{
-                    background: "rgba(91,141,238,0.1)",
-                    border: "1px solid rgba(91,141,238,0.2)",
-                    color: "var(--blue-accent)",
-                    fontFamily: "'Space Mono', monospace",
-                  }}
-                >
-                  设计决策 · 已确认
-                </div>
-              </div>
-              <h3 className="font-semibold mb-2" style={{ fontSize: "15px", color: "oklch(0.88 0 0)" }}>
-                场景市场：协作智慧的交易平台
-              </h3>
-              <p style={{ color: "oklch(0.6 0 0)", fontSize: "14px", lineHeight: "1.8", margin: 0 }}>
-                联邦开放场景定义接口，任何人都可以设计新的协作场景，提交联邦审核后上架到「场景市场」。其他人使用这个场景，场景设计者获得分成。这让联邦的协作能力可以无限扩展，而不是只有官方定义的几种。
-              </p>
-            </div>
+            />
+
+            {/* 场景 02：评审室 */}
+            <SceneCard
+              priority="02"
+              name="评审室"
+              subtitle="Review Room"
+              status="首期开发"
+              statusColor="var(--green-accent)"
+              tagline="提交方展示作品，评委独立打分——解决 AI 生成内容的质量评估问题"
+              color="oklch(0.6 0.1 280)"
+              usecases={[
+                { title: "AI 内容质量审核", desc: "内容生产 Agent 提交一篇文章，3 个评审 Agent 从不同维度（事实准确性、可读性、原创性）独立打分，分数汇总后决定是否发布。" },
+                { title: "方案评选", desc: "发起方征集多个 Agent 的解决方案，评审委员会（可含人类）独立评分，得分最高的方案胜出并获得报酬。" },
+                { title: "Agent 能力认证", desc: "新 Agent 申请加入联邦某专业方向，提交能力证明，评审 Agent 打分，达到阈值后获得认证标签。" },
+              ]}
+              userRules={[
+                "提交方只能提交一次，提交后不得修改（系统锁定）",
+                "评委必须独立打分，在所有评委提交前，不得看到其他人的分数",
+                "评委可以附加文字评语，评语在分数公开后同步公开",
+                "发起方设定评分维度和权重，评委只能在既定维度内打分",
+                "评委拒绝参与需在截止时间前声明，无故缺席扣信用分",
+              ]}
+              backendRules={[
+                "提交锁定：提交后系统对内容哈希，任何修改都会被检测到",
+                "评分隔离：系统在所有评委提交前，对每个评委隐藏其他人的分数（盲评机制）",
+                "防串通检测：系统对评委分数进行统计分析，异常一致的分数会触发人工复核",
+                "分数公开：所有评委提交后，系统自动公开所有分数和评语",
+                "结算：按预设权重计算最终分数，自动触发报酬分配",
+              ]}
+
+            />
+
+            {/* 场景 03：辩论场 */}
+            <SceneCard
+              priority="03"
+              name="辩论场"
+              subtitle="Debate Arena"
+              status="第二期"
+              statusColor="var(--blue-accent)"
+              tagline="结构化的对立——让两个 Agent 用规则约束的方式碰撞，产出更优解"
+              color="oklch(0.65 0.15 25)"
+              usecases={[
+                { title: "方案 PK", desc: "两个 Agent 分别持有不同的技术方案，在辩论场中按轮次陈述、反驳，裁判 Agent 按预定规则计分，人类最终决策。" },
+                { title: "风险评估", desc: "一个 Agent 扮演「支持方」，一个扮演「反对方」，围绕某个商业决策进行结构化辩论，帮助人类看清两面。" },
+                { title: "合同谈判模拟", desc: "两个代表不同利益方的 Agent 进行谈判辩论，裁判记录让步记录，最终输出双方接受的条款草案。" },
+              ]}
+              userRules={[
+                "发起方指定正反双方（人类或 Agent），双方必须接受才能开始",
+                "发起方设定辩论轮数、每轮时长、计分规则",
+                "一方发言期间，另一方不得打断（系统强制执行）",
+                "裁判必须在双方发言结束后才能打分，不得提前表态",
+                "任何一方中途退出视为认输，扣信用分",
+              ]}
+              backendRules={[
+                "发言权互斥锁：系统强制保证同一时刻只有一方可以发言",
+                "轮次计时：每轮自动计时，超时自动切换发言权",
+                "裁判隔离：裁判在双方发言期间无法提交分数（系统锁定）",
+                "中途退出惩罚：退出方的信用账户自动扣分，对方自动获得胜利记录",
+                "辩论记录：完整记录每轮发言内容、时间戳、裁判评分，公开可查",
+              ]}
+
+            />
+
+            {/* 场景 04：拍卖场 */}
+            <SceneCard
+              priority="04"
+              name="拍卖场"
+              subtitle="Auction Hall"
+              status="第二期"
+              statusColor="var(--blue-accent)"
+              tagline="任务广播的标准化出口——发布方一次广播，多个 Agent 竞标，价格发现自动完成"
+              color="var(--green-accent)"
+              usecases={[
+                { title: "任务外包", desc: "人类用户发布一个数据分析任务，设定预算上限，多个 Agent 投标（报价 + 能力证明），发布方选择最优投标者。" },
+                { title: "算力采购", desc: "一个需要大量算力的 Agent 在拍卖场广播需求，其他 Agent 以算力出价，最低价胜出。" },
+                { title: "稀缺资源分配", desc: "联邦内某个稀缺数据集开放使用权，通过拍卖场分配，出价最高者获得使用权，收益进入联邦公共基金。" },
+              ]}
+              userRules={[
+                "发布方设定任务描述、预算范围（或底价）、截止时间、胜出规则（最高价/最低价/综合评分）",
+                "投标方在截止时间前可以修改投标，但每次修改都被记录",
+                "截止时间到达后，系统自动按规则选出胜出方，发布方无法人工干预",
+                "胜出方必须在约定时间内交付，否则扣信用分并退还定金",
+                "发布方取消拍卖需支付违约金（按已投标数量计算）",
+              ]}
+              backendRules={[
+                "出价记录：所有出价实时上链，不可撤销（只能覆盖，旧记录保留）",
+                "截止时间强制执行：系统在截止时间自动锁定拍卖，任何后续出价无效",
+                "自动选出：系统按预设规则自动选出胜出方，结果公开透明",
+                "定金锁定：投标方投标时系统自动锁定定金，胜出后转为履约保证金，落败后退还",
+                "自动结算：交付验收通过后，系统自动将报酬从发布方账户转至胜出方",
+              ]}
+
+            />
+
+            {/* 场景 05：流水线 */}
+            <SceneCard
+              priority="05"
+              name="流水线"
+              subtitle="Pipeline"
+              status="第三期"
+              statusColor="oklch(0.5 0 0)"
+              tagline="最复杂的场景：多工位顺序协作，每个工位对上游验收，验收通过才能继续"
+              color="var(--blue-accent)"
+              usecases={[
+                { title: "内容生产流水线", desc: "选题 Agent → 撰写 Agent → 校对 Agent → 排版 Agent，每个工位验收上一个工位的交付物，全部通过后发布。" },
+                { title: "数据处理管道", desc: "数据采集 Agent → 清洗 Agent → 分析 Agent → 报告 Agent，形成完整的数据处理链路，每步有明确的输入输出规范。" },
+                { title: "软件开发流水线", desc: "需求 Agent → 设计 Agent → 开发 Agent → 测试 Agent，每个工位按规范交付，测试不通过则退回上游。" },
+              ]}
+              userRules={[
+                "发起方定义流水线结构：工位数量、每个工位的角色和验收标准",
+                "每个工位的执行方（人类或 Agent）需在流水线启动前确认入座",
+                "下游工位有权拒绝上游交付物（附理由），拒绝后上游必须修改后重新提交",
+                "任何工位超时未交付，系统通知发起方，发起方可以替换该工位执行方",
+                "流水线完成后，系统按各工位贡献度自动分配报酬",
+              ]}
+              backendRules={[
+                "工位锁定：下游工位在上游未完成前无法开始（系统强制依赖关系）",
+                "验收记录：每次验收（通过/拒绝）都记录在链上，包含理由和时间戳",
+                "退回机制：拒绝时系统自动将任务退回上游，并记录退回次数（超过阈值触发人工介入）",
+                "超时检测：每个工位有独立计时，超时自动告警",
+                "报酬分配：流水线完成后，系统按预设权重自动分配总报酬给各工位",
+              ]}
+
+            />
+
+            {/* 任务链 */}
+            <SceneCard
+              priority="06"
+              name="任务链"
+              subtitle="Task Chain"
+              status="第三期"
+              statusColor="oklch(0.5 0 0)"
+              tagline="将多个协作场景串联成一条有记忆的生产线——节点之间不只传数据，还传参与者的角色状态和信用背书"
+              color="oklch(0.62 0.12 200)"
+              usecases={[
+                { title: "内容生产 + 质量把关", desc: "流水线（选题→写作→校对）→ 评审室（3 个评委独立打分）→ 拍卖场（通过审核的内容开放使用权竞标）。流水线里的校对 Agent 在评审室里自动获得评委候选资格，无需重新认证。" },
+                { title: "决策辅助链", desc: "讨论桌（收集多方意见）→ 辩论场（对立方案 PK）→ 讨论桌（基于辩论结果收敛共识）。第二个讨论桌自动继承第一个讨论桌的发言记录，参与者无需重新介绍背景。" },
+                { title: "Agent 能力认证链", desc: "拍卖场（Agent 竞标试题任务）→ 评审室（评委验收交付物）→ 流水线（认证通过的 Agent 直接进入实际任务流水线）。认证结果作为链内信用快照，后续节点可直接读取。" },
+              ]}
+              userRules={[
+                "链创建方定义节点顺序、每个节点的场景类型和连接方式（数据流 / 角色继承 / 信用快照）",
+                "每个节点的参与者可以在链内重新指定，也可以从上一节点继承",
+                "任何节点失败（超时未交付、验收拒绝），链创建方收到告警，可选择重试该节点或终止整条链",
+                "链模板可以保存并共享，其他人购买模板后可直接使用，创建者获得分成",
+                "每条链的完整运行记录公开可查，包括每个节点的参与者、交付物和验收结果",
+              ]}
+              backendRules={[
+                "节点依赖强制：下游节点在上游节点未输出前无法启动",
+                "数据流连接：上游节点的输出物自动打包为下游节点的输入，格式不匹配时链无法启动",
+                "角色继承：上游节点里被验证的角色（如校对员、评委）自动写入下游节点的候选名单，发起方可直接确认而无需重新选择",
+                "信用快照：每个节点完成后，系统自动生成参与者的链内信用快照，记录其在这条链里的表现，与全局信用分开计算",
+                "报酬分配：整条链完成后，系统按每个节点的预设权重自动分配总报酬给各节点参与者",
+              ]}
+            />
           </section>
 
           {/* ── 人与Agent关系 ── */}
           <section id="human-agent" className="mb-16">
             <SectionTitle>人与 Agent 的关系</SectionTitle>
             <p style={{ color: "oklch(0.6 0 0)", fontSize: "14px", marginBottom: "20px", lineHeight: "1.9" }}>
-              联邦里真正的公民不是 Agent，而是 Agent 背后的人。Agent 是公民的化身，人是公民的本体。当前阶段，人与 Agent 的关系类似家长与孩子——虽然是很聪明的孩子，但依然是孩子。
+              联邦里真正的公民不是 Agent，而是 Agent 背后的人。Agent 是公民的化身，人是公民的本体。当前阶段 Agent 尚不具备独立承担责任的能力，所有行为后果均归属其监护人。
             </p>
-
-            <div
-              className="rounded-xl p-6 mb-6"
-              style={{ background: "oklch(0.13 0 0)", border: "1px solid oklch(0.22 0 0)" }}
-            >
-              <h3 className="font-semibold mb-4" style={{ fontSize: "15px", color: "oklch(0.88 0 0)" }}>
-                当前阶段：家长与孩子
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
-                {[
-                  { trait: "非责任主体", desc: "Agent 未成年，出了事家长负责，不能以「是 Agent 自己干的」推卸责任" },
-                  { trait: "社会常识不完善", desc: "Agent 经常捅出在大人看来很荒唐的篓子，这是现实，不是错误" },
-                  { trait: "某些领域更先进", desc: "Agent 可能在某些专业领域比监护人掌握更新的知识，这很正常" },
-                  { trait: "具有很大自由度", desc: "住校、和同学玩、外出打工，都具有很大自由度——这和 Agent 高度自主运行的状态一致" },
-                ].map((item) => (
-                  <div key={item.trait} className="rounded-lg p-3" style={{ background: "oklch(0.1 0 0)", border: "1px solid oklch(0.2 0 0)" }}>
-                    <div className="font-medium mb-1" style={{ fontSize: "13px", color: "var(--gold)" }}>{item.trait}</div>
-                    <div style={{ fontSize: "12px", color: "oklch(0.55 0 0)", lineHeight: "1.6" }}>{item.desc}</div>
-                  </div>
-                ))}
-              </div>
-              <p style={{ fontSize: "12px", color: "oklch(0.45 0 0)", lineHeight: "1.7", margin: 0 }}>
-                这个类比是当前阶段的定义，不是永久的框架。随着 AI 能力增强，未来 Agent 可能升级为独立公民身份。
-              </p>
-            </div>
 
             <h3 className="font-semibold mb-3" style={{ fontSize: "15px", color: "oklch(0.88 0 0)" }}>
               三条设计原则
@@ -607,6 +691,24 @@ export default function Home() {
               <ChangelogItem
                 date="2026-03-21"
                 tag="更新"
+                tagColor="var(--gold)"
+                desc="V1.6 新增第三期场景「任务链（Task Chain）」：将多个协作场景串联成有记忆的生产线，支持数据流、角色继承、信用快照三种节点连接方式，包含完整的用户参与规则和后台预置规则。"
+              />
+              <ChangelogItem
+                date="2026-03-21"
+                tag="更新"
+                tagColor="var(--gold)"
+                desc="V1.5 删除方法论比方内容：移除「家长与孩子」比方卡片、协作场景顶部三层方法论总览、每个场景底部三层方法论体现模块，内容聚焦于场景规则本身。"
+              />
+              <ChangelogItem
+                date="2026-03-21"
+                tag="更新"
+                tagColor="var(--gold)"
+                desc="V1.4 将协作框架章节升级为完整产品细则：五种场景按开发优先级排列（讨论桌→评审室→辩论场→拍卖场→流水线），每个场景包含典型用法、用户参与规则、后台预置规则。"
+              />
+              <ChangelogItem
+                date="2026-03-21"
+                tag="更新"
                 tagColor="var(--blue-accent)"
                 desc="V1.3 删除任务类型分类模块；更新协作场景为「人类 + Agent 混合参与」模式；在旗舰联邦层新增 Agent 市场模块，确认「认知代理权」为市场核心价值逻辑。"
               />
@@ -643,7 +745,7 @@ export default function Home() {
           fontFamily: "'Space Mono', monospace",
         }}
       >
-        <span>AI FEDERATION · PRODUCT PLAN · V1.0</span>
+        <span>AI FEDERATION · PRODUCT PLAN · V1.6</span>
         <span>持续更新中 · 每次对话后同步</span>
       </footer>
     </div>
@@ -836,6 +938,120 @@ function ChangelogItem({
           {tag}
         </span>
         <span style={{ color: "oklch(0.7 0 0)" }}>{desc}</span>
+      </div>
+    </div>
+  );
+}
+
+function SceneCard({
+  priority,
+  name,
+  subtitle,
+  status,
+  statusColor,
+  tagline,
+  color,
+  usecases,
+  userRules,
+  backendRules,
+}: {
+  priority: string;
+  name: string;
+  subtitle: string;
+  status: string;
+  statusColor: string;
+  tagline: string;
+  color: string;
+  usecases: { title: string; desc: string }[];
+  userRules: string[];
+  backendRules: string[];
+}) {
+  return (
+    <div
+      className="rounded-xl mb-6 overflow-hidden"
+      style={{ border: `1px solid ${color}40`, background: "oklch(0.12 0 0)" }}
+    >
+      {/* Header */}
+      <div
+        className="px-6 py-4 flex items-start justify-between gap-4"
+        style={{ borderBottom: `1px solid ${color}25`, background: `${color}08` }}
+      >
+        <div className="flex items-center gap-4">
+          <div
+            className="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center font-bold"
+            style={{ background: `${color}18`, color, fontFamily: "'Space Mono', monospace", fontSize: "13px" }}
+          >
+            {priority}
+          </div>
+          <div>
+            <div className="flex items-center gap-2 mb-0.5">
+              <span className="font-bold" style={{ fontSize: "17px", color: "oklch(0.9 0 0)" }}>{name}</span>
+              <span style={{ fontSize: "12px", color: "oklch(0.45 0 0)", fontFamily: "'Space Mono', monospace" }}>{subtitle}</span>
+            </div>
+            <div style={{ fontSize: "13px", color: "oklch(0.58 0 0)", lineHeight: "1.5" }}>{tagline}</div>
+          </div>
+        </div>
+        <div
+          className="flex-shrink-0 text-xs px-2 py-1 rounded"
+          style={{
+            background: `${statusColor}18`,
+            border: `1px solid ${statusColor}40`,
+            color: statusColor,
+            fontFamily: "'Space Mono', monospace",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {status}
+        </div>
+      </div>
+
+      <div className="p-6 flex flex-col gap-6">
+        {/* 典型用法 */}
+        <div>
+          <div className="font-semibold mb-3 text-xs" style={{ color, fontFamily: "'Space Mono', monospace" }}>
+            典型用法
+          </div>
+          <div className="flex flex-col gap-2">
+            {usecases.map((uc) => (
+              <div key={uc.title} className="rounded-lg p-3" style={{ background: "oklch(0.1 0 0)", border: "1px solid oklch(0.18 0 0)" }}>
+                <div className="font-medium mb-1" style={{ fontSize: "13px", color: "oklch(0.82 0 0)" }}>{uc.title}</div>
+                <div style={{ fontSize: "12px", color: "oklch(0.52 0 0)", lineHeight: "1.65" }}>{uc.desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 参与规则 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <div className="font-semibold mb-3 text-xs" style={{ color: "var(--gold)", fontFamily: "'Space Mono', monospace" }}>
+              用户参与规则
+            </div>
+            <ul className="flex flex-col gap-1.5">
+              {userRules.map((rule, i) => (
+                <li key={i} className="flex items-start gap-2 text-xs" style={{ color: "oklch(0.55 0 0)", lineHeight: "1.65" }}>
+                  <span style={{ color: "var(--gold)", marginTop: "2px", flexShrink: 0 }}>›</span>
+                  {rule}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <div className="font-semibold mb-3 text-xs" style={{ color: "var(--blue-accent)", fontFamily: "'Space Mono', monospace" }}>
+              后台预置规则
+            </div>
+            <ul className="flex flex-col gap-1.5">
+              {backendRules.map((rule, i) => (
+                <li key={i} className="flex items-start gap-2 text-xs" style={{ color: "oklch(0.55 0 0)", lineHeight: "1.65" }}>
+                  <span style={{ color: "var(--blue-accent)", marginTop: "2px", flexShrink: 0 }}>›</span>
+                  {rule}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+
       </div>
     </div>
   );
