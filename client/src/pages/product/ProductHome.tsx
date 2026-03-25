@@ -727,7 +727,7 @@ function FeaturesSection() {
 
   return (
     <section style={{
-      padding: "80px 40px",
+      padding: "60px 40px",
       maxWidth: "1080px",
       margin: "0 auto",
     }}>
@@ -745,69 +745,51 @@ function FeaturesSection() {
       <div style={{
         display: "grid",
         gridTemplateColumns: "1fr 1fr",
-        gap: "20px",
+        gap: "14px",
       }}>
         {features.map((f, i) => (
           <div key={i} style={{
             background: BG2,
             border: `1px solid ${BORDER}`,
             borderRadius: "12px",
+            padding: "28px 28px 32px",
+            position: "relative",
             overflow: "hidden",
-            display: "flex",
-            flexDirection: "column",
           }}>
-            {/* 图片区域，占卡片 70% */}
+            {/* 左上角光晕 */}
             <div style={{
-              width: "100%",
-              paddingBottom: "56.25%",  /* 16:9 比例 */
-              position: "relative",
-              overflow: "hidden",
-            }}>
-              <img
-                src={f.img}
-                alt={f.title_en}
-                style={{
-                  position: "absolute",
-                  top: 0, left: 0,
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  display: "block",
-                }}
-              />
-              {/* 底部渐变遇到文字区域的过渡 */}
-              <div style={{
-                position: "absolute",
-                bottom: 0, left: 0, right: 0,
-                height: "60px",
-                background: `linear-gradient(to bottom, transparent, ${BG2})`,
-              }} />
-            </div>
-
-            {/* 文字区域，占卡片 30% */}
+              position: "absolute",
+              top: 0, left: 0,
+              width: "160px", height: "100px",
+              background: `radial-gradient(ellipse at top left, ${f.accent}18 0%, transparent 70%)`,
+              pointerEvents: "none",
+            }} />
+            {/* 左侧彩色竖线 */}
             <div style={{
-              padding: "20px 24px 24px",
-              flex: 1,
+              position: "absolute",
+              top: "20px", bottom: "20px", left: 0,
+              width: "3px",
+              background: f.accent,
+              borderRadius: "0 2px 2px 0",
+            }} />
+            <h3 style={{
+              fontSize: "15px",
+              fontWeight: 700,
+              color: f.accent,
+              marginBottom: "10px",
+              fontFamily: "'Inter', sans-serif",
+              letterSpacing: "-0.01em",
             }}>
-              <h3 style={{
-                fontSize: "16px",
-                fontWeight: 700,
-                color: f.accent,
-                marginBottom: "8px",
-                fontFamily: "'Inter', sans-serif",
-                letterSpacing: "-0.01em",
-              }}>
-                {lang === "zh" ? f.title_zh : f.title_en}
-              </h3>
-              <p style={{
-                fontSize: "13px",
-                color: MUTED2,
-                lineHeight: 1.7,
-                margin: 0,
-              }}>
-                {lang === "zh" ? f.desc_zh : f.desc_en}
-              </p>
-            </div>
+              {lang === "zh" ? f.title_zh : f.title_en}
+            </h3>
+            <p style={{
+              fontSize: "13px",
+              color: MUTED2,
+              lineHeight: 1.7,
+              margin: 0,
+            }}>
+              {lang === "zh" ? f.desc_zh : f.desc_en}
+            </p>
           </div>
         ))}
       </div>
