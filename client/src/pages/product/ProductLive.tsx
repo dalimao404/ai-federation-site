@@ -504,7 +504,7 @@ export default function ProductLive() {
                 style={{ flex:1, background:BG2, border:`1px solid ${input ? LIME+"40" : BORDER}`, borderRadius:8, padding:"10px 14px", color:WHITE, fontSize:14, fontFamily:"'Inter',sans-serif", lineHeight:1.5, transition:"border-color .2s" }}
               />
               <button onClick={send} disabled={!input.trim()} style={{
-                padding:"10px 18px", height:58,
+                padding:"0 18px", alignSelf:"stretch",
                 background:input.trim() ? LIME : BG3,
                 border:`1px solid ${input.trim() ? LIME : BORDER}`,
                 borderRadius:8, color:input.trim() ? BG : MUTED,

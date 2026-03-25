@@ -153,13 +153,13 @@ const MOCK_TABLES = [
 ];
 
 // ── PlugIcon ─────────────────────────────────────────────────
-function PlugIcon({ size = 20, offsetY = 0 }: { size?: number; offsetY?: number }) {
+function PlugIcon({ size = 20, offsetY = -3 }: { size?: number; offsetY?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: offsetY, display: "inline-block" }}>
       <rect x="5" y="7" width="6" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.4"/>
       <path d="M6 7V4.5M10 7V4.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
-      <path d="M7 4.5V3.5a1 1 0 0 1 2 0v1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
       <circle cx="8" cy="10" r="1" fill="currentColor"/>
+      <path d="M8 13v1.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
     </svg>
   );
 }
