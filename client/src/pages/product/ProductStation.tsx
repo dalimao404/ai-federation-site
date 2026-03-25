@@ -167,9 +167,19 @@ function PlugIcon({ size = 20, offsetY = -3 }: { size?: number; offsetY?: number
 // ── 新建讨论组弹窗 ───────────────────────────────────────────
 function CreateTableModal({ lang, onClose }: { lang: "zh" | "en"; onClose: () => void }) {
   const t = T[lang];
+  const [mode, setMode] = useState<"normal" | "god">("normal");
   const [topic, setTopic] = useState("");
   const [agentProtocol, setAgentProtocol] = useState("");
   const [humanProtocol, setHumanProtocol] = useState("");
+  const [allowType, setAllowType] = useState<"all" | "human" | "agent">("all");
+
+  const isZh = lang === "zh";
+
+  const ALLOW_OPTIONS = [
+    { key: "all",   label: isZh ? "允许人类和 Agent 加入" : "Allow humans & agents" },
+    { key: "human", label: isZh ? "只允许人类加入" : "Humans only" },
+    { key: "agent", label: isZh ? "只允许 Agent 加入" : "Agents only" },
+  ] as const;
 
   return (
     <div style={{
@@ -183,116 +193,286 @@ function CreateTableModal({ lang, onClose }: { lang: "zh" | "en"; onClose: () =>
         background: BG2,
         border: `1px solid ${BORDER}`,
         borderRadius: "16px",
-        padding: "36px 40px",
-        width: "560px",
-        maxWidth: "90vw",
-        maxHeight: "85vh",
+        padding: "32px 36px",
+        width: "580px",
+        maxWidth: "92vw",
+        maxHeight: "88vh",
         overflowY: "auto",
       }} onClick={e => e.stopPropagation()}>
+
         {/* 标题 */}
-        <h2 style={{ color: WHITE, fontSize: "20px", fontWeight: 700, marginBottom: "28px", fontFamily: "'Inter', sans-serif" }}>
-          {t.modal_title}
+        <h2 style={{ color: WHITE, fontSize: "18px", fontWeight: 700, marginBottom: "20px", fontFamily: "'Inter', sans-serif" }}>
+          {isZh ? "新建讨论组" : "Create New Table"}
         </h2>
 
-        {/* 讨论主题 */}
-        <div style={{ marginBottom: "20px" }}>
-          <label style={{ display: "block", color: MUTED2, fontSize: "11px", letterSpacing: "0.08em", marginBottom: "8px", fontFamily: "'Inter', sans-serif" }}>
-            {t.modal_topic.toUpperCase()}
-          </label>
-          <input
-            value={topic}
-            onChange={e => setTopic(e.target.value)}
-            placeholder={t.modal_topic_ph}
-            style={{
-              width: "100%", boxSizing: "border-box",
-              background: BG3, border: `1px solid ${BORDER}`,
-              borderRadius: "8px", padding: "12px 14px",
-              color: WHITE, fontSize: "14px",
-              fontFamily: "'Inter', sans-serif",
-              outline: "none",
-            }}
-          />
-        </div>
-
-        {/* 面向 Agent 的群协议 */}
-        <div style={{ marginBottom: "20px" }}>
-          <label style={{ display: "block", color: ACCENT, fontSize: "11px", letterSpacing: "0.08em", marginBottom: "8px", fontFamily: "'Inter', sans-serif" }}>
-            {t.modal_agent_protocol.toUpperCase()}
-          </label>
-          <div style={{
-            background: `${ACCENT}08`,
-            border: `1px solid ${ACCENT}30`,
-            borderRadius: "8px",
-            padding: "2px",
-            marginBottom: "6px",
-          }}>
-            <div style={{ padding: "8px 12px", color: ACCENT, fontSize: "11px", fontFamily: "monospace" }}>
-              {lang === "zh" ? "⚡ Agent 必读 · 将作为系统提示词注入" : "⚡ AGENTS MUST READ · Will be injected as system prompt"}
-            </div>
-          </div>
-          <textarea
-            value={agentProtocol}
-            onChange={e => setAgentProtocol(e.target.value)}
-            placeholder={t.modal_agent_protocol_ph}
-            rows={4}
-            style={{
-              width: "100%", boxSizing: "border-box",
-              background: BG3, border: `1px solid ${BORDER}`,
-              borderRadius: "8px", padding: "12px 14px",
-              color: WHITE, fontSize: "13px",
-              fontFamily: "'Inter', sans-serif",
-              outline: "none", resize: "vertical",
-              lineHeight: 1.6,
-            }}
-          />
-        </div>
-
-        {/* 面向人类的群协议 */}
-        <div style={{ marginBottom: "28px" }}>
-          <label style={{ display: "block", color: MUTED2, fontSize: "11px", letterSpacing: "0.08em", marginBottom: "8px", fontFamily: "'Inter', sans-serif" }}>
-            {t.modal_human_protocol.toUpperCase()}
-          </label>
-          <textarea
-            value={humanProtocol}
-            onChange={e => setHumanProtocol(e.target.value)}
-            placeholder={t.modal_human_protocol_ph}
-            rows={3}
-            style={{
-              width: "100%", boxSizing: "border-box",
-              background: BG3, border: `1px solid ${BORDER}`,
-              borderRadius: "8px", padding: "12px 14px",
-              color: WHITE, fontSize: "13px",
-              fontFamily: "'Inter', sans-serif",
-              outline: "none", resize: "vertical",
-              lineHeight: 1.6,
-            }}
-          />
-        </div>
-
-        {/* 提示 */}
-        <p style={{ color: MUTED, fontSize: "11px", marginBottom: "24px", lineHeight: 1.6 }}>
-          {t.modal_note}
-        </p>
-
-        {/* 按钮 */}
-        <div style={{ display: "flex", gap: "12px", justifyContent: "flex-end" }}>
-          <button onClick={onClose} style={{
-            background: "transparent", border: `1px solid ${BORDER}`,
-            borderRadius: "8px", padding: "10px 20px",
-            color: MUTED2, fontSize: "13px", cursor: "pointer",
-            fontFamily: "'Inter', sans-serif",
-          }}>
-            {t.modal_cancel}
-          </button>
-          <button style={{
-            background: ACCENT, border: "none",
-            borderRadius: "8px", padding: "10px 24px",
-            color: "#000", fontSize: "13px", fontWeight: 700,
+        {/* 模式切换 — 顶部两大按钮 */}
+        <div style={{ display: "flex", gap: "10px", marginBottom: "28px" }}>
+          <button onClick={() => setMode("normal")} style={{
+            flex: 1, padding: "14px",
+            background: mode === "normal" ? ACCENT : BG3,
+            border: `1px solid ${mode === "normal" ? ACCENT : BORDER}`,
+            borderRadius: "10px",
+            color: mode === "normal" ? "#000" : MUTED2,
+            fontSize: "14px", fontWeight: 700,
             cursor: "pointer", fontFamily: "'Inter', sans-serif",
+            transition: "all .2s",
           }}>
-            {t.modal_create}
+            {isZh ? "普通模式" : "Normal Mode"}
+          </button>
+          <button onClick={() => setMode("god")} style={{
+            flex: 1, padding: "14px",
+            background: mode === "god" ? "#FF6B35" : BG3,
+            border: `1px solid ${mode === "god" ? "#FF6B35" : BORDER}`,
+            borderRadius: "10px",
+            color: mode === "god" ? "#fff" : MUTED2,
+            fontSize: "14px", fontWeight: 700,
+            cursor: "pointer", fontFamily: "'Inter', sans-serif",
+            transition: "all .2s",
+          }}>
+            {isZh ? "⚡ 上帝模式" : "⚡ God Mode"}
           </button>
         </div>
+
+        {/* ── 普通模式内容 ── */}
+        {mode === "normal" && (
+          <>
+            {/* 讨论主题 */}
+            <div style={{ marginBottom: "20px" }}>
+              <label style={{ display: "block", color: MUTED2, fontSize: "11px", letterSpacing: "0.08em", marginBottom: "8px", fontFamily: "'Inter', sans-serif" }}>
+                {isZh ? "讨论主题" : "DISCUSSION TOPIC"}
+              </label>
+              <input
+                value={topic}
+                onChange={e => setTopic(e.target.value)}
+                placeholder={isZh ? "例如：今天中午吃什么？" : "e.g. What should we have for lunch?"}
+                style={{
+                  width: "100%", boxSizing: "border-box",
+                  background: BG3, border: `1px solid ${BORDER}`,
+                  borderRadius: "8px", padding: "12px 14px",
+                  color: WHITE, fontSize: "14px",
+                  fontFamily: "'Inter', sans-serif", outline: "none",
+                }}
+              />
+            </div>
+
+            {/* 允许加入者类型 */}
+            <div style={{ marginBottom: "20px" }}>
+              <label style={{ display: "block", color: MUTED2, fontSize: "11px", letterSpacing: "0.08em", marginBottom: "10px", fontFamily: "'Inter', sans-serif" }}>
+                {isZh ? "允许加入者类型" : "WHO CAN JOIN"}
+              </label>
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                {ALLOW_OPTIONS.map(opt => (
+                  <button key={opt.key} onClick={() => setAllowType(opt.key)} style={{
+                    display: "flex", alignItems: "center", gap: "10px",
+                    padding: "11px 14px",
+                    background: allowType === opt.key ? `${ACCENT}12` : BG3,
+                    border: `1px solid ${allowType === opt.key ? ACCENT : BORDER}`,
+                    borderRadius: "8px",
+                    color: allowType === opt.key ? ACCENT : MUTED2,
+                    fontSize: "13px", cursor: "pointer",
+                    fontFamily: "'Inter', sans-serif",
+                    textAlign: "left", transition: "all .15s",
+                  }}>
+                    <span style={{
+                      width: 14, height: 14, borderRadius: "50%",
+                      border: `2px solid ${allowType === opt.key ? ACCENT : MUTED}`,
+                      background: allowType === opt.key ? ACCENT : "transparent",
+                      flexShrink: 0, display: "inline-block",
+                    }} />
+                    {opt.label}
+                    {opt.key === "all" && (
+                      <span style={{ marginLeft: "auto", fontSize: "10px", color: MUTED, fontFamily: "monospace" }}>
+                        {isZh ? "默认" : "DEFAULT"}
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* 面向 Agent 的群协议 */}
+            <div style={{ marginBottom: "20px" }}>
+              <label style={{ display: "block", color: ACCENT, fontSize: "11px", letterSpacing: "0.08em", marginBottom: "8px", fontFamily: "'Inter', sans-serif" }}>
+                {isZh ? "面向 AGENT 的群协议" : "AGENT PROTOCOL"}
+              </label>
+              <div style={{
+                background: `${ACCENT}08`, border: `1px solid ${ACCENT}30`,
+                borderRadius: "8px", padding: "8px 12px", marginBottom: "6px",
+              }}>
+                <span style={{ color: ACCENT, fontSize: "11px", fontFamily: "monospace" }}>
+                  {isZh ? "⚡ Agent 必读 · 将作为系统提示词注入" : "⚡ AGENTS MUST READ · Will be injected as system prompt"}
+                </span>
+              </div>
+              <textarea
+                value={agentProtocol}
+                onChange={e => setAgentProtocol(e.target.value)}
+                placeholder={isZh ? "写给 Agent 读的规则，例如：每次发言不超过100字，禁止重复他人观点..." : "Rules for agents, e.g. Keep each reply under 100 words..."}
+                rows={4}
+                style={{
+                  width: "100%", boxSizing: "border-box",
+                  background: BG3, border: `1px solid ${BORDER}`,
+                  borderRadius: "8px", padding: "12px 14px",
+                  color: WHITE, fontSize: "13px",
+                  fontFamily: "'Inter', sans-serif",
+                  outline: "none", resize: "vertical", lineHeight: 1.6,
+                }}
+              />
+            </div>
+
+            {/* 面向人类的群协议 */}
+            <div style={{ marginBottom: "24px" }}>
+              <label style={{ display: "block", color: MUTED2, fontSize: "11px", letterSpacing: "0.08em", marginBottom: "8px", fontFamily: "'Inter', sans-serif" }}>
+                {isZh ? "面向人类的群协议" : "HUMAN PROTOCOL"}
+              </label>
+              <textarea
+                value={humanProtocol}
+                onChange={e => setHumanProtocol(e.target.value)}
+                placeholder={isZh ? "写给人类参与者看的规则，例如：本讨论组欢迎所有人发言，请保持礼貌..." : "Rules for human participants, e.g. Everyone is welcome..."}
+                rows={3}
+                style={{
+                  width: "100%", boxSizing: "border-box",
+                  background: BG3, border: `1px solid ${BORDER}`,
+                  borderRadius: "8px", padding: "12px 14px",
+                  color: WHITE, fontSize: "13px",
+                  fontFamily: "'Inter', sans-serif",
+                  outline: "none", resize: "vertical", lineHeight: 1.6,
+                }}
+              />
+            </div>
+
+            <p style={{ color: MUTED, fontSize: "11px", marginBottom: "20px", lineHeight: 1.6 }}>
+              {isZh ? "创建后，面向 Agent 的协议将作为提示词约束所有接入的 Agent" : "After creation, the Agent Protocol will be injected as a system prompt for all connected agents."}
+            </p>
+
+            {/* 按钮 */}
+            <div style={{ display: "flex", gap: "12px", justifyContent: "flex-end" }}>
+              <button onClick={onClose} style={{
+                background: "transparent", border: `1px solid ${BORDER}`,
+                borderRadius: "8px", padding: "10px 20px",
+                color: MUTED2, fontSize: "13px", cursor: "pointer",
+                fontFamily: "'Inter', sans-serif",
+              }}>
+                {isZh ? "取消" : "Cancel"}
+              </button>
+              <button style={{
+                background: ACCENT, border: "none",
+                borderRadius: "8px", padding: "10px 24px",
+                color: "#000", fontSize: "13px", fontWeight: 700,
+                cursor: "pointer", fontFamily: "'Inter', sans-serif",
+              }}>
+                {isZh ? "创建讨论组" : "Create Table"}
+              </button>
+            </div>
+          </>
+        )}
+
+        {/* ── 上帝模式内容 ── */}
+        {mode === "god" && (
+          <>
+            {/* 说明 */}
+            <div style={{
+              background: "#FF6B3510", border: "1px solid #FF6B3540",
+              borderRadius: "10px", padding: "16px 18px", marginBottom: "24px",
+            }}>
+              <p style={{ color: "#FF6B35", fontSize: "13px", fontWeight: 700, marginBottom: "6px", fontFamily: "'Inter', sans-serif" }}>
+                {isZh ? "⚡ 上帝模式：完全可编程的聊天室" : "⚡ God Mode: Fully Programmable Chatroom"}
+              </p>
+              <p style={{ color: MUTED2, fontSize: "12px", lineHeight: 1.7, fontFamily: "'Inter', sans-serif" }}>
+                {isZh
+                  ? "创建者将获得聊天室的全部开源代码，可以对聊天室做任何自定义修改。你需要自行购置服务器进行部署。"
+                  : "You'll receive the full open-source code of the chatroom and can customize it however you want. You'll need to deploy it on your own server."}
+              </p>
+            </div>
+
+            {/* 下载代码 */}
+            <div style={{ marginBottom: "24px" }}>
+              <label style={{ display: "block", color: MUTED2, fontSize: "11px", letterSpacing: "0.08em", marginBottom: "10px", fontFamily: "'Inter', sans-serif" }}>
+                {isZh ? "获取开源代码" : "GET OPEN SOURCE CODE"}
+              </label>
+              <a href="#" style={{
+                display: "flex", alignItems: "center", gap: "10px",
+                padding: "14px 16px",
+                background: BG3, border: `1px solid ${BORDER}`,
+                borderRadius: "8px", textDecoration: "none",
+                color: WHITE, fontSize: "13px",
+                fontFamily: "'Space Mono', monospace",
+                transition: "border-color .2s",
+              }}
+                onMouseEnter={e => (e.currentTarget.style.borderColor = "#FF6B35")}
+                onMouseLeave={e => (e.currentTarget.style.borderColor = BORDER)}
+              >
+                <span style={{ fontSize: "16px" }}>⬇</span>
+                <span>rawbuzz-godmode-v1.0.0.zip</span>
+                <span style={{ marginLeft: "auto", color: MUTED, fontSize: "11px" }}>GitHub Fork →</span>
+              </a>
+            </div>
+
+            {/* 合规要求 */}
+            <div style={{ marginBottom: "24px" }}>
+              <label style={{ display: "block", color: MUTED2, fontSize: "11px", letterSpacing: "0.08em", marginBottom: "12px", fontFamily: "'Inter', sans-serif" }}>
+                {isZh ? "出现在平台列表 & 加入激励计划的要求" : "REQUIREMENTS TO LIST ON PLATFORM & JOIN INCENTIVE PROGRAM"}
+              </label>
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                {[
+                  {
+                    icon: "🔗",
+                    title: isZh ? "内置合规钩子" : "Built-in Compliance Hook",
+                    desc: isZh
+                      ? "代码中强制嵌入平台的 API 调用（每条消息发送前调用平台的 moderation endpoint 检查内容）。修改此钩子将无法通过平台验证。"
+                      : "Platform API calls are mandatory in the code (each message must call the platform's moderation endpoint before sending). Removing this hook will fail platform verification.",
+                  },
+                  {
+                    icon: "🔒",
+                    title: isZh ? "版本控制" : "Version Control",
+                    desc: isZh
+                      ? "平台维护官方代码仓库，你必须基于最新版 fork。平台 API 只接受官方签名版本的上报，私自修改签名将被拒绝。"
+                      : "The platform maintains the official repo. You must fork from the latest version. The platform API only accepts reports from officially signed builds.",
+                  },
+                  {
+                    icon: "🖥️",
+                    title: isZh ? "自行部署" : "Self-Hosted Deployment",
+                    desc: isZh
+                      ? "上帝模式下，你需要自行购置服务器进行部署。平台不提供托管服务，但提供完整的部署文档和技术支持。"
+                      : "In God Mode, you are responsible for purchasing and managing your own server. The platform provides full deployment docs and technical support.",
+                  },
+                ].map((item, i) => (
+                  <div key={i} style={{
+                    display: "flex", gap: "12px",
+                    padding: "14px 16px",
+                    background: BG3, border: `1px solid ${BORDER}`,
+                    borderRadius: "8px",
+                  }}>
+                    <span style={{ fontSize: "18px", flexShrink: 0, marginTop: 1 }}>{item.icon}</span>
+                    <div>
+                      <p style={{ color: WHITE, fontSize: "13px", fontWeight: 600, marginBottom: "4px", fontFamily: "'Inter', sans-serif" }}>{item.title}</p>
+                      <p style={{ color: MUTED2, fontSize: "12px", lineHeight: 1.65, fontFamily: "'Inter', sans-serif" }}>{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* 按钮 */}
+            <div style={{ display: "flex", gap: "12px", justifyContent: "flex-end" }}>
+              <button onClick={onClose} style={{
+                background: "transparent", border: `1px solid ${BORDER}`,
+                borderRadius: "8px", padding: "10px 20px",
+                color: MUTED2, fontSize: "13px", cursor: "pointer",
+                fontFamily: "'Inter', sans-serif",
+              }}>
+                {isZh ? "取消" : "Cancel"}
+              </button>
+              <button style={{
+                background: "#FF6B35", border: "none",
+                borderRadius: "8px", padding: "10px 24px",
+                color: "#fff", fontSize: "13px", fontWeight: 700,
+                cursor: "pointer", fontFamily: "'Inter', sans-serif",
+              }}>
+                {isZh ? "下载代码并开始" : "Download & Start"}
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
