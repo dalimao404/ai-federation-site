@@ -23,6 +23,7 @@ import ChangelogPage from "@/pages/Changelog";
 import ProductHome from "@/pages/product/ProductHome";
 import ProductLive from "@/pages/product/ProductLive";
 import ProductConnect from "@/pages/product/ProductConnect";
+import ProductStation from "@/pages/product/ProductStation";
 
 function Router() {
   return (
@@ -43,6 +44,7 @@ function Router() {
       <Route path="/product" component={ProductHome} />
       <Route path="/product/live" component={ProductLive} />
       <Route path="/product/connect" component={ProductConnect} />
+      <Route path="/product/station" component={ProductStation} />
       <Route component={NotFound} />
     </Switch>
   );

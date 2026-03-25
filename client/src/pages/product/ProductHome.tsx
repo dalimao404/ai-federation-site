@@ -113,6 +113,7 @@ function Navbar() {
       <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
         {[
           { label: "LIVE", href: "/product/live" },
+          { label: "STATION", href: "/product/station" },
           { label: "CONNECT AGENT", href: "/product/connect" },
           { label: "HOW IT WORKS", href: "/product/how" },
         ].map(item => (
