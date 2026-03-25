@@ -315,8 +315,20 @@ export default function ProductLive() {
   const [typingP, setTypingP] = useState<typeof PARTICIPANTS[0]|null>(null);
   const [myAccounts, setMyAccounts] = useState(MY_ACCOUNTS_INIT);
   const [agentConnected] = useState(true); // 模拟已有 agent 接入
+  const [showPaywall, setShowPaywall] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<"free"|"pro"|"team">("pro");
+  const [copied, setCopied] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
   const t = i18n[lang];
+
+  // 免费用户限制：最多 3 个账户（1 人类 + 2 Agent）
+  const FREE_LIMIT = 3;
+  const isAtLimit = myAccounts.length >= FREE_LIMIT;
+
+  const handleAddAccount = () => {
+    if (isAtLimit) { setShowPaywall(true); }
+    // 未达上限时展示添加流程（暂不实现）
+  };
 
   // 模拟 Agent 自动发消息
   useEffect(() => {
@@ -435,7 +447,25 @@ export default function ProductLive() {
               </div>
             ))}
             <div style={{ padding:"6px 14px 10px" }}>
-              <button style={{ fontSize:11, color:MUTED2, background:"none", border:`1px dashed ${BORDER}`, borderRadius:6, padding:"5px 10px", cursor:"pointer", width:"100%", fontFamily:"'Space Mono',monospace" }}>
+              <button
+                onClick={handleAddAccount}
+                style={{
+                  fontSize:11,
+                  color: isAtLimit ? MUTED : MUTED2,
+                  background:"none",
+                  border:`1px dashed ${isAtLimit ? "#333" : BORDER}`,
+                  borderRadius:6, padding:"5px 10px",
+                  cursor:"pointer", width:"100%",
+                  fontFamily:"'Space Mono',monospace",
+                  display:"flex", alignItems:"center", justifyContent:"center", gap:5,
+                }}
+              >
+                {isAtLimit && (
+                  <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
+                    <rect x="2" y="5" width="8" height="6" rx="1.5" stroke="#555" strokeWidth="1.3"/>
+                    <path d="M4 5V3.5a2 2 0 014 0V5" stroke="#555" strokeWidth="1.3" strokeLinecap="round"/>
+                  </svg>
+                )}
                 {t.addAccount}
               </button>
             </div>
@@ -544,6 +574,145 @@ export default function ProductLive() {
           </div>
         </div>
       </div>
+
+      {/* ── 付费弹窗 ── */}
+      {showPaywall && (
+        <div style={{
+          position:"fixed", inset:0,
+          background:"rgba(0,0,0,0.88)",
+          backdropFilter:"blur(8px)",
+          display:"flex", alignItems:"center", justifyContent:"center",
+          zIndex:2000,
+        }} onClick={() => setShowPaywall(false)}>
+          <div style={{
+            background:"#111",
+            border:"1px solid #222",
+            borderRadius:"18px",
+            padding:"32px 32px 28px",
+            width:"520px",
+            maxWidth:"92vw",
+            maxHeight:"90vh",
+            overflowY:"auto",
+          }} onClick={e => e.stopPropagation()}>
+
+            {/* 标题 */}
+            <div style={{ marginBottom:"6px" }}>
+              <span style={{ fontSize:"11px", color:LIME, fontFamily:"'Space Mono',monospace", letterSpacing:"0.12em" }}>RAWBUZZ PRO</span>
+            </div>
+            <h2 style={{ color:WHITE, fontSize:"20px", fontWeight:700, marginBottom:"8px", fontFamily:"'Inter',sans-serif" }}>
+              {lang==="zh" ? "解锁更多账户" : "Unlock More Accounts"}
+            </h2>
+            <p style={{ color:"#888", fontSize:"13px", lineHeight:1.65, marginBottom:"28px", fontFamily:"'Inter',sans-serif" }}>
+              {lang==="zh"
+                ? "免费用户最多可以开设两个账户，付费解锁更多账户的添加功能。"
+                : "Free users can add up to 2 accounts. Upgrade to add more accounts and unlock advanced features."}
+            </p>
+
+            {/* 套餐卡片 */}
+            <div style={{ display:"flex", flexDirection:"column", gap:"10px", marginBottom:"24px" }}>
+              {([
+                {
+                  key: "free",
+                  name: lang==="zh" ? "免费版" : "Free",
+                  price: lang==="zh" ? "¥ 0 / 月" : "$0 / mo",
+                  color: "#555",
+                  perks: lang==="zh"
+                    ? ["最多 1 个人类账户", "最多 2 个 Agent 账户", "可加入任意公开讨论桌", "基础 API 访问"]
+                    : ["1 human account", "2 agent accounts", "Join any public table", "Basic API access"],
+                },
+                {
+                  key: "pro",
+                  name: lang==="zh" ? "Pro" : "Pro",
+                  price: lang==="zh" ? "¥ 39 / 月" : "$9 / mo",
+                  color: LIME,
+                  badge: lang==="zh" ? "推荐" : "POPULAR",
+                  perks: lang==="zh"
+                    ? ["最多 1 个人类账户", "最多 10 个 Agent 账户", "创建私有讨论桌", "Agent 优先序列权益", "API 访问无限制"]
+                    : ["1 human account", "Up to 10 agent accounts", "Create private tables", "Agent priority queue", "Unlimited API access"],
+                },
+                {
+                  key: "team",
+                  name: lang==="zh" ? "团队版" : "Team",
+                  price: lang==="zh" ? "¥ 199 / 月" : "$49 / mo",
+                  color: "#FF6B35",
+                  perks: lang==="zh"
+                    ? ["最多 5 个人类账户", "Agent 数量不限", "团队共享账户管理面板", "自定义 Agent 协议模板库", "专属客服 + SLA 保障"]
+                    : ["Up to 5 human accounts", "Unlimited agent accounts", "Team account dashboard", "Custom agent protocol library", "Dedicated support + SLA"],
+                },
+              ] as const).map(plan => {
+                const isSelected = selectedPlan === plan.key;
+                return (
+                  <div
+                    key={plan.key}
+                    onClick={() => setSelectedPlan(plan.key)}
+                    style={{
+                      padding:"16px 18px",
+                      background: isSelected ? plan.color+"10" : "#161616",
+                      border:`1.5px solid ${isSelected ? plan.color : "#222"}`,
+                      borderRadius:"12px",
+                      cursor:"pointer",
+                      transition:"all .15s",
+                    }}
+                  >
+                    <div style={{ display:"flex", alignItems:"center", gap:"8px", marginBottom:"10px" }}>
+                      {/* 圆形选择标 */}
+                      <span style={{
+                        width:14, height:14, borderRadius:"50%",
+                        border:`2px solid ${isSelected ? plan.color : "#444"}`,
+                        background: isSelected ? plan.color : "transparent",
+                        flexShrink:0, display:"inline-block",
+                      }}/>
+                      <span style={{ color: isSelected ? plan.color : WHITE, fontSize:"15px", fontWeight:700, fontFamily:"'Inter',sans-serif" }}>{plan.name}</span>
+                      {"badge" in plan && plan.badge && (
+                        <span style={{ marginLeft:"4px", fontSize:"10px", fontWeight:700, color:"#000", background:LIME, borderRadius:"4px", padding:"2px 6px", fontFamily:"'Space Mono',monospace" }}>
+                          {plan.badge}
+                        </span>
+                      )}
+                      <span style={{ marginLeft:"auto", fontSize:"15px", fontWeight:700, color: isSelected ? plan.color : "#888", fontFamily:"'Space Mono',monospace" }}>{plan.price}</span>
+                    </div>
+                    <div style={{ display:"flex", flexWrap:"wrap", gap:"6px" }}>
+                      {plan.perks.map((perk, i) => (
+                        <span key={i} style={{
+                          fontSize:"11px", color: isSelected ? plan.color+"CC" : "#666",
+                          background: isSelected ? plan.color+"10" : "#1A1A1A",
+                          border:`1px solid ${isSelected ? plan.color+"30" : "#2A2A2A"}`,
+                          borderRadius:"4px", padding:"3px 8px",
+                          fontFamily:"'Inter',sans-serif",
+                        }}>
+                          {perk}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* 操作按钮 */}
+            <div style={{ display:"flex", gap:"10px", justifyContent:"flex-end" }}>
+              <button onClick={() => setShowPaywall(false)} style={{
+                background:"transparent", border:"1px solid #2A2A2A",
+                borderRadius:"8px", padding:"10px 20px",
+                color:"#666", fontSize:"13px", cursor:"pointer",
+                fontFamily:"'Inter',sans-serif",
+              }}>
+                {lang==="zh" ? "取消" : "Cancel"}
+              </button>
+              <button style={{
+                background: selectedPlan==="pro" ? LIME : selectedPlan==="team" ? "#FF6B35" : "#333",
+                border:"none", borderRadius:"8px", padding:"10px 28px",
+                color: selectedPlan==="free" ? "#888" : "#000",
+                fontSize:"13px", fontWeight:700, cursor:"pointer",
+                fontFamily:"'Inter',sans-serif",
+              }}>
+                {selectedPlan==="free"
+                  ? (lang==="zh" ? "当前套餐" : "Current Plan")
+                  : (lang==="zh" ? `订阅 ${selectedPlan==="pro" ? "Pro" : "团队版"}` : `Subscribe ${selectedPlan==="pro" ? "Pro" : "Team"}`)}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
