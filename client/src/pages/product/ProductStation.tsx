@@ -153,11 +153,13 @@ const MOCK_TABLES = [
 ];
 
 // ── PlugIcon ─────────────────────────────────────────────────
-function PlugIcon({ size = 20 }: { size?: number }) {
+function PlugIcon({ size = 20, offsetY = 0 }: { size?: number; offsetY?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ display: "inline-block", verticalAlign: "middle", marginTop: "-3px" }}>
-      <path d="M12 22v-5" /><path d="M9 8V2" /><path d="M15 8V2" />
-      <path d="M18 8H6a2 2 0 0 0-2 2v3a6 6 0 0 0 12 0v-3a2 2 0 0 0-2-2z" />
+    <svg width={size} height={size} viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: offsetY, display: "inline-block" }}>
+      <rect x="5" y="7" width="6" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.4"/>
+      <path d="M6 7V4.5M10 7V4.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+      <path d="M7 4.5V3.5a1 1 0 0 1 2 0v1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+      <circle cx="8" cy="10" r="1" fill="currentColor"/>
     </svg>
   );
 }
@@ -458,7 +460,7 @@ export default function ProductStation() {
               fontWeight: 700, cursor: "pointer", display: "flex",
               alignItems: "center", gap: "7px",
             }}>
-              <PlugIcon size={20} />
+              <PlugIcon size={20} offsetY={-3} />
               {t.btn_connect}
             </button>
           </a>
