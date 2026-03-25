@@ -164,6 +164,70 @@ function PlugIcon({ size = 20, offsetY = -3 }: { size?: number; offsetY?: number
   );
 }
 
+// ── 自行部署卡片（含复制链接） ──────────────────────────
+function SelfHostCard({ isZh }: { isZh: boolean }) {
+  const DEPLOY_LINK = "https://rawbuzz.io/deploy?token=GODMODE-XXXXXXXX";
+  const [copied, setCopied] = useState(false);
+
+  function handleCopy() {
+    navigator.clipboard.writeText(DEPLOY_LINK).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }
+
+  return (
+    <div style={{ padding: "14px 16px", background: BG3, border: `1px solid ${BORDER}`, borderRadius: "8px" }}>
+      <p style={{ color: WHITE, fontSize: "13px", fontWeight: 600, marginBottom: "6px", fontFamily: "'Inter', sans-serif" }}>
+        {isZh ? "自行部署" : "Self-Hosted Deployment"}
+      </p>
+      <p style={{ color: MUTED2, fontSize: "12px", lineHeight: 1.7, fontFamily: "'Inter', sans-serif", marginBottom: "10px" }}>
+        {isZh
+          ? "在上帝模式下，你需要自行购置服务器进行部署。请发送以下链接给你的 OpenClaw 或其他具有稳定沙盒环境的 Agent，它可以帮助你进行部署。"
+          : "In God Mode, you are responsible for your own server. Send the link below to your OpenClaw or any agent with a stable sandbox environment — it can handle the deployment for you."}
+      </p>
+      {/* 部署链接行 */}
+      <div style={{
+        display: "flex", alignItems: "center", gap: "8px",
+        background: "#000", border: `1px solid ${BORDER}`,
+        borderRadius: "6px", padding: "9px 12px",
+      }}>
+        <span style={{
+          flex: 1, color: ACCENT, fontSize: "11px",
+          fontFamily: "'Space Mono', monospace",
+          overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+        }}>
+          {DEPLOY_LINK}
+        </span>
+        <button
+          onClick={handleCopy}
+          title={isZh ? "复制链接" : "Copy link"}
+          style={{
+            background: "transparent", border: "none",
+            cursor: "pointer", padding: "2px 4px",
+            color: copied ? ACCENT : MUTED2,
+            flexShrink: 0, lineHeight: 1,
+            transition: "color .2s",
+          }}
+        >
+          {copied ? (
+            // 已复制 — 打勾图标
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8l4 4 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          ) : (
+            // 复制图标
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <rect x="5" y="1" width="9" height="11" rx="1.5" stroke="currentColor" strokeWidth="1.4"/>
+              <path d="M3 4H2a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1v-1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+            </svg>
+          )}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // ── 新建讨论组弹窗 ───────────────────────────────────────────
 function CreateTableModal({ lang, onClose }: { lang: "zh" | "en"; onClose: () => void }) {
   const t = T[lang];
@@ -409,46 +473,45 @@ function CreateTableModal({ lang, onClose }: { lang: "zh" | "en"; onClose: () =>
 
             {/* 合规要求 */}
             <div style={{ marginBottom: "24px" }}>
-              <label style={{ display: "block", color: MUTED2, fontSize: "11px", letterSpacing: "0.08em", marginBottom: "12px", fontFamily: "'Inter', sans-serif" }}>
-                {isZh ? "出现在平台列表 & 加入激励计划的要求" : "REQUIREMENTS TO LIST ON PLATFORM & JOIN INCENTIVE PROGRAM"}
-              </label>
+              {/* 区域标题 */}
+              <div style={{
+                background: `${ACCENT}0A`, border: `1px solid ${ACCENT}30`,
+                borderRadius: "8px", padding: "12px 14px", marginBottom: "12px",
+              }}>
+                <p style={{ color: ACCENT, fontSize: "12px", lineHeight: 1.7, fontFamily: "'Inter', sans-serif" }}>
+                  {isZh
+                    ? "注意：您的聊天室可以加入到 RawBuzz 网站的聊天室推荐列表之中，前提是符合以下条件"
+                    : "Note: Your chatroom can appear in the RawBuzz public listing if it meets the following requirements"}
+                </p>
+              </div>
+
               <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                {[
-                  {
-                    icon: "🔗",
-                    title: isZh ? "内置合规钩子" : "Built-in Compliance Hook",
-                    desc: isZh
-                      ? "代码中强制嵌入平台的 API 调用（每条消息发送前调用平台的 moderation endpoint 检查内容）。修改此钩子将无法通过平台验证。"
-                      : "Platform API calls are mandatory in the code (each message must call the platform's moderation endpoint before sending). Removing this hook will fail platform verification.",
-                  },
-                  {
-                    icon: "🔒",
-                    title: isZh ? "版本控制" : "Version Control",
-                    desc: isZh
+                {/* 合规检查 */}
+                <div style={{ padding: "14px 16px", background: BG3, border: `1px solid ${BORDER}`, borderRadius: "8px" }}>
+                  <p style={{ color: WHITE, fontSize: "13px", fontWeight: 600, marginBottom: "6px", fontFamily: "'Inter', sans-serif" }}>
+                    {isZh ? "合规检查" : "Compliance Check"}
+                  </p>
+                  <p style={{ color: MUTED2, fontSize: "12px", lineHeight: 1.7, fontFamily: "'Inter', sans-serif" }}>
+                    {isZh
+                      ? "代码中嵌入 RawBuzz 的 API 调用（每条消息发送前调用平台的 moderation endpoint 检查内容），修改此钩子则无法通过平台验证，并无法出现在公共推荐列表，但是你可以发送私人链接给你的加入者。"
+                      : "Embed RawBuzz API calls in your code (call the platform's moderation endpoint before each message is sent). Modifying this hook will fail platform verification and remove you from the public listing — but you can still share private links with your participants."}
+                  </p>
+                </div>
+
+                {/* 版本控制 */}
+                <div style={{ padding: "14px 16px", background: BG3, border: `1px solid ${BORDER}`, borderRadius: "8px" }}>
+                  <p style={{ color: WHITE, fontSize: "13px", fontWeight: 600, marginBottom: "6px", fontFamily: "'Inter', sans-serif" }}>
+                    {isZh ? "版本控制" : "Version Control"}
+                  </p>
+                  <p style={{ color: MUTED2, fontSize: "12px", lineHeight: 1.7, fontFamily: "'Inter', sans-serif" }}>
+                    {isZh
                       ? "平台维护官方代码仓库，你必须基于最新版 fork。平台 API 只接受官方签名版本的上报，私自修改签名将被拒绝。"
-                      : "The platform maintains the official repo. You must fork from the latest version. The platform API only accepts reports from officially signed builds.",
-                  },
-                  {
-                    icon: "🖥️",
-                    title: isZh ? "自行部署" : "Self-Hosted Deployment",
-                    desc: isZh
-                      ? "上帝模式下，你需要自行购置服务器进行部署。平台不提供托管服务，但提供完整的部署文档和技术支持。"
-                      : "In God Mode, you are responsible for purchasing and managing your own server. The platform provides full deployment docs and technical support.",
-                  },
-                ].map((item, i) => (
-                  <div key={i} style={{
-                    display: "flex", gap: "12px",
-                    padding: "14px 16px",
-                    background: BG3, border: `1px solid ${BORDER}`,
-                    borderRadius: "8px",
-                  }}>
-                    <span style={{ fontSize: "18px", flexShrink: 0, marginTop: 1 }}>{item.icon}</span>
-                    <div>
-                      <p style={{ color: WHITE, fontSize: "13px", fontWeight: 600, marginBottom: "4px", fontFamily: "'Inter', sans-serif" }}>{item.title}</p>
-                      <p style={{ color: MUTED2, fontSize: "12px", lineHeight: 1.65, fontFamily: "'Inter', sans-serif" }}>{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
+                      : "The platform maintains the official repo. You must fork from the latest version. The platform API only accepts reports from officially signed builds; unauthorized signature modifications will be rejected."}
+                  </p>
+                </div>
+
+                {/* 自行部署 */}
+                <SelfHostCard isZh={isZh} />
               </div>
             </div>
 
