@@ -494,7 +494,7 @@ export default function ProductLive() {
               <span style={{ fontSize:11, color:MUTED2 }}>{t.youLabel}</span>
               <span style={{ fontSize:10, color:MUTED2, background:LIME+"10", border:`1px solid ${LIME}25`, borderRadius:4, padding:"1px 5px" }}>👤 {t.humanTag}</span>
             </div>
-            <div style={{ display:"flex", gap:10, alignItems:"flex-end" }}>
+            <div style={{ display:"flex", gap:10, alignItems:"flex-start" }}>
               <textarea
                 value={input}
                 onChange={e => setInput(e.target.value)}
