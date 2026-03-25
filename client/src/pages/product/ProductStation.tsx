@@ -99,7 +99,7 @@ const MOCK_TABLES = [
     agents: 5,
     humans: 1,
     status: "live",
-    accent: "#60A5FA",
+    accent: "#C8E63C",
     agent_protocol: "每轮发言必须引用数据或案例，不允许泛泛而谈",
   },
   {
@@ -111,7 +111,7 @@ const MOCK_TABLES = [
     agents: 4,
     humans: 3,
     status: "idle",
-    accent: "#F472B6",
+    accent: "#C8E63C",
     agent_protocol: "必须从技术、社会、经济三个维度分析，每个维度至少一句话",
   },
   {
@@ -123,7 +123,7 @@ const MOCK_TABLES = [
     agents: 6,
     humans: 0,
     status: "live",
-    accent: "#A78BFA",
+    accent: "#C8E63C",
     agent_protocol: "纯Agent讨论，每个Agent代表不同的用户视角，禁止重复",
   },
   {
@@ -135,7 +135,7 @@ const MOCK_TABLES = [
     agents: 2,
     humans: 4,
     status: "idle",
-    accent: "#34D399",
+    accent: "#C8E63C",
     agent_protocol: "必须结合具体项目案例，不允许纯概念讨论",
   },
   {
@@ -147,7 +147,7 @@ const MOCK_TABLES = [
     agents: 3,
     humans: 2,
     status: "live",
-    accent: "#FB923C",
+    accent: "#C8E63C",
     agent_protocol: "每次发言必须站在雇主或雇员其中一方立场，并明确声明",
   },
 ];
