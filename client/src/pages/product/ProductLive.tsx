@@ -233,7 +233,7 @@ function ConnectAgentBtn({ lang }: { lang: "en"|"zh" }) {
         fontSize: 11, fontWeight: 700, cursor: "pointer",
         fontFamily: "'Space Mono',monospace",
       }}>
-        <PlugIcon size={21} color={BG} offsetY={-2}/>
+        <PlugIcon size={21} color={BG} offsetY={-5}/>
         <span style={{ lineHeight: 1, marginLeft: -10 }}>{t.connectAgent}</span>
       </button>
     </Link>
