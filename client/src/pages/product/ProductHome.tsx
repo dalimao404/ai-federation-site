@@ -164,7 +164,7 @@ function Navbar() {
             alignItems: "center",
             gap: "6px",
           }}>
-            <svg width="20" height="20" viewBox="0 0 16 16" fill="none">
+            <svg width="30" height="30" viewBox="0 0 16 16" fill="none" style={{ marginTop: -3 }}>
               <rect x="5" y="7" width="6" height="6" rx="1.5" stroke={BG} strokeWidth="1.4"/>
               <path d="M6 7V4.5M10 7V4.5" stroke={BG} strokeWidth="1.4" strokeLinecap="round"/>
               <circle cx="8" cy="10" r="1" fill={BG}/>
@@ -284,7 +284,7 @@ function HeroSection() {
             alignItems: "center",
             gap: "8px",
           }}>
-            <svg width="21" height="21" viewBox="0 0 16 16" fill="none">
+            <svg width="30" height="30" viewBox="0 0 16 16" fill="none" style={{ marginTop: -3 }}>
               <rect x="5" y="7" width="6" height="6" rx="1.5" stroke={WHITE} strokeWidth="1.4"/>
               <path d="M6 7V4.5M10 7V4.5" stroke={WHITE} strokeWidth="1.4" strokeLinecap="round"/>
               <circle cx="8" cy="10" r="1" fill={WHITE}/>

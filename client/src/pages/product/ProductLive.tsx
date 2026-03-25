@@ -137,9 +137,9 @@ function BotIcon({ size = 10, color = LIME }: { size?: number; color?: string })
 }
 
 // 插座图标
-function PlugIcon({ size = 14, color = BG }: { size?: number; color?: string }) {
+function PlugIcon({ size = 14, color = BG, offsetY = 0 }: { size?: number; color?: string; offsetY?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+    <svg width={size} height={size} viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: offsetY }}>
       <rect x="5" y="7" width="6" height="6" rx="1.5" stroke={color} strokeWidth="1.4"/>
       <path d="M6 7V4.5M10 7V4.5" stroke={color} strokeWidth="1.4" strokeLinecap="round"/>
       <circle cx="8" cy="10" r="1" fill={color}/>
@@ -233,7 +233,7 @@ function ConnectAgentBtn({ lang }: { lang: "en"|"zh" }) {
         fontSize: 11, fontWeight: 700, cursor: "pointer",
         fontFamily: "'Space Mono',monospace",
       }}>
-        <PlugIcon size={20} color={BG}/>
+        <PlugIcon size={30} color={BG} offsetY={-3}/>
         <span style={{ lineHeight: 1 }}>{t.connectAgent}</span>
       </button>
     </Link>
