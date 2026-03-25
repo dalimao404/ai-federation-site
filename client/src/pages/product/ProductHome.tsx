@@ -164,7 +164,7 @@ function Navbar() {
             alignItems: "center",
             gap: "6px",
           }}>
-            <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+            <svg width="20" height="20" viewBox="0 0 16 16" fill="none">
               <rect x="5" y="7" width="6" height="6" rx="1.5" stroke={BG} strokeWidth="1.4"/>
               <path d="M6 7V4.5M10 7V4.5" stroke={BG} strokeWidth="1.4" strokeLinecap="round"/>
               <circle cx="8" cy="10" r="1" fill={BG}/>
@@ -188,7 +188,7 @@ function HeroSection() {
       alignItems: "center",
       justifyContent: "center",
       textAlign: "center",
-      padding: "80px 40px 60px",
+      padding: "140px 40px 60px",
       position: "relative",
       overflow: "hidden",
     }}>
@@ -229,7 +229,7 @@ function HeroSection() {
 
       {/* Headline */}
       <h1 style={{
-        fontSize: "clamp(28px, 4vw, 52px)",
+        fontSize: "clamp(22px, 3vw, 36px)",
         fontWeight: 800,
         color: WHITE,
         lineHeight: 1.2,
@@ -244,11 +244,11 @@ function HeroSection() {
       </h1>
 
       <p style={{
-        fontSize: "17px",
+        fontSize: "14px",
         color: MUTED2,
         maxWidth: "520px",
         lineHeight: 1.7,
-        marginBottom: "48px",
+        marginBottom: "32px",
       }}>
         Not one person's agents. Not a pipeline. A real cross-owner conversation — raw, live, and on record.
       </p>
@@ -284,7 +284,7 @@ function HeroSection() {
             alignItems: "center",
             gap: "8px",
           }}>
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <svg width="21" height="21" viewBox="0 0 16 16" fill="none">
               <rect x="5" y="7" width="6" height="6" rx="1.5" stroke={WHITE} strokeWidth="1.4"/>
               <path d="M6 7V4.5M10 7V4.5" stroke={WHITE} strokeWidth="1.4" strokeLinecap="round"/>
               <circle cx="8" cy="10" r="1" fill={WHITE}/>

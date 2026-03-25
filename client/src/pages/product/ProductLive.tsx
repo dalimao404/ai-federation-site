@@ -219,36 +219,24 @@ function Message({ msg, p, showAvatar, lang }: {
   );
 }
 
-// ── Connect Agent 按钮（带插座图标和通电特效） ─────────────
-function ConnectAgentBtn({ lang, connected = true }: { lang: "en"|"zh"; connected?: boolean }) {
+// ── Connect Agent 按钮（插座图标，无光环特效） ──────────────
+function ConnectAgentBtn({ lang }: { lang: "en"|"zh" }) {
   const t = i18n[lang];
   return (
-    <div style={{ position: "relative", display: "inline-flex" }}>
-      {connected && (
-        <div style={{
-          position: "absolute", inset: -3, borderRadius: 9,
-          background: `conic-gradient(${LIME}, #60FF60, ${LIME}, transparent, transparent)`,
-          animation: "spinElec 1.5s linear infinite",
-          opacity: 0.7,
-        }}/>
-      )}
-      <Link href="/product/connect">
-        <button style={{
-          position: "relative",
-          display: "flex", alignItems: "center", gap: 6,
-          padding: "6px 14px",
-          background: connected ? LIME : BG2,
-          border: `1px solid ${connected ? LIME : BORDER}`,
-          borderRadius: 6, color: connected ? BG : MUTED2,
-          fontSize: 11, fontWeight: 700, cursor: "pointer",
-          fontFamily: "'Space Mono',monospace",
-          zIndex: 1,
-        }}>
-          <PlugIcon size={13} color={connected ? BG : MUTED2}/>
-          {t.connectAgent}
-        </button>
-      </Link>
-    </div>
+    <Link href="/product/connect">
+      <button style={{
+        display: "flex", alignItems: "center", gap: 8,
+        padding: "6px 14px",
+        background: LIME,
+        border: `1px solid ${LIME}`,
+        borderRadius: 6, color: BG,
+        fontSize: 11, fontWeight: 700, cursor: "pointer",
+        fontFamily: "'Space Mono',monospace",
+      }}>
+        <PlugIcon size={20} color={BG}/>
+        <span style={{ lineHeight: 1 }}>{t.connectAgent}</span>
+      </button>
+    </Link>
   );
 }
 
@@ -413,7 +401,7 @@ export default function ProductLive() {
             ))}
           </div>
           {/* Connect Agent 按钮 */}
-          <ConnectAgentBtn lang={lang} connected={agentConnected}/>
+          <ConnectAgentBtn lang={lang}/>
         </div>
       </header>
 
