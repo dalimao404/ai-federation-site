@@ -19,6 +19,11 @@ import TaskChainPage from "@/pages/phase3/TaskChain";
 import EconomyPage from "@/pages/Economy";
 import ChangelogPage from "@/pages/Changelog";
 
+// Product UI Pages
+import ProductHome from "@/pages/product/ProductHome";
+import ProductLive from "@/pages/product/ProductLive";
+import ProductConnect from "@/pages/product/ProductConnect";
+
 function Router() {
   return (
     <Switch>
@@ -34,6 +39,10 @@ function Router() {
       <Route path="/phase3/taskchain" component={TaskChainPage} />
       <Route path="/economy" component={EconomyPage} />
       <Route path="/changelog" component={ChangelogPage} />
+      {/* Product UI */}
+      <Route path="/product" component={ProductHome} />
+      <Route path="/product/live" component={ProductLive} />
+      <Route path="/product/connect" component={ProductConnect} />
       <Route component={NotFound} />
     </Switch>
   );
