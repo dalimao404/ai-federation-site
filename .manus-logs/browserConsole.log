@@ -667,3 +667,35 @@
 [2026-03-25T22:24:50.041Z] {"timestamp":1774477488026,"level":"DEBUG","args":["[Manus] Debug collector initialized (no rrweb, UI events only)"],"stack":null}
 [2026-03-25T22:24:50.041Z] {"timestamp":1774477488077,"level":"DEBUG","args":["[vite] connected."],"stack":null}
 [2026-03-25T22:24:50.041Z] {"timestamp":1774477488247,"level":"INFO","args":["%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools","font-weight:bold"],"stack":null}
+[2026-03-25T22:29:07.514Z] {"timestamp":1774477745401,"level":"DEBUG","args":["[Manus] Debug collector initialized (no rrweb, UI events only)"],"stack":null}
+[2026-03-25T22:29:07.514Z] {"timestamp":1774477745737,"level":"INFO","args":["%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools","font-weight:bold"],"stack":null}
+[2026-03-25T22:29:07.514Z] {"timestamp":1774477746305,"level":"DEBUG","args":["[vite] connected."],"stack":null}
+[2026-03-25T22:29:52.338Z] {"timestamp":1774477791452,"level":"LOG","args":["[vite] server connection lost. Polling for restart..."],"stack":null}
+[2026-03-25T22:29:55.333Z] {"timestamp":1774477793135,"level":"DEBUG","args":["[Manus] Debug collector initialized (no rrweb, UI events only)"],"stack":null}
+[2026-03-25T22:29:55.333Z] {"timestamp":1774477793654,"level":"DEBUG","args":["[vite] connected."],"stack":null}
+[2026-03-25T22:29:55.333Z] {"timestamp":1774477794134,"level":"INFO","args":["%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools","font-weight:bold"],"stack":null}
+[2026-03-25T22:31:48.693Z] {"timestamp":1774477906581,"level":"DEBUG","args":["[Manus] Debug collector initialized (no rrweb, UI events only)"],"stack":null}
+[2026-03-25T22:31:48.693Z] {"timestamp":1774477906928,"level":"INFO","args":["%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools","font-weight:bold"],"stack":null}
+[2026-03-25T22:31:48.693Z] {"timestamp":1774477907470,"level":"DEBUG","args":["[vite] connected."],"stack":null}
+[2026-03-25T22:33:46.041Z] {"timestamp":1774478024863,"level":"DEBUG","args":["[vite]","hot updated: /src/pages/product/ProductConnect.tsx"],"stack":null}
+[2026-03-25T22:33:46.041Z] {"timestamp":1774478024865,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-03-25T22:33:46.690Z] {"timestamp":1774478024867,"level":"DEBUG","args":["[vite]","hot updated: /src/pages/product/ProductConnect.tsx"],"stack":null}
+[2026-03-25T22:33:46.690Z] {"timestamp":1774478024867,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-03-25T22:33:51.528Z] {"timestamp":1774478024961,"level":"DEBUG","args":["[vite]","hot updated: /src/pages/product/ProductConnect.tsx"],"stack":null}
+[2026-03-25T22:33:51.528Z] {"timestamp":1774478024961,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-03-25T22:33:52.043Z] {"timestamp":1774478032004,"level":"DEBUG","args":["[vite]","hot updated: /src/pages/product/ProductConnect.tsx"],"stack":null}
+[2026-03-25T22:33:52.043Z] {"timestamp":1774478032006,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-03-25T22:33:52.690Z] {"timestamp":1774478032107,"level":"DEBUG","args":["[vite]","hot updated: /src/pages/product/ProductConnect.tsx"],"stack":null}
+[2026-03-25T22:33:52.690Z] {"timestamp":1774478032107,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-03-25T22:33:58.042Z] {"timestamp":1774478037496,"level":"DEBUG","args":["[vite]","hot updated: /src/pages/product/ProductConnect.tsx"],"stack":null}
+[2026-03-25T22:33:58.042Z] {"timestamp":1774478037499,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-03-25T22:33:58.705Z] {"timestamp":1774478037615,"level":"DEBUG","args":["[vite]","hot updated: /src/pages/product/ProductConnect.tsx"],"stack":null}
+[2026-03-25T22:33:58.705Z] {"timestamp":1774478037615,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-03-25T22:34:04.689Z] {"timestamp":1774478044269,"level":"DEBUG","args":["[vite]","hot updated: /src/pages/product/ProductConnect.tsx"],"stack":null}
+[2026-03-25T22:34:04.689Z] {"timestamp":1774478044269,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-03-25T22:34:06.043Z] {"timestamp":1774478044159,"level":"DEBUG","args":["[vite]","hot updated: /src/pages/product/ProductConnect.tsx"],"stack":null}
+[2026-03-25T22:34:06.043Z] {"timestamp":1774478044161,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-03-25T22:34:10.690Z] {"timestamp":1774478050474,"level":"DEBUG","args":["[vite]","hot updated: /src/pages/product/ProductConnect.tsx"],"stack":null}
+[2026-03-25T22:34:10.690Z] {"timestamp":1774478050474,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-03-25T22:34:12.045Z] {"timestamp":1774478050391,"level":"DEBUG","args":["[vite]","hot updated: /src/pages/product/ProductConnect.tsx"],"stack":null}
+[2026-03-25T22:34:12.045Z] {"timestamp":1774478050392,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}

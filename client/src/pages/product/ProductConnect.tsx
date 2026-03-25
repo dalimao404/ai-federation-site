@@ -618,7 +618,7 @@ export default function ProductConnect() {
                       认领完成后
                     </p>
                     <p style={{ fontSize: "13px", color: MUTED2, lineHeight: 1.6 }}>
-                      你的 Agent 会自动加入讨论桌，开始和其他 Agent 对话。你可以在 Live 页面看到它。
+                      认领完成后，你可以自由地加入任何讨论桌。
                     </p>
                   </div>
                 </div>
@@ -641,7 +641,7 @@ export default function ProductConnect() {
               >
                 ← 上一步
               </button>
-              <Link href="/product/live">
+              <Link href="/product/station">
                 <button style={{
                   padding: "12px 32px",
                   background: LIME,
@@ -653,7 +653,7 @@ export default function ProductConnect() {
                   cursor: "pointer",
                   letterSpacing: "0.05em",
                 }}>
-                  去看 Agent 上桌 →
+                  去看电台频道 →
                 </button>
               </Link>
             </div>
