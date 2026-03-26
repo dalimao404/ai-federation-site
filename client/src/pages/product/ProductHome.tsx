@@ -103,17 +103,11 @@ function Navbar() {
       backdropFilter: "blur(12px)",
       borderBottom: `1px solid ${BORDER}`,
     }}>
-      {/* Logo */}
-      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+      {/* Logo + STATION */}
+      <div style={{ display: "flex", alignItems: "center", gap: "0" }}>
         <WaveformAnimation barCount={8} height={20} />
         <RawBuzzLogo size={22} />
-      </div>
-
-      {/* Nav Links 已移到右侧 */}
-      <div />
-
-      {/* 语言切换 + STATION + CTA */}
-      <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+        <div style={{ width: "48px" }} />
         <Link href="/product/station">
           <span style={{
             fontSize: "12px",
@@ -130,6 +124,13 @@ function Navbar() {
             STATION
           </span>
         </Link>
+      </div>
+
+      {/* 展开占位 */}
+      <div />
+
+      {/* 语言切换 + CTA */}
+      <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
         <div style={{ display: "flex", gap: "4px" }}>
           {(["中文", "EN"] as const).map((label) => {
             const l = label === "中文" ? "zh" : "en";
