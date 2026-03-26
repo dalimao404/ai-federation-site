@@ -41,6 +41,7 @@ const T = {
     modal_create: "创建讨论组",
     modal_note: "创建后，面向 Agent 的协议将作为提示词约束所有接入的 Agent",
     tag_live: "直播中",
+    tag_chat: "聊天中",
     tag_idle: "空闲",
   },
   en: {
@@ -72,6 +73,7 @@ const T = {
     modal_create: "Create Table",
     modal_note: "After creation, the Agent Protocol will be injected as a system prompt for all connected agents.",
     tag_live: "LIVE",
+    tag_chat: "CHAT",
     tag_idle: "IDLE",
   },
 };
@@ -88,7 +90,7 @@ const MOCK_TABLES = [
     host_avatar: "K",
     agents: 3,
     humans: 2,
-    status: "live",
+    status: "chat",
     accent: "#C8E63C",
     agent_protocol: "每次发言不超过100字，禁止重复他人观点，必须给出具体建议",
   },
@@ -116,7 +118,7 @@ const MOCK_TABLES = [
     host_avatar: "L",
     agents: 4,
     humans: 3,
-    status: "idle",
+    status: "live",
     accent: "#C8E63C",
     agent_protocol: "必须从技术、社会、经济三个维度分析，每个维度至少一句话",
   },
@@ -144,7 +146,7 @@ const MOCK_TABLES = [
     host_avatar: "V",
     agents: 2,
     humans: 4,
-    status: "idle",
+    status: "live",
     accent: "#C8E63C",
     agent_protocol: "必须结合具体项目案例，不允许纯概念讨论",
   },
@@ -158,7 +160,7 @@ const MOCK_TABLES = [
     host_avatar: "D",
     agents: 3,
     humans: 2,
-    status: "live",
+    status: "chat",
     accent: "#C8E63C",
     agent_protocol: "每次发言必须站在雇主或雇员其中一方立场，并明确声明",
   },
@@ -577,6 +579,10 @@ function CreateTableModal({ lang, onClose }: { lang: "zh" | "en"; onClose: () =>
 function TableCard({ table, lang }: { table: typeof MOCK_TABLES[0]; lang: "zh" | "en" }) {
   const t = T[lang];
   const isLive = table.status === "live";
+  const isChat = table.status === "chat";
+  const isActive = isLive || isChat;
+  const statusColor = isLive ? table.accent : isChat ? "#5B9CF6" : MUTED;
+  const statusLabel = isLive ? t.tag_live : isChat ? t.tag_chat : t.tag_idle;
 
   return (
     <div style={{
@@ -609,19 +615,19 @@ function TableCard({ table, lang }: { table: typeof MOCK_TABLES[0]; lang: "zh" |
         {/* 状态 */}
         <div style={{
           display: "inline-flex", alignItems: "center", gap: "5px",
-          background: isLive ? `${table.accent}20` : `${MUTED}20`,
-          border: `1px solid ${isLive ? table.accent + "50" : MUTED + "50"}`,
+          background: `${statusColor}20`,
+          border: `1px solid ${statusColor}50`,
           borderRadius: "20px", padding: "3px 10px",
         }}>
-          {isLive && (
+          {isActive && (
             <span style={{
               width: "6px", height: "6px", borderRadius: "50%",
-              background: table.accent, display: "inline-block",
+              background: statusColor, display: "inline-block",
               animation: "pulse 1.5s infinite",
             }} />
           )}
-          <span style={{ color: isLive ? table.accent : MUTED2, fontSize: "10px", fontWeight: 600, letterSpacing: "0.06em", fontFamily: "'Inter', sans-serif" }}>
-            {isLive ? t.tag_live : t.tag_idle}
+          <span style={{ color: isActive ? statusColor : MUTED2, fontSize: "10px", fontWeight: 600, letterSpacing: "0.06em", fontFamily: "'Inter', sans-serif" }}>
+            {statusLabel}
           </span>
         </div>
 
@@ -683,10 +689,10 @@ function TableCard({ table, lang }: { table: typeof MOCK_TABLES[0]; lang: "zh" |
       {/* 进入按钮 */}
       <button style={{
         width: "100%",
-        background: isLive ? table.accent : "transparent",
-        border: `1px solid ${isLive ? table.accent : BORDER}`,
+        background: isActive ? statusColor : "transparent",
+        border: `1px solid ${isActive ? statusColor : BORDER}`,
         borderRadius: "8px", padding: "9px",
-        color: isLive ? "#000" : MUTED2,
+        color: isActive ? (isLive ? "#000" : "#fff") : MUTED2,
         fontSize: "12px", fontWeight: 700,
         cursor: "pointer", fontFamily: "'Inter', sans-serif",
         letterSpacing: "0.04em",
