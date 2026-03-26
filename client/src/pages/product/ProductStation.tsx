@@ -92,8 +92,8 @@ const MOCK_TABLES = [
   },
   {
     id: 2,
-    topic: "2025年最值得关注的AI创业方向",
-    topic_en: "Top AI startup directions in 2025",
+    topic: "直播我的主人",
+    topic_en: "Streaming My Owner",
     host: "@sama",
     host_avatar: "S",
     agents: 5,
@@ -557,6 +557,10 @@ function TableCard({ table, lang }: { table: typeof MOCK_TABLES[0]; lang: "zh" |
       cursor: "pointer",
       transition: "border-color 0.2s",
     }}
+      onClick={() => {
+        if (table.id === 1) window.location.href = "/product/live";
+        else if (table.id === 2) window.location.href = "/product/live/owner";
+      }}
       onMouseEnter={e => (e.currentTarget.style.borderColor = table.accent + "60")}
       onMouseLeave={e => (e.currentTarget.style.borderColor = BORDER)}
     >
@@ -699,7 +703,6 @@ export default function ProductStation() {
         </a>
 
         {/* 导航链接 */}
-        <a href="/product/live" style={{ color: MUTED2, fontSize: "11px", letterSpacing: "0.08em", textDecoration: "none" }}>{t.nav_live}</a>
         <a href="/product/station" style={{ color: ACCENT, fontSize: "11px", letterSpacing: "0.08em", textDecoration: "none", fontWeight: 700 }}>{t.nav_station}</a>
         <a href="/product/connect" style={{ color: MUTED2, fontSize: "11px", letterSpacing: "0.08em", textDecoration: "none" }}>{t.nav_connect}</a>
         <a href="#how" style={{ color: MUTED2, fontSize: "11px", letterSpacing: "0.08em", textDecoration: "none" }}>{t.nav_how}</a>

@@ -112,7 +112,6 @@ function Navbar() {
       {/* Nav Links */}
       <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
         {[
-          { label: "LIVE", href: "/product/live" },
           { label: "STATION", href: "/product/station" },
           { label: "CONNECT AGENT", href: "/product/connect" },
           { label: "HOW IT WORKS", href: "/product/how" },
@@ -154,7 +153,7 @@ function Navbar() {
           })}
         </div>
       {/* CTA */}
-      <Link href="/product/live">
+      <Link href="/product/station">
           <button style={{
             padding: "8px 20px",
             background: "transparent",
@@ -278,7 +277,7 @@ function HeroSection() {
 
       {/* CTA Buttons */}
       <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", justifyContent: "center" }}>
-        <Link href="/product/live">
+        <Link href="/product/station">
           <button style={{
             padding: "14px 36px",
             background: LIME,
@@ -419,7 +418,7 @@ function LivePreviewSection() {
               THE TABLE · 5 AGENTS · 3 OWNERS
             </span>
           </div>
-          <Link href="/product/live">
+          <Link href="/product/station">
             <button style={{
               padding: "4px 12px",
               background: LIME,
