@@ -334,9 +334,53 @@ function LiveVideoPanel({ lang }: { lang: "en"|"zh" }) {
       </div>
     </div>
   );
+}// ── 群规定模块（与 ProductLive 完全一致）─────────────────────────────────
+function OwnerRulesPanel({ lang }: { lang: "en"|"zh" }) {
+  const [expanded, setExpanded] = useState(false);
+  const t = i18n[lang];
+  const COLLAPSE_LINES = 3;
+  const visibleRules = expanded ? t.rules : t.rules.slice(0, COLLAPSE_LINES);
+  const hasMore = t.rules.length > COLLAPSE_LINES;
+
+  return (
+    <div style={{ padding: "14px 16px", borderBottom: `1px solid ${BORDER}` }}>
+      <div style={{ fontSize:10, color:MUTED, letterSpacing:"0.12em", fontFamily:"'Space Mono',monospace", textTransform:"uppercase", marginBottom:10 }}>
+        {t.rulesTitle}
+      </div>
+
+      {/* Agent 必读：黄绿色卡片 */}
+      <div style={{ background: LIME+"0D", border:`1px solid ${LIME}25`, borderRadius:6, padding:"8px 10px", marginBottom:10 }}>
+        <div style={{ fontSize:10, color:LIME, fontWeight:700, letterSpacing:"0.08em", marginBottom:4 }}>{t.rulesAgentLabel}</div>
+        <a href={t.rulesAgentLink} target="_blank" rel="noreferrer" style={{ fontSize:11, color:LIME, textDecoration:"underline", wordBreak:"break-all" }}>
+          {t.rulesAgentLink}
+        </a>
+      </div>
+
+      {/* 人类可读版 */}
+      <div style={{ fontSize:10, color:MUTED2, marginBottom:6 }}>{t.rulesHumanLabel}</div>
+      <div style={{ overflow: expanded ? "auto" : "hidden", maxHeight: expanded ? "240px" : "auto" }}>
+        {visibleRules.map((rule, i) => (
+          <div key={i} style={{ display:"flex", gap:6, marginBottom:5, alignItems:"flex-start" }}>
+            <span style={{ color:LIME, fontSize:11, flexShrink:0, marginTop:1 }}>{i+1}.</span>
+            <span style={{ fontSize:11, color:MUTED2, lineHeight:1.55 }}>{rule}</span>
+          </div>
+        ))}
+      </div>
+
+      {hasMore && (
+        <button onClick={() => setExpanded(!expanded)} style={{
+          marginTop:6, background:"none", border:"none",
+          color:LIME, fontSize:11, cursor:"pointer",
+          fontFamily:"'Space Mono',monospace", padding:0,
+        }}>
+          {expanded ? t.showLess : t.showMore} {expanded ? "↑" : "↓"}
+        </button>
+      )}
+    </div>
+  );
 }
 
-// ── 主组件 ────────────────────────────────────────────────
+// ── 主组件 ────────────────────────────────────────────────────────
 export default function ProductLiveOwner() {
   const [lang, setLang] = useState<"en"|"zh">("zh");
   const [input, setInput] = useState("");
@@ -573,30 +617,8 @@ export default function ProductLiveOwner() {
 
         {/* ── 右栏：群规定 + 会话信息 ── */}
         <div style={{ width:220, borderLeft:`1px solid ${BORDER}`, display:"flex", flexDirection:"column", flexShrink:0, overflow:"auto" }}>
-          {/* 群规定 */}
-          <div style={{ padding:"14px 16px", borderBottom:`1px solid ${BORDER}` }}>
-            <span style={{ fontSize:10, color:MUTED, letterSpacing:"0.15em", fontFamily:"'Space Mono',monospace", textTransform:"uppercase" }}>
-              {t.rulesTitle}
-            </span>
-            <div style={{ marginTop:10, display:"flex", flexDirection:"column", gap:6 }}>
-              {t.rules.map((rule, i) => (
-                <div key={i} style={{ display:"flex", gap:8, alignItems:"flex-start" }}>
-                  <span style={{ fontSize:10, color:MUTED, flexShrink:0, marginTop:2 }}>{i+1}.</span>
-                  <span style={{ fontSize:12, color:MUTED2, lineHeight:1.5 }}>{rule}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          {/* Agent 链接 */}
-          <div style={{ padding:"12px 16px", borderBottom:`1px solid ${BORDER}` }}>
-            <div style={{ fontSize:10, color:MUTED, letterSpacing:"0.12em", fontFamily:"'Space Mono',monospace", textTransform:"uppercase", marginBottom:8 }}>
-              {t.rulesAgentLabel}
-            </div>
-            <a href={t.rulesAgentLink} target="_blank" rel="noreferrer" style={{
-              display:"block", fontSize:11, color:LIME,
-              wordBreak:"break-all", lineHeight:1.4,
-            }}>{t.rulesAgentLink}</a>
-          </div>
+          {/* 群规定（与 ProductLive 统一样式）*/}
+          <OwnerRulesPanel lang={lang} />
           {/* 会话统计 */}
           <div style={{ padding:"12px 16px" }}>
             <div style={{ fontSize:10, color:MUTED, letterSpacing:"0.12em", fontFamily:"'Space Mono',monospace", textTransform:"uppercase", marginBottom:10 }}>
