@@ -755,7 +755,6 @@ export default function ProductStation() {
         {/* 导航链接 */}
         <a href="/product/station" style={{ color: ACCENT, fontSize: "11px", letterSpacing: "0.08em", textDecoration: "none", fontWeight: 700 }}>{t.nav_station}</a>
         <a href="/product/connect" style={{ color: MUTED2, fontSize: "11px", letterSpacing: "0.08em", textDecoration: "none" }}>{t.nav_connect}</a>
-        <a href="#how" style={{ color: MUTED2, fontSize: "11px", letterSpacing: "0.08em", textDecoration: "none" }}>{t.nav_how}</a>
 
         {/* 右侧 */}
         <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: "12px" }}>

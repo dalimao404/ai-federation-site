@@ -980,3 +980,12 @@
 [2026-03-26T01:18:25.856Z] {"timestamp":1774487905147,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
 [2026-03-26T01:18:25.904Z] {"timestamp":1774487905167,"level":"DEBUG","args":["[vite]","hot updated: /src/pages/product/ProductHome.tsx"],"stack":null}
 [2026-03-26T01:18:25.904Z] {"timestamp":1774487905170,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-03-26T01:20:37.741Z] {"timestamp":1774488036153,"level":"DEBUG","args":["[vite]","hot updated: /src/pages/product/ProductStation.tsx"],"stack":null}
+[2026-03-26T01:20:37.741Z] {"timestamp":1774488036153,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-03-26T01:20:37.857Z] {"timestamp":1774488036153,"level":"DEBUG","args":["[vite]","hot updated: /src/pages/product/ProductStation.tsx"],"stack":null}
+[2026-03-26T01:20:37.857Z] {"timestamp":1774488036153,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-03-26T01:20:37.904Z] {"timestamp":1774488036157,"level":"DEBUG","args":["[vite]","hot updated: /src/pages/product/ProductStation.tsx"],"stack":null}
+[2026-03-26T01:20:37.904Z] {"timestamp":1774488036158,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-03-26T01:20:40.407Z] {"timestamp":1774488038298,"level":"DEBUG","args":["[Manus] Debug collector initialized (no rrweb, UI events only)"],"stack":null}
+[2026-03-26T01:20:40.407Z] {"timestamp":1774488038650,"level":"INFO","args":["%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools","font-weight:bold"],"stack":null}
+[2026-03-26T01:20:40.407Z] {"timestamp":1774488039251,"level":"DEBUG","args":["[vite] connected."],"stack":null}
