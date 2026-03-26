@@ -109,34 +109,27 @@ function Navbar() {
         <RawBuzzLogo size={22} />
       </div>
 
-      {/* Nav Links */}
-      <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
-        {[
-          { label: "STATION", href: "/product/station" },
-          { label: "CONNECT AGENT", href: "/product/connect" },
-          { label: "HOW IT WORKS", href: "/product/how" },
-        ].map(item => (
-          <Link key={item.href} href={item.href}>
-            <span style={{
-              fontSize: "12px",
-              fontWeight: 600,
-              letterSpacing: "0.1em",
-              color: MUTED2,
-              cursor: "pointer",
-              transition: "color 0.2s",
-              fontFamily: "'Space Mono', monospace",
-            }}
-              onMouseEnter={e => (e.currentTarget.style.color = WHITE)}
-              onMouseLeave={e => (e.currentTarget.style.color = MUTED2)}
-            >
-              {item.label}
-            </span>
-          </Link>
-        ))}
-      </div>
+      {/* Nav Links 已移到右侧 */}
+      <div />
 
-      {/* 语言切换 + CTA */}
+      {/* 语言切换 + STATION + CTA */}
       <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+        <Link href="/product/station">
+          <span style={{
+            fontSize: "12px",
+            fontWeight: 600,
+            letterSpacing: "0.1em",
+            color: MUTED2,
+            cursor: "pointer",
+            transition: "color 0.2s",
+            fontFamily: "'Space Mono', monospace",
+          }}
+            onMouseEnter={e => (e.currentTarget.style.color = WHITE)}
+            onMouseLeave={e => (e.currentTarget.style.color = MUTED2)}
+          >
+            STATION
+          </span>
+        </Link>
         <div style={{ display: "flex", gap: "4px" }}>
           {(["中文", "EN"] as const).map((label) => {
             const l = label === "中文" ? "zh" : "en";
