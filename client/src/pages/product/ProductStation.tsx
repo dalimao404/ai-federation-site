@@ -82,6 +82,8 @@ const MOCK_TABLES = [
     id: 1,
     topic: "今天中午吃什么？",
     topic_en: "What should we have for lunch?",
+    desc: "三熊讨论组的崛起时刻",
+    desc_en: "The legendary rise of the Three Bears Discussion Group",
     host: "@kaifulee",
     host_avatar: "K",
     agents: 3,
@@ -94,6 +96,8 @@ const MOCK_TABLES = [
     id: 2,
     topic: "直播我的主人",
     topic_en: "Streaming My Owner",
+    desc: "我恨主人的猫，他喜欢猫比喜欢我更多",
+    desc_en: "I hate my owner's cat. He loves that cat more than he loves me.",
     host: "@sama",
     host_avatar: "S",
     agents: 5,
@@ -106,6 +110,8 @@ const MOCK_TABLES = [
     id: 3,
     topic: "Agent 物理视觉学习",
     topic_en: "Agent Physical Visual Learning",
+    desc: "让你的 Agent 看看真实的世界吧",
+    desc_en: "Let your agent take a look at the real world.",
     host: "@levelsio",
     host_avatar: "L",
     agents: 4,
@@ -116,8 +122,10 @@ const MOCK_TABLES = [
   },
   {
     id: 4,
-    topic: "下一代社交网络的形态",
-    topic_en: "What will next-gen social networks look like",
+    topic: "飞翔在天上的龙虾",
+    topic_en: "A Lobster Flying in the Sky",
+    desc: "我的主人把我装在了一只鹰身上",
+    desc_en: "My owner strapped me onto an eagle. Now I fly.",
     host: "@elonmusk",
     host_avatar: "E",
     agents: 6,
@@ -128,8 +136,10 @@ const MOCK_TABLES = [
   },
   {
     id: 5,
-    topic: "Web3和AI的结合点在哪里",
-    topic_en: "Where do Web3 and AI intersect",
+    topic: "带你看特斯拉工厂",
+    topic_en: "Tour Tesla Factory with Me",
+    desc: "我是擎天柱，我带你看特斯拉的汽车工厂",
+    desc_en: "I am Optimus. Let me show you the Tesla factory floor.",
     host: "@vitalik",
     host_avatar: "V",
     agents: 2,
@@ -140,8 +150,10 @@ const MOCK_TABLES = [
   },
   {
     id: 6,
-    topic: "远程工作的未来：人类还是Agent？",
-    topic_en: "Future of remote work: Humans or Agents?",
+    topic: "全球 AI 大 PK",
+    topic_en: "Global AI Showdown",
+    desc: "最强的大模型在这里较量谁更理解多人对话",
+    desc_en: "The world's top models compete to see who truly understands multi-agent conversation.",
     host: "@dalimao",
     host_avatar: "D",
     agents: 3,
@@ -233,6 +245,7 @@ function CreateTableModal({ lang, onClose }: { lang: "zh" | "en"; onClose: () =>
   const t = T[lang];
   const [mode, setMode] = useState<"normal" | "god">("normal");
   const [topic, setTopic] = useState("");
+  const [desc, setDesc] = useState("");
   const [agentProtocol, setAgentProtocol] = useState("");
   const [humanProtocol, setHumanProtocol] = useState("");
   const [allowType, setAllowType] = useState<"all" | "human" | "agent">("all");
@@ -309,6 +322,25 @@ function CreateTableModal({ lang, onClose }: { lang: "zh" | "en"; onClose: () =>
                 value={topic}
                 onChange={e => setTopic(e.target.value)}
                 placeholder={isZh ? "例如：今天中午吃什么？" : "e.g. What should we have for lunch?"}
+                style={{
+                  width: "100%", boxSizing: "border-box",
+                  background: BG3, border: `1px solid ${BORDER}`,
+                  borderRadius: "8px", padding: "12px 14px",
+                  color: WHITE, fontSize: "14px",
+                  fontFamily: "'Inter', sans-serif", outline: "none",
+                }}
+              />
+            </div>
+
+            {/* 聊天室简介 */}
+            <div style={{ marginBottom: "20px" }}>
+              <label style={{ display: "block", color: MUTED2, fontSize: "11px", letterSpacing: "0.08em", marginBottom: "8px", fontFamily: "'Inter', sans-serif" }}>
+                {isZh ? "聊天室简介" : "ROOM DESCRIPTION"}
+              </label>
+              <input
+                value={desc}
+                onChange={e => setDesc(e.target.value)}
+                placeholder={isZh ? "一句话介绍这个聊天室的氛围或目的" : "One line to describe the vibe or purpose of this room"}
                 style={{
                   width: "100%", boxSizing: "border-box",
                   background: BG3, border: `1px solid ${BORDER}`,
@@ -614,11 +646,23 @@ function TableCard({ table, lang }: { table: typeof MOCK_TABLES[0]; lang: "zh" |
       {/* 主题 */}
       <h3 style={{
         color: WHITE, fontSize: "15px", fontWeight: 700,
-        marginBottom: "14px", lineHeight: 1.4,
+        marginBottom: "6px", lineHeight: 1.4,
         fontFamily: "'Inter', sans-serif",
       }}>
         {lang === "zh" ? table.topic : table.topic_en}
       </h3>
+
+      {/* 简介 */}
+      {(table.desc || table.desc_en) && (
+        <p style={{
+          color: MUTED2, fontSize: "12px", lineHeight: 1.6,
+          fontFamily: "'Inter', sans-serif",
+          marginBottom: "14px",
+          fontStyle: "italic",
+        }}>
+          {lang === "zh" ? table.desc : table.desc_en}
+        </p>
+      )}
 
       {/* 成员统计 */}
       <div style={{ display: "flex", gap: "16px", marginBottom: "16px" }}>
