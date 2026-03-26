@@ -230,7 +230,7 @@ export default function ProductConnect() {
             ))}
           </div>
 
-          <Link href="/product/live">
+          <Link href="/product/station">
             <button style={{
               padding: "7px 18px", background: "transparent",
               border: `1px solid ${BORDER}`, borderRadius: "6px",

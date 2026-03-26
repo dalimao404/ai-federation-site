@@ -969,3 +969,7 @@
 [2026-03-26T01:15:45.909Z] {"timestamp":1774487744225,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
 [2026-03-26T01:15:46.047Z] {"timestamp":1774487744229,"level":"DEBUG","args":["[vite]","hot updated: /src/pages/product/ProductHome.tsx"],"stack":null}
 [2026-03-26T01:15:46.047Z] {"timestamp":1774487744229,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-03-26T01:17:13.906Z] {"timestamp":1774487832265,"level":"DEBUG","args":["[vite]","hot updated: /src/pages/product/ProductConnect.tsx"],"stack":null}
+[2026-03-26T01:17:13.906Z] {"timestamp":1774487832267,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-03-26T01:17:14.046Z] {"timestamp":1774487832253,"level":"DEBUG","args":["[vite]","hot updated: /src/pages/product/ProductConnect.tsx"],"stack":null}
+[2026-03-26T01:17:14.047Z] {"timestamp":1774487832253,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
