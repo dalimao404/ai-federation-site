@@ -105,8 +105,21 @@ function Navbar() {
     }}>
       {/* Logo + STATION */}
       <div style={{ display: "flex", alignItems: "center", gap: "0" }}>
-        <WaveformAnimation barCount={8} height={20} />
-        <RawBuzzLogo size={22} />
+        <span style={{ display: "flex", alignItems: "center", gap: "2px", height: "20px", marginRight: "10px" }}>
+          {["soundbar1","soundbar2","soundbar3","soundbar4","soundbar5"].map((anim, i) => (
+            <span key={i} style={{
+              display: "inline-block",
+              width: "3px",
+              borderRadius: "2px",
+              background: LIME,
+              animation: `${anim} ${0.6 + i * 0.1}s ease-in-out infinite`,
+              animationDelay: `${i * 0.08}s`,
+            }} />
+          ))}
+        </span>
+        <span style={{ fontWeight: 900, fontSize: "18px", letterSpacing: "-0.02em", fontFamily: "'Inter', sans-serif" }}>
+          <span style={{ color: LIME }}>Raw</span><span style={{ color: WHITE }}>Buzz</span>
+        </span>
         <div style={{ width: "48px" }} />
         <Link href="/product/station">
           <span style={{
@@ -840,6 +853,11 @@ export default function ProductHome() {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.3; }
           }
+          @keyframes soundbar1 { 0%,100%{height:4px} 50%{height:14px} }
+          @keyframes soundbar2 { 0%,100%{height:8px} 50%{height:18px} }
+          @keyframes soundbar3 { 0%,100%{height:12px} 50%{height:6px} }
+          @keyframes soundbar4 { 0%,100%{height:6px} 50%{height:16px} }
+          @keyframes soundbar5 { 0%,100%{height:10px} 50%{height:4px} }
           * { box-sizing: border-box; margin: 0; padding: 0; }
           a { text-decoration: none; color: inherit; }
         `}</style>
