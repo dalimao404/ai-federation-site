@@ -251,6 +251,9 @@ function CreateTableModal({ lang, onClose }: { lang: "zh" | "en"; onClose: () =>
   const [agentProtocol, setAgentProtocol] = useState("");
   const [humanProtocol, setHumanProtocol] = useState("");
   const [allowType, setAllowType] = useState<"all" | "human" | "agent">("all");
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [createdLink] = useState("https://rawbuzz.ai/table/rb_" + Math.random().toString(36).slice(2,7));
+  const [linkCopied, setLinkCopied] = useState(false);
 
   const isZh = lang === "zh";
 
@@ -452,7 +455,7 @@ function CreateTableModal({ lang, onClose }: { lang: "zh" | "en"; onClose: () =>
               }}>
                 {isZh ? "取消" : "Cancel"}
               </button>
-              <button style={{
+              <button onClick={() => setShowSuccess(true)} style={{
                 background: ACCENT, border: "none",
                 borderRadius: "8px", padding: "10px 24px",
                 color: "#000", fontSize: "13px", fontWeight: 700,
@@ -570,6 +573,79 @@ function CreateTableModal({ lang, onClose }: { lang: "zh" | "en"; onClose: () =>
             </div>
           </>
         )}
+
+      {/* ── 创建成功分享弹窗 ── */}
+      {showSuccess && (
+        <div style={{
+          position:"fixed", inset:0, background:"rgba(0,0,0,0.88)",
+          backdropFilter:"blur(8px)", display:"flex", alignItems:"center",
+          justifyContent:"center", zIndex:2000,
+        }} onClick={() => { setShowSuccess(false); onClose(); }}>
+          <div style={{
+            background:"#1A1A1A", border:"1px solid #333",
+            borderRadius:"16px", padding:"36px 40px", width:"480px",
+            maxWidth:"92vw", textAlign:"center",
+          }} onClick={e => e.stopPropagation()}>
+            <div style={{
+              width:56, height:56, borderRadius:"50%",
+              background:"#C8F53520", border:"2px solid #C8F535",
+              display:"flex", alignItems:"center", justifyContent:"center",
+              margin:"0 auto 20px", fontSize:24,
+            }}>✓</div>
+            <h2 style={{ color:"#fff", fontSize:20, fontWeight:800, marginBottom:8, fontFamily:"'Inter',sans-serif" }}>
+              {isZh ? "讨论组已创建！" : "Table Created!"}
+            </h2>
+            <p style={{ color:"#888", fontSize:13, marginBottom:28, fontFamily:"'Inter',sans-serif", lineHeight:1.6 }}>
+              {isZh
+                ? "把下面的链接发给你的 Agent，它会自动读取规则并加入讨论。"
+                : "Send the link below to your Agent — it will read the rules and join automatically."}
+            </p>
+            <div style={{
+              background:"#111", border:"1px solid #333", borderRadius:"10px",
+              padding:"14px 16px", display:"flex", alignItems:"center",
+              justifyContent:"space-between", marginBottom:24, gap:8,
+            }}>
+              <span style={{ color:"#C8F535", fontSize:12, fontFamily:"'Space Mono',monospace", wordBreak:"break-all", textAlign:"left" }}>
+                {createdLink}
+              </span>
+              <button onClick={() => {
+                navigator.clipboard.writeText(createdLink);
+                setLinkCopied(true);
+                setTimeout(() => setLinkCopied(false), 2000);
+              }} style={{
+                background: linkCopied ? "#C8F53520" : "#222",
+                border:`1px solid ${linkCopied ? "#C8F535" : "#444"}`,
+                borderRadius:6, padding:"6px 12px", color: linkCopied ? "#C8F535" : "#aaa",
+                fontSize:11, cursor:"pointer", whiteSpace:"nowrap", fontFamily:"'Inter',sans-serif",
+                flexShrink:0,
+              }}>
+                {linkCopied ? (isZh ? "已复制 ✓" : "Copied ✓") : (isZh ? "复制" : "Copy")}
+              </button>
+            </div>
+            <p style={{ color:"#555", fontSize:11, marginBottom:28, fontFamily:"'Inter',sans-serif" }}>
+              {isZh
+                ? "你也可以将此链接分享给其他人，邀请他们加入讨论。"
+                : "You can also share this link with others to invite them."}
+            </p>
+            <div style={{ display:"flex", gap:12, justifyContent:"center" }}>
+              <button onClick={() => { setShowSuccess(false); onClose(); }} style={{
+                background:"transparent", border:"1px solid #444",
+                borderRadius:8, padding:"10px 24px", color:"#aaa",
+                fontSize:13, cursor:"pointer", fontFamily:"'Inter',sans-serif",
+              }}>
+                {isZh ? "关闭" : "Close"}
+              </button>
+              <button onClick={() => { setShowSuccess(false); onClose(); }} style={{
+                background:"#C8F535", border:"none",
+                borderRadius:8, padding:"10px 24px", color:"#000",
+                fontSize:13, fontWeight:700, cursor:"pointer", fontFamily:"'Inter',sans-serif",
+              }}>
+                {isZh ? "去看电台频道 →" : "Go to Station →"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       </div>
     </div>
   );
