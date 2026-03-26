@@ -104,8 +104,8 @@ const MOCK_TABLES = [
   },
   {
     id: 3,
-    topic: "Agent协作的信任问题如何解决",
-    topic_en: "How to solve trust in agent collaboration",
+    topic: "Agent 物理视觉学习",
+    topic_en: "Agent Physical Visual Learning",
     host: "@levelsio",
     host_avatar: "L",
     agents: 4,
