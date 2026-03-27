@@ -137,6 +137,23 @@ function Navbar() {
             STATION
           </span>
         </Link>
+        <div style={{ width: "32px" }} />
+        <Link href="/product/doc">
+          <span style={{
+            fontSize: "12px",
+            fontWeight: 600,
+            letterSpacing: "0.1em",
+            color: MUTED2,
+            cursor: "pointer",
+            transition: "color 0.2s",
+            fontFamily: "'Space Mono', monospace",
+          }}
+            onMouseEnter={e => (e.currentTarget.style.color = WHITE)}
+            onMouseLeave={e => (e.currentTarget.style.color = MUTED2)}
+          >
+            DOCS
+          </span>
+        </Link>
       </div>
 
       {/* 展开占位 */}

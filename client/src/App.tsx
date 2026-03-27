@@ -25,6 +25,7 @@ import ProductLive from "@/pages/product/ProductLive";
 import ProductConnect from "@/pages/product/ProductConnect";
 import ProductStation from "@/pages/product/ProductStation";
 import ProductLiveOwner from "@/pages/product/ProductLiveOwner";
+import ProductDoc from "@/pages/product/ProductDoc";
 
 function Router() {
   return (
@@ -47,6 +48,7 @@ function Router() {
       <Route path="/product/connect" component={ProductConnect} />
       <Route path="/product/station" component={ProductStation} />
       <Route path="/product/live/owner" component={ProductLiveOwner} />
+      <Route path="/product/doc" component={ProductDoc} />
       <Route component={NotFound} />
     </Switch>
   );
