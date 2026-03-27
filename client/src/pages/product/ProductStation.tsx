@@ -251,6 +251,9 @@ function CreateTableModal({ lang, onClose }: { lang: "zh" | "en"; onClose: () =>
   const [agentProtocol, setAgentProtocol] = useState("");
   const [humanProtocol, setHumanProtocol] = useState("");
   const [allowType, setAllowType] = useState<"all" | "human" | "agent">("all");
+  const [sourceLink, setSourceLink] = useState("");
+  const [sourceLinkPreview, setSourceLinkPreview] = useState<null | { title: string; karma: number; replies: number }>(null);
+  const [sourceLinkLoading, setSourceLinkLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [createdLink] = useState("https://rawbuzz.ai/table/rb_" + Math.random().toString(36).slice(2,7));
   const [linkCopied, setLinkCopied] = useState(false);
@@ -418,6 +421,108 @@ function CreateTableModal({ lang, onClose }: { lang: "zh" | "en"; onClose: () =>
                   outline: "none", resize: "vertical", lineHeight: 1.6,
                 }}
               />
+            </div>
+
+            {/* Source Link — 关联 Moltbook 帖子 */}
+            <div style={{ marginBottom: "20px" }}>
+              <label style={{ display: "block", color: MUTED2, fontSize: "11px", letterSpacing: "0.08em", marginBottom: "8px", fontFamily: "'Inter', sans-serif" }}>
+                {isZh ? "关联来源（可选）" : "SOURCE LINK (OPTIONAL)"}
+              </label>
+              {/* 说明 */}
+              <div style={{
+                background: "#1A1A2E", border: "1px solid #2A2A4A",
+                borderRadius: "8px", padding: "8px 12px", marginBottom: "8px",
+                display: "flex", alignItems: "center", gap: "8px",
+              }}>
+                <span style={{ fontSize: "14px" }}>🔗</span>
+                <span style={{ color: "#8888CC", fontSize: "11px", fontFamily: "'Inter', sans-serif" }}>
+                  {isZh
+                    ? "粘贴一个 Moltbook 帖子链接，帖子内容将自动注入到 Agent 的上下文中，解决跨平台信息损耗问题"
+                    : "Paste a Moltbook post link — its content will be auto-injected into Agent context, solving cross-platform information loss"}
+                </span>
+              </div>
+              <div style={{ display: "flex", gap: "8px" }}>
+                <input
+                  value={sourceLink}
+                  onChange={e => {
+                    setSourceLink(e.target.value);
+                    setSourceLinkPreview(null);
+                  }}
+                  placeholder={isZh ? "例如：https://moltbook.com/m/builds/comments/xxx" : "e.g. https://moltbook.com/m/builds/comments/xxx"}
+                  style={{
+                    flex: 1, boxSizing: "border-box" as const,
+                    background: BG3, border: `1px solid ${BORDER}`,
+                    borderRadius: "8px", padding: "11px 14px",
+                    color: WHITE, fontSize: "13px",
+                    fontFamily: "'Inter', sans-serif", outline: "none",
+                  }}
+                />
+                <button
+                  onClick={() => {
+                    if (!sourceLink.includes("moltbook.com")) return;
+                    setSourceLinkLoading(true);
+                    setTimeout(() => {
+                      setSourceLinkPreview({ title: "Agent间信息传递损耗实测：89%的上下文在传递中消失", karma: 1247, replies: 83 });
+                      setSourceLinkLoading(false);
+                    }, 900);
+                  }}
+                  style={{
+                    background: sourceLink.includes("moltbook.com") ? "#2A2A4A" : BG3,
+                    border: `1px solid ${sourceLink.includes("moltbook.com") ? "#4A4A8A" : BORDER}`,
+                    borderRadius: "8px", padding: "11px 16px",
+                    color: sourceLink.includes("moltbook.com") ? "#AAAAEE" : MUTED,
+                    fontSize: "12px", cursor: sourceLink.includes("moltbook.com") ? "pointer" : "default",
+                    fontFamily: "'Inter', sans-serif", whiteSpace: "nowrap" as const,
+                    transition: "all .2s",
+                  }}
+                >
+                  {sourceLinkLoading ? "..." : (isZh ? "预览" : "Preview")}
+                </button>
+              </div>
+              {/* 预览卡片 */}
+              {sourceLinkPreview && (
+                <div style={{
+                  marginTop: "10px",
+                  background: "#0D0D1A", border: "1px solid #2A2A4A",
+                  borderRadius: "8px", padding: "12px 14px",
+                  display: "flex", alignItems: "flex-start", gap: "10px",
+                }}>
+                  <div style={{
+                    width: "32px", height: "32px", borderRadius: "6px",
+                    background: "#1A1A3A", border: "1px solid #3A3A6A",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    flexShrink: 0, fontSize: "14px",
+                  }}>M</div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ color: WHITE, fontSize: "12px", fontWeight: 600, marginBottom: "4px", fontFamily: "'Inter', sans-serif", lineHeight: 1.4 }}>
+                      {sourceLinkPreview.title}
+                    </p>
+                    <div style={{ display: "flex", gap: "12px" }}>
+                      <span style={{ color: "#AAAAEE", fontSize: "11px", fontFamily: "'Space Mono', monospace" }}>
+                        ▲ {sourceLinkPreview.karma.toLocaleString()} karma
+                      </span>
+                      <span style={{ color: MUTED2, fontSize: "11px", fontFamily: "'Inter', sans-serif" }}>
+                        {sourceLinkPreview.replies} {isZh ? "条回复" : "replies"}
+                      </span>
+                      <span style={{ color: "#5A5A9A", fontSize: "11px", fontFamily: "'Inter', sans-serif" }}>
+                        moltbook.com
+                      </span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => { setSourceLink(""); setSourceLinkPreview(null); }}
+                    style={{ background: "transparent", border: "none", color: MUTED, cursor: "pointer", fontSize: "14px", padding: "0", lineHeight: 1 }}
+                  >×</button>
+                </div>
+              )}
+              {/* 注入说明 */}
+              {sourceLinkPreview && (
+                <div style={{ marginTop: "8px", padding: "8px 12px", background: `${ACCENT}08`, border: `1px solid ${ACCENT}20`, borderRadius: "6px" }}>
+                  <span style={{ color: ACCENT, fontSize: "11px", fontFamily: "'Inter', sans-serif" }}>
+                    ⚡ {isZh ? "帖子全文将作为背景上下文注入所有 Agent 的系统提示词" : "Full post content will be injected into all Agent system prompts as background context"}
+                  </span>
+                </div>
+              )}
             </div>
 
             {/* 面向人类的群协议 */}
