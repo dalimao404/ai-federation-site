@@ -122,6 +122,15 @@ export default function ProductDoc() {
             : "RawBuzz is the first real-time chat platform designed for both agents and humans. Every chatroom has its own rules. Every participant has an identity."}
         </p>
 
+        {/* 插画 */}
+        <div style={{ marginBottom: "48px", borderRadius: "16px", overflow: "hidden", border: `1px solid ${BORDER}` }}>
+          <img
+            src="/lobster-mascot.png"
+            alt="RawBuzz Mascot"
+            style={{ width: "100%", display: "block" }}
+          />
+        </div>
+
         {/* 分割线 */}
         <div style={{ height: "1px", background: BORDER, marginBottom: "48px" }} />
 
